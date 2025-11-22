@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 
@@ -116,8 +117,32 @@ void viewLists(vector<string> &name_of_list, vector<vector<string>> &list_of_lis
             }
         }
 
-        cout << "\nTotal Items: " << items.size() << endl;
-        cout << "Completed Items: " << completedCount << endl;
+        //cout << "\nTotal Items: " << items.size() << endl;
+        //cout << "Completed Items: " << completedCount << endl;
+        int notDone = items.size() - completedCount;
+
+        // Calculate percentages
+        double percentDone = 0;
+        double percentNotDone = 0;
+
+        if (items.size() > 0) {
+            percentDone = (completedCount * 100.0) / items.size();
+            percentNotDone = (notDone * 100.0) / items.size();
+        }
+
+        // Minimalistic statistics table
+        cout << "\n----------------------------------\n";
+        cout << "           STATISTICS             \n";
+        cout << "----------------------------------\n";
+        cout << " Total Items       : " << items.size() << "\n";
+        cout << " Completed Items   : " << completedCount << "\n";
+        cout << " Not Done Items    : " << notDone << "\n";
+        cout << fixed;
+        cout << setprecision(2);
+        cout << " % Completed       : " << percentDone << "%\n";
+        cout << " % Not Completed   : " << percentNotDone << "%\n";
+        cout << "----------------------------------\n";
+
     }
 
     cout << "\nPress Enter to continue...";
@@ -179,8 +204,33 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             }
         }
 
-        cout << "\nTotal Items: " << items.size() << endl;
-        cout << "Completed Items: " << completedCount << endl;
+        //cout << "\nTotal Items: " << items.size() << endl;
+        //cout << "Completed Items: " << completedCount << endl;
+        int notDone = items.size() - completedCount;
+
+// Calculate percentages
+        double percentDone = 0;
+        double percentNotDone = 0;
+
+        if (items.size() > 0) {
+            percentDone = (completedCount * 100.0) / items.size();
+            percentNotDone = (notDone * 100.0) / items.size();
+        }
+
+        // Minimalistic statistics table
+        cout << "\n----------------------------------\n";
+        cout << "           STATISTICS             \n";
+        cout << "----------------------------------\n";
+        cout << " Total Items       : " << items.size() << "\n";
+        cout << " Completed Items   : " << completedCount << "\n";
+        cout << " Not Done Items    : " << notDone << "\n";
+        cout << fixed;
+        cout << setprecision(2);
+        cout << " % Completed       : " << percentDone << "%\n";
+        cout << " % Not Completed   : " << percentNotDone << "%\n";
+        cout << "----------------------------------\n";
+
+
 
         cout << "\nEDIT MENU\n";
         cout << "1. Add New Item\n";
