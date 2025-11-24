@@ -123,9 +123,9 @@ void createNewList(
     cout << "\n----------------------------------------\n";
     cout << " START ADDING ITEMS TO YOUR LIST\n";
     cout << "----------------------------------------\n";
-    cout << "• Type an item and press Enter\n";
-    cout << "• Type 'done' to finish\n";
-    cout << "• Type 'cancel' to discard list\n";
+    cout << " Type an item and press Enter\n";
+    cout << " Type 'done' to finish\n";
+    cout << " Type 'cancel' to discard list\n";
     cout << "----------------------------------------\n\n";
 
     do {
@@ -156,9 +156,9 @@ void createNewList(
         cout << "\n----------------------------------------\n";
         cout << " ADD DESCRIPTIONS FOR THIS ITEM\n";
         cout << "----------------------------------------\n";
-        cout << "• Type a description and press Enter\n";
-        cout << "• Type 'done' when finished\n";
-        cout << "• Type 'none' to skip descriptions\n";
+        cout << " Type a description and press Enter\n";
+        cout << " Type 'done' when finished\n";
+        cout << " Type 'none' to skip descriptions\n";
         cout << "----------------------------------------\n";
 
         tempDescriptions.clear();  // Clear from previous item
