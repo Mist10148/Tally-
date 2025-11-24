@@ -1099,7 +1099,96 @@ void deleteList(
     cin.get();
 }
 
+int updatedate(int cmonth, int cdate, int cyear
+) {
+    cout << "\n=====================================\n";
+    cout << "               EDIT DATE             \n";
+    cout << "=====================================\n";
+    cout << "Enter month number: ";
+    do
+    {
+        cin >> cmonth;
+        if (cmonth < 1 || cmonth > 12)
+        {
+            cout << "Try again\n";
+        }
+        
+    } while (cmonth < 1 || cmonth > 12);
+    cout << "Enter year number: ";
+    do
+    {
+        cin >> cyear;
+        if (cyear < 2000 || cyear > 2100)
+        {
+            cout << "Try again\n";
+        }
+    } while (cyear < 2000 || cyear > 2100);
+    cout << "Enter date number: ";
+    switch (cmonth)
+    {
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+        do
+    {
+        cin >> cdate;
+        if (cdate < 1 || cdate > 31)
+        {
+            cout << "Try again\n";
+        }
+        
+    } while (cdate < 1 || cdate > 31);
+        break;
+    
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+   do
+    {
+        cin >> cdate;
+        if (cdate < 1 || cdate > 30)
+        {
+            cout << "Try again\n";
+        }
+        
+    } while (cdate < 1 || cdate > 30);    
+        break;
 
+    case 2:
+    if (((cyear%4 == 0 && cyear%100 != 0) || (cyear%400 == 0)))
+    {
+        do
+        {
+            cin >> cdate;
+            if (cdate < 1 || cdate > 29)
+            {
+                cout << "Try again\n";
+            }
+            
+        } while (cdate < 1 || cdate > 29); 
+    }
+    else
+    {
+        do
+        {
+            cin >> cdate;
+            if (cdate < 1 || cdate > 28)
+            {
+                cout << "Try again\n";
+            }
+            
+        } while (cdate < 1 || cdate > 28);
+    }
+        break;77
+    }
+    cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
+    return cmonth, cdate, cyear;
+}
 int main() {
 
 
@@ -1109,6 +1198,10 @@ int main() {
     vector<string> name_of_list;
     vector<vector<string>> list_of_lists;
     vector<vector<vector<string>>> list_of_descriptions;
+    int cmonth = 0, cdate = 0, cyear = 0;
+    vector<vector<vector<int>>> month;
+    vector<vector<vector<int>>> date;
+    vector<vector<vector<int>>> year;
 
     int choice;
 
@@ -1121,7 +1214,7 @@ int main() {
         cout << "==========================================\n";
         cout << " Organize your tasks, reminders, and more!\n";
         cout << "==========================================\n\n";
-
+        cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
         cout << "            MAIN MENU\n";
         cout << "------------------------------------------\n";
         cout << "1. Create a New List\n";
@@ -1135,7 +1228,7 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice < 1 || choice > 6) {
+        if (choice < 1 || choice > 7) {
             cout << "\nInvalid choice. Enter a number from 1 to 6.\n";
             cout << "Press Enter to continue...";
             cin.ignore();
@@ -1167,6 +1260,10 @@ int main() {
             case 6:
                 searchLists(name_of_list);
                 break;
+            case 7:
+             updatedate(cmonth, cdate, cyear);
+             break;
+
         }
     }
 
