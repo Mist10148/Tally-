@@ -2,156 +2,400 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+
 using namespace std;
 
+// -------------------------
+// SEARCH LIST NAMES
+// -------------------------
+void searchLists(const vector<string>& names) {
+    cin.ignore();   // clear leftover newline
+    string key;     // keyword user wants to search for
 
+    cout << "\n=====================================\n";
+    cout << "           SEARCH LIST NAMES         \n";
+    cout << "=====================================\n";
 
+    cout << "Enter keyword to search: ";
+    getline(cin, key);
 
-// Function to create a new list
-void createNewList(vector<string>& name_of_list, vector<vector<string>>& list_of_lists) {
-    system("cls");
+    cout << "\n-------------- RESULTS --------------\n";
 
-    cout << "==============================\n";
-    cout << "       CREATE NEW LIST        \n";
-    cout << "==============================\n";
+    bool found = false;   // tracks if any match is found
 
-    cin.ignore(); // Clears leftover newline
-    string title;
-    cout << "Enter list title: ";
-    getline(cin, title);
-
-    vector<string> items;  // temporary storage for items
-
-    cout << "\nStart adding items to your list.\n";
-    cout << "Type an item and press Enter.\n";
-    cout << "Type 'done' to finish or 'cancel' to discard.\n\n";
-
-    string item;
-
-    // DO-WHILE LOOP FOR ADDING ITEMS
-    do {
-        cout << "Add item: ";
-        getline(cin, item);
-
-        if (item == "done")
-            break;
-
-        if (item == "cancel") {
-            cout << "\nList creation cancelled. Returning to menu...\n";
-            cout << "Press Enter to continue...";
-            cin.get();
-            return;
+    // Check every list name for the keyword
+    for (int i = 0; i < (int)names.size(); i++) {
+        if (names[i].find(key) != string::npos) {   // substring match
+            cout << " " << i + 1 << ". " << names[i] << "\n";
+            found = true;
         }
+    }
 
-        // Add item using assignment + resize
-        int index = items.size();
-        items.resize(index + 1);
-        items[index] = item;
+    // If no list contains the keyword
+    if (!found) {
+        cout << "( No matching list names found )\n";
+    }
 
-    } while (true);
+    cout << "-------------------------------------\n";
+    cout << "Press Enter to continue...";
+    cin.get();
+}
 
-    // Save the title
-    int titleIndex = name_of_list.size();
-    name_of_list.resize(titleIndex + 1);
-    name_of_list[titleIndex] = title;
+// -------------------------
+// SEARCH ITEMS IN A LIST
+// -------------------------
+void searchItems(const vector<string>& items) {
+    cin.ignore();   // clear leftover newline
+    string key;     // keyword user wants to search for
 
-    // Save the items list
-    int listIndex = list_of_lists.size();
-    list_of_lists.resize(listIndex + 1);
-    list_of_lists[listIndex] = items;
+    cout << "\n=====================================\n";
+    cout << "            SEARCH ITEMS             \n";
+    cout << "=====================================\n";
 
-    cout << "\nList saved successfully!\n";
+    cout << "Enter keyword to search: ";
+    getline(cin, key);
+
+    cout << "\n-------------- RESULTS --------------\n";
+
+    bool found = false;   // tracks if any item matches
+
+    // Search through all items in the list
+    for (int i = 0; i < (int)items.size(); i++) {
+        if (items[i].find(key) != string::npos) {   // substring match
+            cout << " " << i + 1 << ". " << items[i] << "\n";
+            found = true;
+        }
+    }
+
+    // No results
+    if (!found) {
+        cout << "( No matching items found )\n";
+    }
+
+    cout << "-------------------------------------\n";
     cout << "Press Enter to continue...";
     cin.get();
 }
 
 
-void viewLists(vector<string> &name_of_list, vector<vector<string>> &list_of_lists) {
 
+// Function to create a new list
+void createNewList(
+    vector<string>& name_of_list,
+    vector<vector<string>>& list_of_lists,
+    vector<vector<vector<string>>>& list_of_descriptions
+) {
+    system("cls");
+
+    // ===================================================
+    // VARIABLE DECLARATIONS (ALL MOVED TO TOP)
+    // ===================================================
+
+    string title;                        // The title/name of the new list
+    string item;                         // Stores each item typed by the user
+    string descLine;                     // Stores each description line entered
+
+    vector<string> items;                // Holds all items belonging to this list
+    vector<vector<string>> descriptions; // Holds descriptions for all items
+
+    vector<string> tempDescriptions;     // Temporary storage for current item's descriptions
+
+    int index = 0;                       // Index for adding new item
+    int dindex = 0;                      // Index for adding a description
+    int dsaveIndex = 0;                  // Index for saving full description set
+
+    // ===================================================
+    // GET LIST TITLE
+    // ===================================================
+
+    cout << "==============================\n";
+    cout << "        CREATE NEW LIST       \n";
+    cout << "==============================\n\n";
+
+    cin.ignore();
+    cout << "Enter list title: ";
+    getline(cin, title);
+
+    // ===================================================
+    // ITEM INPUT LOOP
+    // ===================================================
+
+    cout << "\n----------------------------------------\n";
+    cout << " START ADDING ITEMS TO YOUR LIST\n";
+    cout << "----------------------------------------\n";
+    cout << "• Type an item and press Enter\n";
+    cout << "• Type 'done' to finish\n";
+    cout << "• Type 'cancel' to discard list\n";
+    cout << "----------------------------------------\n\n";
+
+    do {
+        cout << "Add item: ";
+        getline(cin, item);
+
+        // --- User wants to stop adding items ---
+        if (item == "done")
+            break;
+
+        // --- User cancels entire creation process ---
+        if (item == "cancel") {
+            cout << "\nList creation cancelled.\n";
+            cout << "Press Enter to continue...";
+            cin.get();
+            return;
+        }
+
+        // Add new item (resize method to avoid push_back)
+        index = items.size();
+        items.resize(index + 1);
+        items[index] = item;
+
+        // ===================================================
+        // ENTER DESCRIPTIONS FOR THIS ITEM
+        // ===================================================
+
+        cout << "\n----------------------------------------\n";
+        cout << " ADD DESCRIPTIONS FOR THIS ITEM\n";
+        cout << "----------------------------------------\n";
+        cout << "• Type a description and press Enter\n";
+        cout << "• Type 'done' when finished\n";
+        cout << "• Type 'none' to skip descriptions\n";
+        cout << "----------------------------------------\n";
+
+        tempDescriptions.clear();  // Clear from previous item
+
+        // DESCRIPTION ENTRY LOOP
+        while (true) {
+            cout << "Description: ";
+            getline(cin, descLine);
+
+            if (descLine == "done")   // Finished adding descriptions
+                break;
+
+            if (descLine == "none") { // User wants no descriptions
+                tempDescriptions.clear();
+                break;
+            }
+
+            if (descLine == "")       // Skip empty input silently
+                continue;
+
+            // Add description using resize
+            dindex = tempDescriptions.size();
+            tempDescriptions.resize(dindex + 1);
+            tempDescriptions[dindex] = descLine;
+        }
+
+        // Save this item’s description list
+        dsaveIndex = descriptions.size();
+        descriptions.resize(dsaveIndex + 1);
+        descriptions[dsaveIndex] = tempDescriptions;
+
+        cout << "\nItem + descriptions saved!\n\n";
+
+    } while (true);
+
+    // ===================================================
+    // SAVE FINAL LIST, ITEMS, AND DESCRIPTIONS
+    // ===================================================
+
+    int titleIndex = name_of_list.size();
+    name_of_list.resize(titleIndex + 1);
+    name_of_list[titleIndex] = title;
+
+    int listIndex = list_of_lists.size();
+    list_of_lists.resize(listIndex + 1);
+    list_of_lists[listIndex] = items;
+
+    list_of_descriptions.resize(listIndex + 1);
+    list_of_descriptions[listIndex] = descriptions;
+
+    // ===================================================
+    // COMPLETION MESSAGE
+    // ===================================================
+
+    cout << "\n========================================\n";
+    cout << "       LIST SAVED SUCCESSFULLY!\n";
+    cout << "========================================\n";
+    cout << "Press Enter to continue...";
+    cin.get();
+}
+
+
+
+
+void viewLists(
+    vector<string>& name_of_list,
+    vector<vector<string>>& list_of_lists,
+    vector<vector<vector<string>>>& list_of_descriptions
+) {
+
+    // If no lists exist, show message and exit
     if (name_of_list.size() == 0) {
         cout << "\nNo lists created yet.\n";
-        cout << "Press Enter to continue...";
+        cout << "Press Enter...";
         cin.ignore();
         cin.get();
         return;
     }
 
-    cout << "\n========= VIEW LISTS =========\n";
+    // ================================
+    // DISPLAY ALL LIST TITLES
+    // ================================
+    cout << "\n=====================================\n";
+    cout << "               VIEW LISTS            \n";
+    cout << "=====================================\n";
 
-    for (int i = 0; i < name_of_list.size(); i++) {
-        cout << i + 1 << ". " << name_of_list[i] << endl;
+    for (int i = 0; i < (int)name_of_list.size(); i++) {
+        cout << " " << i + 1 << ". " << name_of_list[i] << "\n";
     }
 
-    int choice;
+    cout << "\n S. Search list names\n";
+    cout << "-------------------------------------\n";
 
-    cout << "\nSelect a list number to view: ";
-    cin >> choice;
+    // ================================
+    // ALLOW USER TO CHOOSE A LIST
+    // ================================
+    cout << "Select a list number: ";
+    string choiceStr;
+    cin >> choiceStr;
 
-    // clear only 1 leftover newline
-    cin.ignore();
+    // ================================
+    // SEARCH MODE (User typed S)
+    // ================================
+    if (choiceStr == "S" || choiceStr == "s") {
+        cin.ignore();
+        string key;
 
-    if (choice < 1 || choice > name_of_list.size()) {
-        cout << "\nInvalid list number.\n";
-        cout << "Press Enter to continue...";
+        cout << "\n=====================================\n";
+        cout << "           SEARCH LIST NAMES         \n";
+        cout << "=====================================\n";
+        cout << "Enter keyword: ";
+        getline(cin, key);
+
+        cout << "\n--------------- RESULTS --------------\n";
+
+        bool found = false;
+
+        // Scan all list names for keyword match
+        for (int i = 0; i < (int)name_of_list.size(); i++) {
+            if (name_of_list[i].find(key) != string::npos) {
+                cout << " " << i + 1 << ". " << name_of_list[i] << "\n";
+                found = true;
+            }
+        }
+
+        if (!found)
+            cout << "( No matching list names found )\n";
+
+        cout << "-------------------------------------\n";
+        cout << "Press Enter...";
         cin.get();
         return;
     }
 
-    int index = choice - 1;
+    // ================================
+    // USER CHOSE A LIST NUMBER
+    // ================================
+    int choice = 0;
+    try {
+        choice = stoi(choiceStr); // convert input to number
+    } catch (...) {
+        cout << "\nInvalid.\nPress Enter...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    cin.ignore();
 
-    cout << "\n====== " << name_of_list[index] << " ======\n";
+    // Validate chosen list
+    if (choice < 1 || choice > (int)name_of_list.size()) {
+        cout << "\nInvalid.\nPress Enter...";
+        cin.get();
+        return;
+    }
 
-    vector<string> &items = list_of_lists[index];
+    int index = choice - 1; // convert to 0-based index
+
+    // Access selected list's items and descriptions
+    vector<string>& items = list_of_lists[index];
+
+    // Prevent crash for lists without descriptions
+    vector<vector<string>> emptyVecVec;
+    vector<vector<string>>& descs =
+        (index < (int)list_of_descriptions.size())
+        ? list_of_descriptions[index]
+        : emptyVecVec;
+
+    // ================================
+    // DISPLAY SELECTED LIST CONTENT
+    // ================================
+    cout << "\n=====================================\n";
+    cout << "           " << name_of_list[index] << "\n";
+    cout << "=====================================\n";
 
     if (items.size() == 0) {
-        cout << "(No items in this list)\n";
-    }
-    else {
+        cout << "(No items)\n";
+    } else {
         int completedCount = 0;
 
-        for (int i = 0; i < items.size(); i++) {
-            cout << i + 1 << ". " << items[i] << endl;
+        // Print each item and its descriptions
+        for (int i = 0; i < (int)items.size(); i++) {
+            cout << " " << i + 1 << ". " << items[i] << "\n";
 
-            if (items[i].find("[DONE]") != string::npos) {
-                completedCount++;
+            // Print all descriptions for this item (if any)
+            if (i < (int)descs.size()) {
+                for (int d = 0; d < (int)descs[i].size(); d++) {
+                    cout << "      > " << descs[i][d] << "\n";
+                }
             }
+
+            // Track [DONE] items
+            if (items[i].find("[DONE]") != string::npos)
+                completedCount++;
         }
 
-        //cout << "\nTotal Items: " << items.size() << endl;
-        //cout << "Completed Items: " << completedCount << endl;
+        // ================================
+        // STATISTICS CALCULATION
+        // ================================
         int notDone = items.size() - completedCount;
 
-        // Calculate percentages
-        double percentDone = 0;
-        double percentNotDone = 0;
+        double percentDone = (items.size() > 0)
+            ? (completedCount * 100.0) / items.size()
+            : 0;
 
-        if (items.size() > 0) {
-            percentDone = (completedCount * 100.0) / items.size();
-            percentNotDone = (notDone * 100.0) / items.size();
-        }
+        double percentNot = (items.size() > 0)
+            ? (notDone * 100.0) / items.size()
+            : 0;
 
-        // Minimalistic statistics table
-        cout << "\n----------------------------------\n";
-        cout << "           STATISTICS             \n";
-        cout << "----------------------------------\n";
+        // ================================
+        // STATISTICS DISPLAY
+        // ================================
+        cout << "\n--------------- STATISTICS -----------\n";
         cout << " Total Items       : " << items.size() << "\n";
         cout << " Completed Items   : " << completedCount << "\n";
-        cout << " Not Done Items    : " << notDone << "\n";
-        cout << fixed;
-        cout << setprecision(2);
+        cout << " Not Done          : " << notDone << "\n";
+        cout << fixed << setprecision(2);
         cout << " % Completed       : " << percentDone << "%\n";
-        cout << " % Not Completed   : " << percentNotDone << "%\n";
-        cout << "----------------------------------\n";
-
+        cout << " % Not Completed   : " << percentNot << "%\n";
+        cout << "-------------------------------------\n";
     }
 
-    cout << "\nPress Enter to continue...";
-    cin.get();  // waits for enter
+    // End screen pause
+    cout << "\nPress Enter...";
+    cin.get();
 }
 
 
-void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_lists) {
 
+// -----------------------------
+// EDIT LIST
+// -----------------------------
+void editList(
+    vector<string> &name_of_list,
+    vector<vector<string>> &list_of_lists,
+    vector<vector<vector<string>>> &list_of_descriptions
+) {
+    // If no lists exist, there is nothing to edit
     if (name_of_list.size() == 0) {
         cout << "\nNo lists to edit.\n";
         cout << "Press Enter to continue...";
@@ -160,55 +404,108 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
         return;
     }
 
-    cout << "\n========= EDIT LIST =========\n";
+    // ================================
+    // DISPLAY ALL LISTS TO CHOOSE FROM
+    // ================================
+    cout << "\n=====================================\n";
+    cout << "               EDIT LIST             \n";
+    cout << "=====================================\n";
 
-    for (int i = 0; i < name_of_list.size(); i++) {
-        cout << i + 1 << ". " << name_of_list[i] << endl;
+    for (int i = 0; i < (int)name_of_list.size(); i++) {
+        cout << " " << i + 1 << ". " << name_of_list[i] << "\n";
     }
 
-    int choice;
+    cout << "\n S. Search list names\n";
+    cout << "-------------------------------------\n";
 
-    cout << "\nSelect a list number to edit: ";
-    cin >> choice;
+    // Let the user choose which list to modify
+    cout << "Select a list number to edit: ";
+    string choiceStr;
+    cin >> choiceStr;
+
+    // User wants to search by keyword
+    if (choiceStr == "S" || choiceStr == "s") {
+        searchLists(name_of_list);
+        return;
+    }
+
+    // Convert chosen list number
+    int choice = 0;
+    try {
+        choice = stoi(choiceStr);
+    } catch (...) {
+        cout << "\nInvalid list number.\n";
+        cout << "Press Enter to continue...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
     cin.ignore();
 
-    if (choice < 1 || choice > name_of_list.size()) {
+    // Validate list index
+    if (choice < 1 || choice > (int)name_of_list.size()) {
         cout << "\nInvalid list number.\n";
         cout << "Press Enter to continue...";
         cin.get();
         return;
     }
 
-    int index = choice - 1;
+    int index = choice - 1; // convert to 0-index
 
+    // =============================================
+    // EDIT LOOP — continues until user exits
+    // =============================================
     while (true) {
 
         system("cls");
 
-        cout << "=============================\n";
-        cout << " Editing: " << name_of_list[index] << endl;
-        cout << "=============================\n\n";
+        cout << "=====================================\n";
+        cout << "         Editing: " << name_of_list[index] << "\n";
+        cout << "=====================================\n\n";
 
+        // Items in this list
         vector<string> &items = list_of_lists[index];
 
+        // Ensure description array matches list count
+        if (index >= (int)list_of_descriptions.size()) {
+            int oldSize = list_of_descriptions.size();
+            list_of_descriptions.resize(index + 1);
+            for (int t = oldSize; t < (int)list_of_descriptions.size(); t++) {
+                list_of_descriptions[t] = vector<vector<string>>();
+            }
+        }
+
+        vector<vector<string>> &descriptions = list_of_descriptions[index];
+
+        // -------------------------------
+        // DISPLAY ITEMS + DESCRIPTIONS
+        // -------------------------------
         int completedCount = 0;
 
         if (items.size() == 0) {
             cout << "(No items yet)\n";
         } else {
-            for (int i = 0; i < items.size(); i++) {
-                cout << i + 1 << ". " << items[i] << endl;
+            for (int i = 0; i < (int)items.size(); i++) {
+                cout << " " << i + 1 << ". " << items[i] << "\n";
 
+                // Show descriptions of this item
+                if (i < (int)descriptions.size()) {
+                    for (int d = 0; d < (int)descriptions[i].size(); d++) {
+                        cout << "      > " << descriptions[i][d] << "\n";
+                    }
+                }
+
+                // Count completed items
                 if (items[i].find("[DONE]") != string::npos)
                     completedCount++;
             }
         }
 
-        //cout << "\nTotal Items: " << items.size() << endl;
-        //cout << "Completed Items: " << completedCount << endl;
+        // -------------------------------
+        // STATISTICS CALCULATION
+        // -------------------------------
         int notDone = items.size() - completedCount;
 
-// Calculate percentages
         double percentDone = 0;
         double percentNotDone = 0;
 
@@ -217,56 +514,99 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             percentNotDone = (notDone * 100.0) / items.size();
         }
 
-        // Minimalistic statistics table
-        cout << "\n----------------------------------\n";
-        cout << "           STATISTICS             \n";
-        cout << "----------------------------------\n";
+        // -------------------------------
+        // SHOW LIST STATISTICS
+        // -------------------------------
+        cout << "\n--------------- STATISTICS -----------\n";
         cout << " Total Items       : " << items.size() << "\n";
         cout << " Completed Items   : " << completedCount << "\n";
         cout << " Not Done Items    : " << notDone << "\n";
-        cout << fixed;
-        cout << setprecision(2);
+        cout << fixed << setprecision(2);
         cout << " % Completed       : " << percentDone << "%\n";
         cout << " % Not Completed   : " << percentNotDone << "%\n";
-        cout << "----------------------------------\n";
+        cout << "-------------------------------------\n";
 
-
-
+        // ================================
+        // EDIT MENU OPTIONS
+        // ================================
         cout << "\nEDIT MENU\n";
-        cout << "1. Add New Item\n";
-        cout << "2. Edit an Item\n";
-        cout << "3. Delete an Item\n";
-        cout << "4. Mark / Unmark Item as DONE\n";
-        cout << "5. Reorder Items (Swap)\n";
-        cout << "6. Rename List\n";
-        cout << "7. Return to Main Menu\n";
+        cout << "-------------------------------------\n";
+        cout << " 1. Add New Item\n";
+        cout << " 2. Edit an Item\n";
+        cout << " 3. Delete an Item\n";
+        cout << " 4. Mark / Unmark Item as DONE\n";
+        cout << " 5. Reorder Items (Swap)\n";
+        cout << " 6. Rename List\n";
+        cout << " 7. Edit Item Descriptions\n";
+        cout << " 8. Search Items\n";
+        cout << " 9. Return to Main Menu\n";
+        cout << "-------------------------------------\n";
 
         int editChoice;
         cout << "\nChoose an option: ";
         cin >> editChoice;
         cin.ignore();
 
-        // --------------------------------------------------------
-        // 1. ADD NEW ITEM
-        // --------------------------------------------------------
+        // User wants to search items within this list
+        if (editChoice == 8) {
+            searchItems(items);
+            continue;
+        }
+
+        // ============================================
+        // OPTION 1 — ADD NEW ITEM
+        // ============================================
         if (editChoice == 1) {
 
             string newItem;
             cout << "\nEnter new item: ";
             getline(cin, newItem);
 
+            // Add item using resize
             int newIndex = items.size();
             items.resize(newIndex + 1);
             items[newIndex] = newItem;
 
-            cout << "Item added!\n";
+            // Prompt for descriptions immediately
+            cout << "\nAdd descriptions for this new item\n";
+            cout << "-------------------------------------\n";
+            cout << "• Type a description and press Enter\n";
+            cout << "• Type 'done' when finished\n";
+            cout << "• Type 'none' to skip\n";
+            cout << "-------------------------------------\n";
+
+            vector<string> temp;
+            string nd;
+
+            while (true) {
+                cout << "Description: ";
+                getline(cin, nd);
+                if (nd == "done") break;
+                if (nd == "none") { temp.clear(); break; }
+                if (nd == "") continue;
+
+                int di = temp.size();
+                temp.resize(di + 1);
+                temp[di] = nd;
+            }
+
+            // Ensure description vector is same size as items
+            int descVecOld = descriptions.size();
+            descriptions.resize(items.size());
+            for (int i = descVecOld; i < (int)descriptions.size(); i++)
+                descriptions[i] = vector<string>();
+
+            descriptions[newIndex] = temp;
+
+            cout << "\nItem added!\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 2. EDIT EXISTING ITEM
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 2 — EDIT ITEM TEXT
+        // ============================================
         else if (editChoice == 2) {
 
             if (items.size() == 0) {
@@ -281,13 +621,15 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cin >> itemNum;
             cin.ignore();
 
-            if (itemNum < 1 || itemNum > items.size()) {
+            // Validate
+            if (itemNum < 1 || itemNum > (int)items.size()) {
                 cout << "\nInvalid item number!\n";
                 cout << "Press Enter to continue...";
                 cin.get();
                 continue;
             }
 
+            // Replace text while preserving [DONE] tag
             string updatedText;
             cout << "Enter new text: ";
             getline(cin, updatedText);
@@ -300,11 +642,12 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cout << "Item updated!\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 3. DELETE ITEM
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 3 — DELETE ITEM
+        // ============================================
         else if (editChoice == 3) {
 
             if (items.size() == 0) {
@@ -319,23 +662,30 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cin >> delNum;
             cin.ignore();
 
-            if (delNum < 1 || delNum > items.size()) {
+            // Validate
+            if (delNum < 1 || delNum > (int)items.size()) {
                 cout << "\nInvalid item number!\n";
                 cout << "Press Enter to continue...";
                 cin.get();
                 continue;
             }
 
+            // Remove item + its descriptions
             items.erase(items.begin() + (delNum - 1));
+
+            if (delNum - 1 < (int)descriptions.size()) {
+                descriptions.erase(descriptions.begin() + (delNum - 1));
+            }
 
             cout << "Item deleted!\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 4. MARK / UNMARK ITEM
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 4 — MARK / UNMARK AS DONE
+        // ============================================
         else if (editChoice == 4) {
 
             if (items.size() == 0) {
@@ -350,7 +700,8 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cin >> markNum;
             cin.ignore();
 
-            if (markNum < 1 || markNum > items.size()) {
+            // Validate
+            if (markNum < 1 || markNum > (int)items.size()) {
                 cout << "\nInvalid item number!\n";
                 cout << "Press Enter to continue...";
                 cin.get();
@@ -359,8 +710,9 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
 
             string &target = items[markNum - 1];
 
+            // Toggle DONE tag
             if (target.find("[DONE]") != string::npos) {
-                target = target.substr(7); // remove "[DONE] "
+                if (target.size() >= 7) target = target.substr(7);
                 cout << "Item unmarked.\n";
             } else {
                 target = "[DONE] " + target;
@@ -369,11 +721,12 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
 
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 5. REORDER ITEMS — SWAP
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 5 — SWAP TWO ITEMS
+        // ============================================
         else if (editChoice == 5) {
 
             if (items.size() < 2) {
@@ -390,25 +743,47 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cin >> b;
             cin.ignore();
 
-            if (a < 1 || a > items.size() || b < 1 || b > items.size()) {
+            // Validate swap positions
+            if (a < 1 || a > (int)items.size() || b < 1 || b > (int)items.size()) {
                 cout << "\nInvalid item numbers!\n";
                 cout << "Press Enter to continue...";
                 cin.get();
                 continue;
             }
 
+            // Swap item text
             string temp = items[a - 1];
             items[a - 1] = items[b - 1];
             items[b - 1] = temp;
 
+            // Swap descriptions too
+            if (a - 1 < (int)descriptions.size() && b - 1 < (int)descriptions.size()) {
+                vector<string> tempD = descriptions[a - 1];
+                descriptions[a - 1] = descriptions[b - 1];
+                descriptions[b - 1] = tempD;
+            } else {
+                // Ensure array is large enough before swap
+                int needed = (a > b ? a : b);
+                if ((int)descriptions.size() < needed) {
+                    int oldSize = descriptions.size();
+                    descriptions.resize(needed);
+                    for (int i = oldSize; i < (int)descriptions.size(); i++)
+                        descriptions[i] = vector<string>();
+                }
+                vector<string> tempD = descriptions[a - 1];
+                descriptions[a - 1] = descriptions[b - 1];
+                descriptions[b - 1] = tempD;
+            }
+
             cout << "Items swapped!\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 6. RENAME LIST
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 6 — RENAME THE LIST
+        // ============================================
         else if (editChoice == 6) {
 
             string newName;
@@ -420,26 +795,200 @@ void editList(vector<string> &name_of_list, vector<vector<string>> &list_of_list
             cout << "List renamed!\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
 
-        // --------------------------------------------------------
-        // 7. EXIT EDIT MENU
-        // --------------------------------------------------------
+        // ============================================
+        // OPTION 7 — EDIT ITEM DESCRIPTIONS
+        // ============================================
         else if (editChoice == 7) {
+
+            if (items.size() == 0) {
+                cout << "\nNo items to edit descriptions for.\n";
+                cout << "Press Enter to continue...";
+                cin.get();
+                continue;
+            }
+
+            int itemNum;
+            cout << "\nEnter item number to edit descriptions: ";
+            cin >> itemNum;
+            cin.ignore();
+
+            // Validate index
+            if (itemNum < 1 || itemNum > (int)items.size()) {
+                cout << "\nInvalid item number!\n";
+                cout << "Press Enter to continue...";
+                cin.get();
+                continue;
+            }
+
+            // Ensure descriptions exist for all items
+            if ((int)descriptions.size() < (int)items.size()) {
+                int old = descriptions.size();
+                descriptions.resize(items.size());
+                for (int i = old; i < (int)descriptions.size(); i++)
+                    descriptions[i] = vector<string>();
+            }
+
+            // -----------------------------------------
+            // DESCRIPTIONS EDIT SUB-MENU
+            // -----------------------------------------
+            while (true) {
+                cout << "\nDescriptions for item: " << items[itemNum - 1] << "\n";
+
+                // Display current descriptions
+                if (descriptions[itemNum - 1].size() == 0) {
+                    cout << "(no descriptions)\n";
+                } else {
+                    for (int d = 0; d < (int)descriptions[itemNum - 1].size(); d++) {
+                        cout << "  " << d + 1 << ". " << descriptions[itemNum - 1][d] << "\n";
+                    }
+                }
+
+                // Description editing options
+                cout << "\n 1. Add new description\n";
+                cout << " 2. Edit a description\n";
+                cout << " 3. Delete a description\n";
+                cout << " 4. Clear all descriptions\n";
+                cout << " 5. Reorder descriptions (Swap)\n";
+                cout << " 0. Return\n";
+
+                int opt;
+                cout << "Choose: ";
+                cin >> opt;
+                cin.ignore();
+
+                if (opt == 0) break;
+
+                // Add description
+                if (opt == 1) {
+                    string nd;
+                    cout << "Enter new description: ";
+                    getline(cin, nd);
+                    int di = descriptions[itemNum - 1].size();
+                    descriptions[itemNum - 1].resize(di + 1);
+                    descriptions[itemNum - 1][di] = nd;
+                }
+
+                // Edit description
+                else if (opt == 2) {
+                    if (descriptions[itemNum - 1].size() == 0) {
+                        cout << "No descriptions to edit.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    int dn;
+                    cout << "Enter description number to edit: ";
+                    cin >> dn;
+                    cin.ignore();
+
+                    if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
+                        cout << "Invalid description number.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    string updated;
+                    cout << "New text: ";
+                    getline(cin, updated);
+                    descriptions[itemNum - 1][dn - 1] = updated;
+                }
+
+                // Delete description
+                else if (opt == 3) {
+                    if (descriptions[itemNum - 1].size() == 0) {
+                        cout << "No descriptions to delete.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    int dn;
+                    cout << "Enter description number to delete: ";
+                    cin >> dn;
+                    cin.ignore();
+
+                    if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
+                        cout << "Invalid description number.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    descriptions[itemNum - 1].erase(descriptions[itemNum - 1].begin() + (dn - 1));
+                }
+
+                // Clear all descriptions
+                else if (opt == 4) {
+                    descriptions[itemNum - 1].clear();
+                }
+
+                // Swap descriptions
+                else if (opt == 5) {
+                    if (descriptions[itemNum - 1].size() < 2) {
+                        cout << "Not enough descriptions to reorder.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    int a, b;
+                    cout << "Enter first description number: ";
+                    cin >> a;
+                    cout << "Enter second description number: ";
+                    cin >> b;
+                    cin.ignore();
+
+                    if (a < 1 || a > (int)descriptions[itemNum - 1].size() ||
+                        b < 1 || b > (int)descriptions[itemNum - 1].size()) {
+                        cout << "Invalid description numbers.\n";
+                        cout << "Press Enter to continue...";
+                        cin.get();
+                        continue;
+                    }
+
+                    string temp = descriptions[itemNum - 1][a - 1];
+                    descriptions[itemNum - 1][a - 1] = descriptions[itemNum - 1][b - 1];
+                    descriptions[itemNum - 1][b - 1] = temp;
+                }
+
+                cout << "Action completed. Press Enter...";
+                cin.get();
+            }
+        }
+
+        // Exit editList()
+        else if (editChoice == 9) {
             break;
         }
 
+        // Invalid option
         else {
             cout << "\nInvalid option.\n";
             cout << "Press Enter to continue...";
             cin.get();
+            continue;
         }
-    }
+
+    } // end while
 }
 
 
-void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_lists) {
-    
+
+// -----------------------------
+// DELETE LIST
+// -----------------------------
+void deleteList(
+    vector<string> &name_of_list,
+    vector<vector<string>> &list_of_lists,
+    vector<vector<vector<string>>> &list_of_descriptions
+) {
+
+    // If no lists exist, there's nothing to delete
     if (name_of_list.size() == 0) {
         cout << "\nNo lists to delete.\n";
         cout << "Press Enter to continue...";
@@ -450,20 +999,23 @@ void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_li
 
     cout << "\n===== DELETE A LIST =====\n";
 
-    // Show lists
-    for (int i = 0; i < name_of_list.size(); i++) {
+    // -------------------------------
+    // DISPLAY ALL LISTS
+    // -------------------------------
+    for (int i = 0; i < (int)name_of_list.size(); i++) {
         cout << i + 1 << ". " << name_of_list[i] << endl;
     }
 
     cout << "\n0. Cancel / Return to Main Menu\n";
 
+    // -------------------------------
+    // USER SELECTS LIST TO DELETE
+    // -------------------------------
     int choice;
     cout << "\nSelect list to delete: ";
     cin >> choice;
 
-    // --------------------------
-    // USER CHOSE TO CANCEL
-    // --------------------------
+    // User cancels deletion
     if (choice == 0) {
         cout << "Returning to main menu...\n";
         cout << "Press Enter to continue...";
@@ -472,10 +1024,8 @@ void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_li
         return;
     }
 
-    // --------------------------
-    // INVALID NUMBER
-    // --------------------------
-    if (choice < 1 || choice > name_of_list.size()) {
+    // Validate chosen list index
+    if (choice < 1 || choice > (int)name_of_list.size()) {
         cout << "Invalid choice.\n";
         cout << "Press Enter to continue...";
         cin.ignore();
@@ -485,14 +1035,15 @@ void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_li
 
     int index = choice - 1;
 
-    // --------------------------
-    // DELETE CONFIRMATION
-    // --------------------------
+    // -------------------------------
+    // DELETION CONFIRMATION
+    // -------------------------------
     char confirm;
     cout << "Are you sure you want to delete \""
          << name_of_list[index] << "\"? (y/n): ";
     cin >> confirm;
 
+    // If user cancels, stop deletion
     if (confirm != 'y' && confirm != 'Y') {
         cout << "Deletion cancelled.\n";
         cout << "Press Enter to continue...";
@@ -501,30 +1052,46 @@ void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_li
         return;
     }
 
-    // --------------------------------------------
-    // MANUAL DELETE (resize + assignment only)
-    // --------------------------------------------
+    // ----------------------------------------------------
+    // MANUAL REBUILD OF LIST ARRAYS (NO push_back allowed)
+    // We create new vectors and copy only the items we keep.
+    // ----------------------------------------------------
     vector<string> newNames;
     vector<vector<string>> newLists;
+    vector<vector<vector<string>>> newDescriptions;
 
-    for (int i = 0; i < name_of_list.size(); i++) {
+    for (int i = 0; i < (int)name_of_list.size(); i++) {
+
+        // Skip the list marked for deletion
         if (i != index) {
 
-            // Add name
+            // Add list name
             int ni = newNames.size();
             newNames.resize(ni + 1);
             newNames[ni] = name_of_list[i];
 
-            // Add item list
+            // Add items of this list
             int li = newLists.size();
             newLists.resize(li + 1);
             newLists[li] = list_of_lists[i];
+
+            // Add descriptions (if available)
+            int di = newDescriptions.size();
+            newDescriptions.resize(di + 1);
+
+            if (i < (int)list_of_descriptions.size())
+                newDescriptions[di] = list_of_descriptions[i];
+            else
+                newDescriptions[di] = vector<vector<string>>(); // create empty if none
         }
     }
 
-    // Replace old content
+    // -------------------------------
+    // REPLACE OLD STORAGE WITH NEW
+    // -------------------------------
     name_of_list = newNames;
     list_of_lists = newLists;
+    list_of_descriptions = newDescriptions;
 
     cout << "\nList deleted successfully!\n";
     cout << "Press Enter to continue...";
@@ -532,14 +1099,19 @@ void deleteList(vector<string> &name_of_list, vector<vector<string>> &list_of_li
     cin.get();
 }
 
+
 int main() {
 
-    vector<string> name_of_list;               
-    vector<vector<string>> list_of_lists;     
+
+    // -------------------------------
+    // Declare storage vectors for lists
+    // -------------------------------
+    vector<string> name_of_list;
+    vector<vector<string>> list_of_lists;
+    vector<vector<vector<string>>> list_of_descriptions;
 
     int choice;
 
-    
     while (true) {
 
         system("cls");
@@ -557,13 +1129,14 @@ int main() {
         cout << "3. Edit or Update an Existing List\n";
         cout << "4. Delete a List\n";
         cout << "5. Return / Exit Program\n";
+        cout << "6. Search List Names\n";
         cout << "------------------------------------------\n";
 
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice < 1 || choice > 5) {
-            cout << "\nInvalid choice. Enter a number from 1 to 5.\n";
+        if (choice < 1 || choice > 6) {
+            cout << "\nInvalid choice. Enter a number from 1 to 6.\n";
             cout << "Press Enter to continue...";
             cin.ignore();
             cin.get();
@@ -572,24 +1145,28 @@ int main() {
 
         switch (choice) {
             case 1:
-                createNewList(name_of_list, list_of_lists);
+                createNewList(name_of_list, list_of_lists, list_of_descriptions);
                 break;
 
             case 2:
-                viewLists(name_of_list, list_of_lists);
+                viewLists(name_of_list, list_of_lists, list_of_descriptions);
                 break;
 
             case 3:
-                editList(name_of_list, list_of_lists);
+                editList(name_of_list, list_of_lists, list_of_descriptions);
                 break;
 
             case 4:
-                deleteList(name_of_list, list_of_lists);
+                deleteList(name_of_list, list_of_lists, list_of_descriptions);
                 break;
 
             case 5:
                 cout << "\nExiting program...\n";
                 return 0;
+
+            case 6:
+                searchLists(name_of_list);
+                break;
         }
     }
 
