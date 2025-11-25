@@ -155,6 +155,23 @@ void createNewList(
     string item;                         // Stores each item typed by the user
     string descLine;                     // Stores each description line entered
 
+    int categoryInput;
+    string category;
+
+    int deadlineStatus;
+    int deadlineChoice;
+    string deadline;
+
+    string deadlinePriority;
+    int deadlinePrioChoice;
+
+    string notes;
+    int noteChoice;
+
+    int confirmationValue;
+
+
+
     vector<string> items;                // Holds all items belonging to this list
     vector<vector<string>> descriptions; // Holds descriptions for all items
 
@@ -177,9 +194,273 @@ void createNewList(
     getline(cin, title);
 
     // ===================================================
+    // ITEM Category
+    // ===================================================
+
+    system("cls");
+
+    cout << "Choose a category for this item: \n";
+
+    cout << "1. Work \n";
+    cout << "2. School \n";
+    cout << "3. Personal \n";
+    cout << "4. Errands \n";
+    cout << "5. Finance \n";
+    cout << "6. Health \n";
+    cout << "7. Appointment \n";
+    cout << "8. Shopping \n";
+    cout << "9. Others \n";
+    cout << "10. None \n";
+
+    cin >> categoryInput;
+
+    while(categoryInput < 1 || categoryInput >10){
+        cout << "Invalid Choice! Please enter a number from 1 to 10";
+        cin >> categoryInput;
+    }
+
+    switch(categoryInput){
+        case 1: category = "Work";
+            break;
+        
+        case 2: category = "School";
+            break;
+
+        case 3: category = "Personal";
+            break;
+
+        case 4: category = "Errands";
+            break;
+
+        case 5: category = "Finance";
+            break;
+
+        case 6: category = "Health";
+            break;
+
+        case 7: category = "Appoinment";
+            break;
+
+        case 8: category = "Shopping";
+            break;
+
+        case 9: category = "Others";
+            break;
+
+        case 10: category = "None";
+            break;
+    }
+
+    // ===================================================
+    // ITEM Deadline
+    // ===================================================
+    system("cls");
+    cout << "Add Deadline?\n";
+    cout << "1. Yes\n";
+    cout << "2. No\n";
+
+    cin >> deadlineStatus;
+
+    while(deadlineStatus < 1 || deadlineStatus > 2){
+        cout << "Invalid Response! Try Again";
+        cin >> deadlineStatus;
+    }
+
+    if(deadlineStatus == 1){
+        system("cls");
+        cin.ignore();
+
+        cout << "Choose Deadline\n";
+        cout << "1. Today\n";
+        cout << "2. Tommorow\n";
+        cout << "3. This Week\n";
+        cout << "4. Next Week\n";
+        cout << "5. Next Month\n";
+
+        cin >> deadlineChoice;
+
+        while(deadlineChoice < 1 || deadlineChoice > 5){
+            cout << "Invalid Response! Try Again";
+            cin >> deadlineChoice;
+        }
+
+        switch(deadlineChoice){
+            case 1: deadline = "Today";
+                break;
+
+            case 2: deadline = "Tommorow";
+                break;
+
+            case 3: deadline = "This Week";
+                break;
+
+            case 4: deadline = "Next Week";
+                break;
+
+            case 5: deadline = "Next Month";
+                break;
+        }
+
+        cin.ignore();
+        system("cls");
+        cout << "Choose Deadline Priority \n";
+
+        cout << "1. Critical\n";
+        cout << "2. High\n";
+        cout << "3. Medium\n";
+        cout << "4. Low\n";
+        cout << "5. None\n";
+
+        cin >> deadlinePrioChoice;
+
+        while(deadlinePrioChoice < 1 || deadlinePrioChoice > 5){
+            cout << "Invalid Response! Please Try Again.\n";
+            cin >> deadlinePrioChoice;
+        }
+
+        switch(deadlinePrioChoice){
+            case 1: deadlinePriority = "Critical";
+                break;
+
+            case 2: deadlinePriority = "High";
+                break;
+
+            case 3: deadlinePriority = "Medium";
+                break;
+
+            case 4: deadlinePriority = "Low";
+                break;
+
+            case 5: deadlinePriority = "None";
+                break;
+        }
+    }
+
+    // ===================================================
+    // ITEM NOTES
+    // ===================================================
+
+    system("cls");
+    cout << "Add Notes?\n";
+    cout << "1. Yes\n";
+    cout << "2. No\n";
+
+    cin >> noteChoice;
+
+    while(noteChoice < 1 || noteChoice > 2){
+        cout << "Invalid Response! Please try again.\n";
+        cin >> noteChoice;
+    }
+
+    if(noteChoice == 1){
+        cout << "Enter Note\n";
+        cin.ignore();
+        getline(cin, notes); 
+    }
+
+    // ===================================================
+    // ITEM SUMMARY
+    // ===================================================
+
+ while (true) {
+    system("cls");
+    cout << "\nYou are about to create this list\n\n";
+    cout << "[1] Name: " << title << endl;
+    cout << "[2] Category: " << category << endl;
+    cout << "[3] Deadline: " << deadline << endl;
+    cout << "[4] Priority: " << deadlinePriority << endl;
+    cout << "[5] Notes: " << notes << endl << endl;
+
+    cout << "[1-5] Edit a field" << endl;
+    cout << "[6] Confirm and Create" << endl;
+    cout << "[7] Cancel" << endl;
+    cout << "Choice: ";
+    
+    cin >> confirmationValue;
+
+    // Make sure leftover newline won't affect getline()
+    cin.ignore();
+
+    if (confirmationValue == 6) break;  // Continue to items
+    if (confirmationValue == 7){
+        cout << "\nList creation cancelled.\n";
+        cout << "Press Enter to continue...";
+        cin.get();
+        return;
+    } 
+    switch (confirmationValue) {
+
+        case 1: {
+            cout << "\nEnter new title: ";
+            getline(cin, title);
+            break;
+        }
+
+        case 2: {
+            cout << "\nChoose a new category:\n";
+            cout << "1. Work  \n2. School  \n3. Personal  \n4. Errands\n";
+            cout << "\n5. Finance  \n6. Health  \n7. Appointment\n";
+            cout << "8. Shopping  \n9. Others  \n10. None\n";
+            int cat;
+            cin >> cat;
+            cin.ignore();
+
+            const string categories[] = {
+                "Work","School","Personal","Errands",
+                "Finance","Health","Appointment",
+                "Shopping","Others","None"
+            };
+            if (cat >= 1 && cat <= 10) category = categories[cat - 1];
+            break;
+        }
+
+        case 3: {
+            cout << "\nChoose Deadline:\n";
+            cout << "1. Today\n2. Tomorrow\n3. This Week\n4. Next Week\n5. Next Month\n";
+            int d;
+            cin >> d;
+            cin.ignore();
+
+            const string deadlines[] = {
+                "Today","Tomorrow","This Week",
+                "Next Week","Next Month"
+            };
+            if (d >= 1 && d <= 5) deadline = deadlines[d - 1];
+            break;
+        }
+
+        case 4: {
+            cout << "\nChoose Priority:\n";
+            cout << "1. Critical  2. High  3. Medium  4. Low  5. None\n";
+            int p;
+            cin >> p;
+            cin.ignore();
+
+            const string prios[] = {
+                "Critical","High","Medium","Low","None"
+            };
+            if (p >= 1 && p <= 5) deadlinePriority = prios[p - 1];
+            break;
+        }
+
+        case 5: {
+            cout << "\nEnter new Notes: ";
+            getline(cin, notes);
+            break;
+        }
+
+        default:
+            cout << "Invalid choice.\n";
+    }
+}
+
+    
+
+    // ===================================================
     // ITEM INPUT LOOP
     // ===================================================
 
+    system("cls");
     cout << "\n----------------------------------------\n";
     cout << " START ADDING ITEMS TO YOUR LIST\n";
     cout << "----------------------------------------\n";
@@ -1381,6 +1662,7 @@ int main() {
                 << " " << (playerXP % 100) << "%\n";
             cout << "-------------------------------------\n";
         }
+
 
 
         cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
