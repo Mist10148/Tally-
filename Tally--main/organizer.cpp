@@ -7,18 +7,6 @@
 using namespace std;
 
 
-// Forward declaration for viewLists so it's visible at call sites in main
-void viewLists(
-    vector<string>& name_of_list,
-    vector<vector<string>>& list_of_lists,
-    vector<vector<vector<string> > >& list_of_descriptions,
-    bool gamificationEnabled,
-    int& playerXP,
-    int& playerLevel,
-    vector<vector<int>>& listmonth,
-    vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
-);
 
 
 // -------------------------
@@ -110,6 +98,218 @@ void searchLists(const vector<string>& names) {
     cin.get();
 }
 
+
+// ----------------------------------
+// Initialize Achievement Definitions
+// ----------------------------------
+void initAchievements(
+    vector<string>& n,
+    vector<string>& b,
+    vector<int>& u,
+    vector<int>& x
+) {
+    int i;
+
+    n.clear(); b.clear(); u.clear(); x.clear();
+
+    // Productivity
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Add First Item"; b[i] = "🔹"; u[i] = 0; x[i] = 10;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Add 10 Items"; b[i] = "🟩"; u[i] = 0; x[i] = 20;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Add 50 Items"; b[i] = "🟪"; u[i] = 0; x[i] = 50;
+
+    // Completion
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Complete First Item"; b[i] = "🔸"; u[i] = 0; x[i] = 10;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Complete 10 Items"; b[i] = "🟨"; u[i] = 0; x[i] = 25;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Complete 50 Items"; b[i] = "🟫"; u[i] = 0; x[i] = 50;
+
+    // Lists
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Create First List"; b[i] = "📘"; u[i] = 0; x[i] = 10;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Create 5 Lists"; b[i] = "📗"; u[i] = 0; x[i] = 25;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Create 10 Lists"; b[i] = "📕"; u[i] = 0; x[i] = 50;
+
+    // Level Achievements
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Reach Level 3"; b[i] = "⭐"; u[i] = 0; x[i] = 20;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Reach Level 5"; b[i] = "🌟"; u[i] = 0; x[i] = 30;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "Reach Level 10"; b[i] = "🏆"; u[i] = 0; x[i] = 50;
+
+    // Streaks
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "1-Day Streak"; b[i] = "✨"; u[i] = 0; x[i] = 10;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "3-Day Streak"; b[i] = "🔥"; u[i] = 0; x[i] = 20;
+
+    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
+    n[i] = "7-Day Streak"; b[i] = "🏅"; u[i] = 0; x[i] = 40;
+}
+
+// ----------------------------------
+// Achievement Evaluation & Unlock
+// ----------------------------------
+void checkAchievements(
+    vector<string>& name_of_list,
+    vector<vector<string>>& list_of_lists,
+    vector<vector<vector<string>>>& list_of_descriptions,
+    vector<string>& achNames,
+    vector<string>& achBadges,
+    vector<int>& achUnlocked,
+    vector<int>& achXP,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel,
+    int& streakCount,
+    int& lastActiveDay,
+    int cmonth,
+    int cdate,
+    int cyear
+) {
+    int i, j, totalItems, totalCompleted, totalLists, currentDay;
+    totalLists = name_of_list.size();
+    totalItems = 0; totalCompleted = 0;
+
+    for (i = 0; i < (int)list_of_lists.size(); i++) {
+        totalItems += list_of_lists[i].size();
+        for (j = 0; j < (int)list_of_lists[i].size(); j++) {
+            if (list_of_lists[i][j].find("[DONE]") != string::npos)
+                totalCompleted++;
+        }
+    }
+
+    currentDay = cdate;
+
+    if (cdate > 0) {
+        if (lastActiveDay == 0) {
+            streakCount = 1; lastActiveDay = currentDay;
+        } else if (lastActiveDay == currentDay) {
+            // same day, do nothing
+        } else if (lastActiveDay + 1 == currentDay) {
+            streakCount++; lastActiveDay = currentDay;
+        } else {
+            streakCount = 1; lastActiveDay = currentDay;
+        }
+    }
+
+    for (i = 0; i < (int)achNames.size(); i++) {
+        if (achUnlocked[i]) continue;
+
+        if (achNames[i] == "Add First Item" && totalItems >= 1) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Add 10 Items" && totalItems >= 10) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Add 50 Items" && totalItems >= 50) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+
+        if (achNames[i] == "Complete First Item" && totalCompleted >= 1) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Complete 10 Items" && totalCompleted >= 10) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Complete 50 Items" && totalCompleted >= 50) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+
+        if (achNames[i] == "Create First List" && totalLists >= 1) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Create 5 Lists" && totalLists >= 5) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Create 10 Lists" && totalLists >= 10) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+
+        if (achNames[i] == "Reach Level 3" && playerLevel >= 3) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Reach Level 5" && playerLevel >= 5) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "Reach Level 10" && playerLevel >= 10) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+
+        if (achNames[i] == "1-Day Streak" && streakCount >= 1) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "3-Day Streak" && streakCount >= 3) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+        if (achNames[i] == "7-Day Streak" && streakCount >= 7) {
+            achUnlocked[i] = 1;
+            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
+            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
+            continue;
+        }
+    }
+
+    cout << "-------------------------------------";
+}
 // -------------------------
 // SEARCH ITEMS IN A LIST
 // -------------------------
@@ -152,13 +352,10 @@ void searchItems(const vector<string>& items) {
 void createNewList(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
-    vector<vector<vector<string> > >& list_of_descriptions,
+    vector<vector<vector<string>>>& list_of_descriptions,
     bool gamificationEnabled,
     int& playerXP,
-    int& playerLevel,
-    vector<vector<int>>& listmonth,
-    vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    int& playerLevel
 ) {
     system("cls");
 
@@ -169,7 +366,7 @@ void createNewList(
     string title;                        // The title/name of the new list
     string item;                         // Stores each item typed by the user
     string descLine;                     // Stores each description line entered
-    int month, date, year;  
+
     int categoryInput;
     string category;
 
@@ -189,13 +386,9 @@ void createNewList(
 
     vector<string> items;                // Holds all items belonging to this list
     vector<vector<string>> descriptions; // Holds descriptions for all items
-    vector<int> months;
-    vector<int> dates;
-    vector<int> years;
+
     vector<string> tempDescriptions;     // Temporary storage for current item's descriptions
-    int Mindex = 0;
-    int Dindex = 0;
-    int Yindex = 0;
+
     int index = 0;                       // Index for adding new item
     int dindex = 0;                      // Index for adding a description
     int dsaveIndex = 0;                  // Index for saving full description set
@@ -337,118 +530,24 @@ void createNewList(
             cin >> deadlinePrioChoice;
         }
 
-    switch(deadlinePrioChoice){
-        case 1: deadlinePriority = "Critical";
-            break;
+        switch(deadlinePrioChoice){
+            case 1: deadlinePriority = "Critical";
+                break;
 
-        case 2: deadlinePriority = "High";
-            break;
+            case 2: deadlinePriority = "High";
+                break;
 
-        case 3: deadlinePriority = "Medium";
-            break;
+            case 3: deadlinePriority = "Medium";
+                break;
 
-        case 4: deadlinePriority = "Low";
-            break;
+            case 4: deadlinePriority = "Low";
+                break;
 
-        case 5: deadlinePriority = "None";
-            break;
-    }
-    system("cls");
-    cout << "\n----------------------------------------\n";
-    cout << " ADD TARGET DATE FOR THIS ITEM\n";
-    cout << "----------------------------------------\n";
-    cout << " Enter Month: ";
-    do
-    {
-    cin >> month;
-    if (month < 1 || month > 12)
-    {
-        cout << "Try again\n";
-    }
-    } while (month < 1 || month > 12);
-    Mindex = months.size();
-    months.resize(Mindex + 1);
-    months[Mindex] = month;
-    cout << "Enter year number: ";
-    do
-    {
-        cin >> year;
-        if (year < 2000 || year > 2100)
-        {
-            cout << "Try again\n";
+            case 5: deadlinePriority = "None";
+                break;
         }
-    } while (year < 2000 || year > 2100);
-    Yindex = years.size();
-    years.resize(Yindex + 1);
-    years[Yindex] = year;
-    cout << "Enter date number: ";
-    switch (month)
-    {
-    case 1:
-    case 3:
-    case 5:
-    case 7:
-    case 8:
-    case 10:
-    case 12:
-        do
-        {
-            cin >> date;
-            if (date < 1 || date > 31)
-            {
-                cout << "Try again\n";
-            }
-            
-        } while (date < 1 || date > 31);
-            break;
-    
-    case 4:
-    case 6:
-    case 9:
-    case 11:
-        do
-        {
-            cin >> date;
-            if (date < 1 || date > 30)
-            {
-                cout << "Try again\n";
-            }
-            
-        } while (date < 1 || date > 30);    
-            break;
-
-    case 2:
-        if (((year%4 == 0 && year%100 != 0) || (year%400 == 0)))
-        {
-            do
-            {
-                cin >> date;
-                if (date < 1 || date > 29)
-                {
-                    cout << "Try again\n";
-                }
-                
-            } while (date < 1 || date > 29); 
-        }
-        else
-        {
-            do
-            {
-                cin >> date;
-                if (date < 1 || date > 28)
-                {
-                    cout << "Try again\n";
-                }
-                
-            } while (date < 1 || date > 28);
-        }
-        break;
     }
-    Dindex = dates.size();
-    dates.resize(Dindex + 1);
-    dates[Dindex] = date;
-    cout << "\nItem + descriptions saved!\n\n";
-    cin.ignore();
+
     // ===================================================
     // ITEM NOTES
     // ===================================================
@@ -669,14 +768,6 @@ void createNewList(
     list_of_descriptions.resize(listIndex + 1);
     list_of_descriptions[listIndex] = descriptions;
 
-    listmonth.resize(listIndex + 1);
-    listmonth[listIndex] = months;
-
-    listyear.resize(listIndex + 1);
-    listyear[listIndex] = years;
-
-    listdate.resize(listIndex + 1);
-    listdate[listIndex] = dates;
     // Give XP for creating a new list
     addXP(10, gamificationEnabled, playerXP, playerLevel);
 
@@ -690,20 +781,17 @@ void createNewList(
     cout << "Press Enter to continue...";
     cin.get();
 }
-}
+
 
 
 
 void viewLists(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
-    vector<vector<vector<string> > >& list_of_descriptions,
+    vector<vector<vector<string>>>& list_of_descriptions,
     bool gamificationEnabled,
     int& playerXP,
-    int& playerLevel,
-    vector<vector<int>>& listmonth,
-    vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    int& playerLevel
 ) {
 
     // If no lists exist, show message and exit
@@ -795,9 +883,7 @@ void viewLists(
 
     // Access selected list's items and descriptions
     vector<string>& items = list_of_lists[index];
-    vector<int>& months = listmonth[index];
-    vector<int>& dates = listdate[index];
-    vector<int>& years = listyear[index];
+
     // Prevent crash for lists without descriptions
     vector<vector<string>> emptyVecVec;
     vector<vector<string>>& descs =
@@ -820,7 +906,7 @@ void viewLists(
         // Print each item and its descriptions
         for (int i = 0; i < (int)items.size(); i++) {
             cout << " " << i + 1 << ". " << items[i] << "\n";
-            cout << "Target date: " << months[i] << "/" << dates[i] << "/" << years[i] << "\n";
+
             // Print all descriptions for this item (if any)
             if (i < (int)descs.size()) {
                 for (int d = 0; d < (int)descs[i].size(); d++) {
@@ -872,13 +958,10 @@ void viewLists(
 void editList(
     vector<string> &name_of_list,
     vector<vector<string>> &list_of_lists,
-    vector<vector<vector<string> > > &list_of_descriptions,
+    vector<vector<vector<string>>> &list_of_descriptions,
     bool gamificationEnabled,
     int& playerXP,
-    int& playerLevel,
-    vector<vector<int>>& listmonth,
-    vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    int& playerLevel
 ) {
     // If no lists exist, there is nothing to edit
     if (name_of_list.size() == 0) {
@@ -950,10 +1033,6 @@ void editList(
 
         // Items in this list
         vector<string> &items = list_of_lists[index];
-        vector<int>& months = listmonth[index];
-        vector<int>& dates = listdate[index];
-        vector<int>& years = listyear[index];
-
 
         // Ensure description array matches list count
         if (index >= (int)list_of_descriptions.size()) {
@@ -1093,95 +1172,6 @@ void editList(
 
             descriptions[newIndex] = temp;
 
-            int month, date, year;
-            cout << "\nSet target date for this item\n";
-            cout << "-------------------------------------\n";
-            cout << " Enter Month: ";
-            do
-            {
-            cin >> month;
-            if (month < 1 || month > 12)
-            {
-                cout << "Try again\n";
-            }
-            } while (month < 1 || month > 12);
-            int monthIndex = months.size();
-            months.resize(monthIndex + 1);
-            months[monthIndex] = month;
-            cout << "Enter year number: ";
-            do
-            {
-                cin >> year;
-                if (year < 2000 || year > 2100)
-                {
-                    cout << "Try again\n";
-                }
-            } while (year < 2000 || year > 2100);
-            int yearIndex = years.size();
-            years.resize(yearIndex + 1);
-            years[yearIndex] = year;
-            cout << "Enter date number: ";
-            switch (month)
-            {
-            case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
-            case 12:
-                do
-                {
-                    cin >> date;
-                    if (date < 1 || date > 31)
-                    {
-                        cout << "Try again\n";
-                    }
-                } while (date < 1 || date > 31);
-                
-                break;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                do
-                {
-                    cin >> date;
-                    if (date < 1 || date > 30)
-                    {
-                        cout << "Try again\n";
-                    }
-                } while (date < 1 || date > 30);
-                break;
-            case 2:
-                if (((year%4 == 0 && year%100 != 0) || (year%400 == 0)))
-                {
-                    do
-                    {
-                        cin >> date;
-                        if (date < 1 || date > 29)
-                        {
-                            cout << "Try again\n";
-                        }
-                    } while (date < 1 || date > 29);
-                }
-                else
-                {
-                    do
-                    {
-                        cin >> date;
-                        if (date < 1 || date > 28)
-                        {
-                            cout << "Try again\n";
-                        }
-                    } while (date < 1 || date > 28);
-                }
-                break;
-            } // end switch(month)
-            int dateIndex = dates.size();
-            dates.resize(dateIndex + 1);
-            dates[dateIndex] = date;
-
             cout << "\nItem added!\n";
             cout << "Press Enter to continue...";
             cin.get();
@@ -1256,9 +1246,6 @@ void editList(
 
             // Remove item + its descriptions
             items.erase(items.begin() + (delNum - 1));
-            dates.erase(dates.begin() + (delNum - 1));
-            months.erase(months.begin() + (delNum - 1));
-            years.erase(years.begin() + (delNum - 1));
 
             if (delNum - 1 < (int)descriptions.size()) {
                 descriptions.erase(descriptions.begin() + (delNum - 1));
@@ -1356,19 +1343,6 @@ void editList(
             string temp = items[a - 1];
             items[a - 1] = items[b - 1];
             items[b - 1] = temp;
-
-            // Swap target dates
-            int tempMonth = months[a - 1];
-            months[a - 1] = months[b - 1];
-            months[b - 1] = tempMonth;
-
-            int tempDate = dates[a - 1];
-            dates[a - 1] = dates[b - 1];
-            dates[b - 1] = tempDate;
-
-            int tempYear = years[a - 1];
-            years[a - 1] = years[b - 1];
-            years[b - 1] = tempYear;
 
             // Swap descriptions too
             if (a - 1 < (int)descriptions.size() && b - 1 < (int)descriptions.size()) {
@@ -1602,13 +1576,10 @@ void editList(
 void deleteList(
     vector<string> &name_of_list,
     vector<vector<string>> &list_of_lists,
-    vector<vector<vector<string> > > &list_of_descriptions,
+    vector<vector<vector<string>>> &list_of_descriptions,
     bool gamificationEnabled,
     int& playerXP,
-    int& playerLevel,
-    vector<vector<int>>& listmonth,
-    vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    int& playerLevel
 ) {
 
     // If no lists exist, there's nothing to delete
@@ -1681,10 +1652,7 @@ void deleteList(
     // ----------------------------------------------------
     vector<string> newNames;
     vector<vector<string>> newLists;
-    vector<vector<vector<string> > > newDescriptions;
-    vector<vector<int>> newListmonth;
-    vector<vector<int>> newListdate;
-    vector<vector<int>> newListyear;
+    vector<vector<vector<string>>> newDescriptions;
 
     for (int i = 0; i < (int)name_of_list.size(); i++) {
 
@@ -1700,19 +1668,6 @@ void deleteList(
             int li = newLists.size();
             newLists.resize(li + 1);
             newLists[li] = list_of_lists[i];
-
-            // Add target dates of this list
-            int datei = newListdate.size();
-            newListdate.resize(datei + 1);
-            newListdate[datei] = listdate[i];
-
-            int monthi = newListmonth.size();
-            newListmonth.resize(monthi + 1);
-            newListmonth[monthi] = listmonth[i];
-
-            int yeari = newListyear.size();
-            newListyear.resize(yeari + 1);
-            newListyear[yeari] = listyear[i];
 
             // Add descriptions (if available)
             int di = newDescriptions.size();
@@ -1730,9 +1685,6 @@ void deleteList(
     // -------------------------------
     name_of_list = newNames;
     list_of_lists = newLists;
-    listdate = newListdate;
-    listmonth = newListmonth;
-    listyear = newListyear;
     list_of_descriptions = newDescriptions;
 
     cout << "\nList deleted successfully!\n";
@@ -1842,11 +1794,11 @@ int main() {
     // -------------------------------
     vector<string> name_of_list;
     vector<vector<string>> list_of_lists;
-    vector<vector<vector<string> > > list_of_descriptions;
+    vector<vector<vector<string>>> list_of_descriptions;
     int cmonth = 0, cdate = 0, cyear = 0;
-    vector<vector<int>> listmonth;
-    vector<vector<int>> listdate;
-    vector<vector<int>> listyear;
+    vector<vector<vector<int>>> month;
+    vector<vector<vector<int>>> date;
+    vector<vector<vector<int>>> year;
 
     //For SpecialCharacter Translation Compatability with Terminal
     SetConsoleOutputCP(CP_UTF8);
@@ -1861,6 +1813,19 @@ int main() {
     int playerXP = 0;
     int playerLevel = 1;
     bool gamificationEnabled = false;
+
+    // =====================================
+    // ACHIEVEMENT SYSTEM STORAGE (inside main, not global)
+    // =====================================
+    vector<string> achNames;
+    vector<string> achBadges;
+    vector<int> achUnlocked;
+    vector<int> achXP;
+    int streakCount = 0;
+    int lastActiveDay = 0;
+
+    // Initialize achievements once on startup
+    initAchievements(achNames, achBadges, achUnlocked, achXP);
 
     while (!started) {
 
@@ -1976,13 +1941,19 @@ int main() {
         cout << "       ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹╹╹┗━╸                ║   \n"; 
         cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
 
+        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
+        cout << "       ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏━┓╺┳╸┏━╸               ║   \n"; 
+        cout << "       ║┗━┫    ┣━┫┃  ┣━┫┃┣╸ ┃ ┃┣╸ ┃┃┃┣╸ ┃ ┃ ┃ ┗━┓               ║   \n"; 
+        cout << "       ║╺━┛╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗━┛┗━╸╹╹╹┗━╸╹ ╹ ╹ ╺━┛               ║   \n"; 
+        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
+
         cout << "------------------------------------------\n";
 
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice < 1 || choice > 8) {
-            cout << "\nInvalid choice. Enter a number from 1 to 8.\n";
+        if (choice < 1 || choice > 9) {
+            cout << "\nInvalid choice. Enter a number from 1 to 9.\n";
             cout << "Press Enter to continue...";
             cin.ignore();
             cin.get();
@@ -1991,19 +1962,34 @@ int main() {
 
         switch (choice) {
             case 1:
-                createNewList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear);
+                createNewList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
+                // Check achievements after creating a list
+                checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
+                                  achNames, achBadges, achUnlocked, achXP,
+                                  gamificationEnabled, playerXP, playerLevel,
+                                  streakCount, lastActiveDay, cmonth, cdate, cyear);
                 break;
 
             case 2:
-                viewLists(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear);
+                viewLists(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
                 break;
 
             case 3:
-                editList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear);
+                editList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
+                // Re-check achievements after editing (edits may have changed counts)
+                checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
+                                  achNames, achBadges, achUnlocked, achXP,
+                                  gamificationEnabled, playerXP, playerLevel,
+                                  streakCount, lastActiveDay, cmonth, cdate, cyear);
                 break;
 
             case 4:
-                deleteList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear);
+                deleteList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
+                // Re-check achievements after deletion
+                checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
+                                  achNames, achBadges, achUnlocked, achXP,
+                                  gamificationEnabled, playerXP, playerLevel,
+                                  streakCount, lastActiveDay, cmonth, cdate, cyear);
                 break;
 
             case 5:
@@ -2019,6 +2005,29 @@ int main() {
             case 8:
                 gamificationEnabled = !gamificationEnabled;
                 cout << "\nGamification is now " << (gamificationEnabled ? "ENABLED" : "DISABLED") << ".\n";
+                cout << "Press Enter to continue...";
+                cin.ignore();
+                cin.get();
+                break;
+
+            case 9:
+                // Show Achievements & Badges
+                system("cls");
+                cout << "\n=====================================\n";
+                cout << "         ACHIEVEMENTS & BADGES       \n";
+                cout << "=====================================\n\n";
+                for (int i = 0; i < (int)achNames.size(); i++) {
+                    cout << " " << i + 1 << ". " << achBadges[i] << " " << achNames[i];
+                    if (achUnlocked[i]) cout << "  (Unlocked)";
+                    else cout << "  (Locked)";
+                    cout << "   +" << achXP[i] << " XP\n";
+                }
+                cout << "\n-------------------------------------\n";
+                if (gamificationEnabled) {
+                    cout << "Player Level : " << playerLevel << "    Player XP : " << playerXP << "\n";
+                    cout << "Streak Days  : " << streakCount << "\n";
+                    cout << "XP Progress   : " << getXPBar(playerXP) << " " << (playerXP % 100) << "%\n";
+                }
                 cout << "Press Enter to continue...";
                 cin.ignore();
                 cin.get();
