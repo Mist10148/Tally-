@@ -6,6 +6,62 @@
 
 using namespace std;
 
+
+
+
+// -------------------------
+// XP / LEVELING FUNCTION
+// -------------------------
+// Adds XP, prints XP gained, and handles leveling.
+// Level formula: level = (playerXP / 100) + 1
+void addXP(int amount, bool gamificationEnabled, int& playerXP, int& playerLevel) {
+
+    if (!gamificationEnabled)
+        return;
+
+    playerXP += amount;
+
+    int newLevel = (playerXP / 100) + 1;  // 100 XP per level
+
+    cout << "\n>>> +" << amount << " XP!\n";
+
+    if (newLevel > playerLevel) {
+        playerLevel = newLevel;
+        cout << ">>> LEVEL UP! You are now LEVEL " << playerLevel << "!\n";
+    }
+
+    cout << "-------------------------------------\n";
+}
+
+
+// -----------------------------
+// XP PROGRESS BAR 
+// -----------------------------
+string getXPBar(int xp) {
+
+    // XP needed to reach next level (always 100)
+    int currentXP = xp % 100;
+
+    // Calculate how many of the 12 blocks are filled
+    int filled = (currentXP * 12) / 100;
+
+    string bar = "[";
+
+    // Build the bar manually
+    for (int i = 0; i < filled; i++)
+        bar += "█";   // filled segment
+        
+    for (int i = filled; i < 12; i++)
+        bar += "-";   // empty segment
+
+    bar += "]";
+
+    return bar;
+}
+
+
+
+
 // -------------------------
 // SEARCH LIST NAMES
 // -------------------------
@@ -84,7 +140,10 @@ void searchItems(const vector<string>& items) {
 void createNewList(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
-    vector<vector<vector<string>>>& list_of_descriptions
+    vector<vector<vector<string>>>& list_of_descriptions,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel
 ) {
     system("cls");
 
@@ -150,6 +209,9 @@ void createNewList(
         items.resize(index + 1);
         items[index] = item;
 
+        // Give XP for adding an item
+        addXP(5, gamificationEnabled, playerXP, playerLevel);
+
         // ===================================================
         // ENTER DESCRIPTIONS FOR THIS ITEM
         // ===================================================
@@ -184,6 +246,9 @@ void createNewList(
             dindex = tempDescriptions.size();
             tempDescriptions.resize(dindex + 1);
             tempDescriptions[dindex] = descLine;
+
+            // Give XP for adding a description
+            addXP(1, gamificationEnabled, playerXP, playerLevel);
         }
 
         // Save this item’s description list
@@ -210,6 +275,9 @@ void createNewList(
     list_of_descriptions.resize(listIndex + 1);
     list_of_descriptions[listIndex] = descriptions;
 
+    // Give XP for creating a new list
+    addXP(10, gamificationEnabled, playerXP, playerLevel);
+
     // ===================================================
     // COMPLETION MESSAGE
     // ===================================================
@@ -227,7 +295,10 @@ void createNewList(
 void viewLists(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
-    vector<vector<vector<string>>>& list_of_descriptions
+    vector<vector<vector<string>>>& list_of_descriptions,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel
 ) {
 
     // If no lists exist, show message and exit
@@ -394,7 +465,10 @@ void viewLists(
 void editList(
     vector<string> &name_of_list,
     vector<vector<string>> &list_of_lists,
-    vector<vector<vector<string>>> &list_of_descriptions
+    vector<vector<vector<string>>> &list_of_descriptions,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel
 ) {
     // If no lists exist, there is nothing to edit
     if (name_of_list.size() == 0) {
@@ -568,6 +642,9 @@ void editList(
             items.resize(newIndex + 1);
             items[newIndex] = newItem;
 
+            // Give XP for adding an item
+            addXP(5, gamificationEnabled, playerXP, playerLevel);
+
             // Prompt for descriptions immediately
             cout << "\nAdd descriptions for this new item\n";
             cout << "-------------------------------------\n";
@@ -589,6 +666,9 @@ void editList(
                 int di = temp.size();
                 temp.resize(di + 1);
                 temp[di] = nd;
+
+                // Give XP for adding a description
+                addXP(1, gamificationEnabled, playerXP, playerLevel);
             }
 
             // Ensure description vector is same size as items
@@ -678,6 +758,9 @@ void editList(
                 descriptions.erase(descriptions.begin() + (delNum - 1));
             }
 
+            // Give XP for deleting an item (small consolation)
+            addXP(2, gamificationEnabled, playerXP, playerLevel);
+
             cout << "Item deleted!\n";
             cout << "Press Enter to continue...";
             cin.get();
@@ -717,6 +800,17 @@ void editList(
                 cout << "Item unmarked.\n";
             } else {
                 target = "[DONE] " + target;
+
+                // Give XP for marking item done
+                addXP(8, gamificationEnabled, playerXP, playerLevel);
+
+                // If this marking finishes the entire list give a completion bonus
+                // completedCount contains current number of done items before this toggle,
+                // so if completedCount + 1 == items.size(), the list is now fully completed.
+                if (completedCount + 1 == (int)items.size() && items.size() > 0) {
+                    addXP(50, gamificationEnabled, playerXP, playerLevel); // completion bonus
+                }
+
                 cout << "Item marked as DONE.\n";
             }
 
@@ -870,6 +964,9 @@ void editList(
                     int di = descriptions[itemNum - 1].size();
                     descriptions[itemNum - 1].resize(di + 1);
                     descriptions[itemNum - 1][di] = nd;
+
+                    // Give XP for adding a description
+                    addXP(1, gamificationEnabled, playerXP, playerLevel);
                 }
 
                 // Edit description
@@ -986,7 +1083,10 @@ void editList(
 void deleteList(
     vector<string> &name_of_list,
     vector<vector<string>> &list_of_lists,
-    vector<vector<vector<string>>> &list_of_descriptions
+    vector<vector<vector<string>>> &list_of_descriptions,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel
 ) {
 
     // If no lists exist, there's nothing to delete
@@ -1216,6 +1316,11 @@ int main() {
     bool started = false;
     int choice;
 
+    // Gamification system (no globals)
+    int playerXP = 0;
+    int playerLevel = 1;
+    bool gamificationEnabled = false;
+
     while (!started) {
 
         cout << "                                     ████████╗ █████╗ ██╗     ██╗  ██╗   ██╗     ██╗          ██╗                        \n";             
@@ -1267,7 +1372,17 @@ int main() {
         cout << " ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n";
         cout << "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
                                                                           
-                                                                                                                                                                                                                                                                                                                        
+        // Display player level & XP in main menu header
+        // Show gamification header only when enabled
+        if (gamificationEnabled) {
+            cout << " Player Level : " << playerLevel
+                << "    Player XP : " << playerXP << "\n";
+            cout << " XP Progress   : " << getXPBar(playerXP)
+                << " " << (playerXP % 100) << "%\n";
+            cout << "-------------------------------------\n";
+        }
+
+
         cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
         cout << "\n";
 
@@ -1305,15 +1420,27 @@ int main() {
         cout << "       ║┏━┓    ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                  ║   \n"; 
         cout << "       ║┣━┓    ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫   ┃  ┃┗━┓ ┃                   ║   \n"; 
         cout << "       ║┗━┛╹   ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹   ┗━╸╹┗━┛ ╹                   ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";                                     
- 
+        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";    
+        
+        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
+        cout << "       ║┏━┓    ╻ ╻┏━┓┏━┓┏━┓╺┳╸┏━╸   ┏━┓┏━┓╺┳╸┏━╸                ║   \n"; 
+        cout << "       ║  ┃    ┃ ┃┣━┛┃ ┃┣━┫ ┃ ┣╸    ┃ ┃┣━┫ ┃ ┣╸                 ║   \n"; 
+        cout << "       ║  ╹╹   ┗━┛╹  ┗━┛╹ ╹ ╹ ┗━╸   ┗━┛╹ ╹ ╹ ┗━╸                ║   \n"; 
+        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
+
+        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
+        cout << "       ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║   \n"; 
+        cout << "       ║┣━┫     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║   \n"; 
+        cout << "       ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹╹╹┗━╸                ║   \n"; 
+        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
+
         cout << "------------------------------------------\n";
 
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice < 1 || choice > 7) {
-            cout << "\nInvalid choice. Enter a number from 1 to 6.\n";
+        if (choice < 1 || choice > 8) {
+            cout << "\nInvalid choice. Enter a number from 1 to 8.\n";
             cout << "Press Enter to continue...";
             cin.ignore();
             cin.get();
@@ -1322,19 +1449,19 @@ int main() {
 
         switch (choice) {
             case 1:
-                createNewList(name_of_list, list_of_lists, list_of_descriptions);
+                createNewList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
                 break;
 
             case 2:
-                viewLists(name_of_list, list_of_lists, list_of_descriptions);
+                viewLists(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
                 break;
 
             case 3:
-                editList(name_of_list, list_of_lists, list_of_descriptions);
+                editList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
                 break;
 
             case 4:
-                deleteList(name_of_list, list_of_lists, list_of_descriptions);
+                deleteList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
                 break;
 
             case 5:
@@ -1347,6 +1474,14 @@ int main() {
             case 7:
              updatedate(cmonth, cdate, cyear);
              break;
+            case 8:
+                gamificationEnabled = !gamificationEnabled;
+                cout << "\nGamification is now " << (gamificationEnabled ? "ENABLED" : "DISABLED") << ".\n";
+                cout << "Press Enter to continue...";
+                cin.ignore();
+                cin.get();
+                break;
+
 
         }
     }
