@@ -690,7 +690,7 @@ void createNewList(
     cout << "Press Enter to continue...";
     cin.get();
 }
-
+}
 
 
 
