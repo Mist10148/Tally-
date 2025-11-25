@@ -98,6 +98,246 @@ void searchLists(const vector<string>& names) {
     cin.get();
 }
 
+// -------------------------
+// SEARCH or SORT LISTS
+// -------------------------
+void searchOrSortLists(
+    const vector<string>& names,
+    const vector<string>& categories,
+    const vector<string>& deadlines,
+    const vector<string>& priorities
+) {
+    if (names.empty()) {
+        cout << "\nNo lists available.\n";
+        cout << "Press Enter to continue...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+
+    int opt;
+    cout << "\n=====================================\n";
+    cout << "         SEARCH / SORT LISTS         \n";
+    cout << "=====================================\n";
+    cout << " 1. Search by name\n";
+    cout << " 2. Sort by name (A -> Z)\n";
+    cout << " 3. Sort by name (Z -> A)\n";
+    cout << " 4. Filter by category\n";
+    cout << " 5. Filter by deadline\n";
+    cout << " 6. Filter by priority\n";
+    cout << " 0. Back\n";
+    cout << "-------------------------------------\n";
+    cout << "Choice: ";
+    cin >> opt;
+
+    // ---- SEARCH MODE ----
+    if (opt == 1) {
+        searchLists(names);
+        return;
+    }
+
+    if (opt == 0) return;
+
+    if (opt < 2 || opt > 6) {
+        cout << "\nInvalid choice.\n";
+        cout << "Press Enter to continue...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+
+    // -----------------------------
+    // SORT BY NAME (2, 3) – global
+    // -----------------------------
+    if (opt == 2 || opt == 3) {
+        cin.ignore(); // clear newline
+
+        int n = (int)names.size();
+        vector<int> order(n);
+        for (int i = 0; i < n; i++)
+            order[i] = i;
+
+        // selection sort by names[order[i]]
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                string a = names[order[i]];
+                string b = names[order[j]];
+                bool swapNeeded = false;
+
+                if (opt == 2) { // A -> Z
+                    if (a > b) swapNeeded = true;
+                } else {        // Z -> A
+                    if (a < b) swapNeeded = true;
+                }
+
+                if (swapNeeded) {
+                    int tmp = order[i];
+                    order[i] = order[j];
+                    order[j] = tmp;
+                }
+            }
+        }
+
+        cout << "\n--------------- SORTED LISTS ---------\n";
+        for (int k = 0; k < n; k++) {
+            int idx = order[k];
+            cout << " " << (idx + 1) << ". " << names[idx] << "\n";
+            if (idx < (int)categories.size())
+                cout << "      Category : " << categories[idx] << "\n";
+            if (idx < (int)deadlines.size())
+                cout << "      Deadline : " << deadlines[idx] << "\n";
+            if (idx < (int)priorities.size())
+                cout << "      Priority : " << priorities[idx] << "\n";
+            cout << "-------------------------------------\n";
+        }
+
+        cout << "Press Enter to continue...";
+        cin.get();
+        return;
+    }
+
+    // -----------------------------------------
+    // FILTER MODES (4 = category, 5 = deadline,
+    //              6 = priority)
+    // -----------------------------------------
+    string target;
+    int subChoice;
+
+    // 4️⃣ Filter by CATEGORY
+    if (opt == 4) {
+        cout << "\nSelect category to show:\n";
+        cout << " 1. Work\n";
+        cout << " 2. School\n";
+        cout << " 3. Personal\n";
+        cout << " 4. Errands\n";
+        cout << " 5. Finance\n";
+        cout << " 6. Health\n";
+        cout << " 7. Appointment\n";
+        cout << " 8. Shopping\n";
+        cout << " 9. Others\n";
+        cout << "10. None\n";
+        cout << "Choice: ";
+        cin >> subChoice;
+
+        while (subChoice < 1 || subChoice > 10) {
+            cout << "Invalid choice. Try again: ";
+            cin >> subChoice;
+        }
+
+        const string catList[10] = {
+            "Work","School","Personal","Errands",
+            "Finance","Health","Appoinment", // note spelling matches your createNewList
+            "Shopping","Others","None"
+        };
+        target = catList[subChoice - 1];
+    }
+
+    // 5️⃣ Filter by DEADLINE
+    else if (opt == 5) {
+        cout << "\nSelect deadline to show:\n";
+        cout << " 1. Today\n";
+        cout << " 2. Tommorow\n";     // matches stored text in createNewList()
+        cout << " 3. This Week\n";
+        cout << " 4. Next Week\n";
+        cout << " 5. Next Month\n";
+        cout << "Choice: ";
+        cin >> subChoice;
+
+        while (subChoice < 1 || subChoice > 5) {
+            cout << "Invalid choice. Try again: ";
+            cin >> subChoice;
+        }
+
+        const string deadlineList[5] = {
+            "Today","Tommorow","This Week","Next Week","Next Month"
+        };
+        target = deadlineList[subChoice - 1];
+    }
+
+    // 6️⃣ Filter by PRIORITY
+    else if (opt == 6) {
+        cout << "\nSelect priority to show:\n";
+        cout << " 1. Critical\n";
+        cout << " 2. High\n";
+        cout << " 3. Medium\n";
+        cout << " 4. Low\n";
+        cout << " 5. None\n";
+        cout << "Choice: ";
+        cin >> subChoice;
+
+        while (subChoice < 1 || subChoice > 5) {
+            cout << "Invalid choice. Try again: ";
+            cin >> subChoice;
+        }
+
+        const string prioList[5] = {
+            "Critical","High","Medium","Low","None"
+        };
+        target = prioList[subChoice - 1];
+    }
+
+    // now build filtered list of indices
+    cin.ignore(); // clear newline
+
+    vector<int> filtered;
+    for (int i = 0; i < (int)names.size(); i++) {
+        string value;
+        if (opt == 4) {
+            if (i < (int)categories.size()) value = categories[i];
+        } else if (opt == 5) {
+            if (i < (int)deadlines.size()) value = deadlines[i];
+        } else if (opt == 6) {
+            if (i < (int)priorities.size()) value = priorities[i];
+        }
+
+        if (value == target) {
+            int fi = filtered.size();
+            filtered.resize(fi + 1);
+            filtered[fi] = i;
+        }
+    }
+
+    if (filtered.size() == 0) {
+        cout << "\nNo lists found for that selection.\n";
+        cout << "Press Enter to continue...";
+        cin.get();
+        return;
+    }
+
+    // sort filtered by NAME A -> Z
+    for (int i = 0; i < (int)filtered.size() - 1; i++) {
+        for (int j = i + 1; j < (int)filtered.size(); j++) {
+            int idxI = filtered[i];
+            int idxJ = filtered[j];
+            if (names[idxI] > names[idxJ]) {
+                int tmp = filtered[i];
+                filtered[i] = filtered[j];
+                filtered[j] = tmp;
+            }
+        }
+    }
+
+    // print only filtered lists (still show meta)
+    cout << "\n---------- FILTERED LISTS (A -> Z) ---\n";
+    for (int k = 0; k < (int)filtered.size(); k++) {
+        int idx = filtered[k];
+        cout << " " << (idx + 1) << ". " << names[idx] << "\n";
+
+        if (idx < (int)categories.size())
+            cout << "      Category : " << categories[idx] << "\n";
+        if (idx < (int)deadlines.size())
+            cout << "      Deadline : " << deadlines[idx] << "\n";
+        if (idx < (int)priorities.size())
+            cout << "      Priority : " << priorities[idx] << "\n";
+
+        cout << "-------------------------------------\n";
+    }
+
+    cout << "Press Enter to continue...";
+    cin.get();
+}
+
+
 
 // ----------------------------------
 // Initialize Achievement Definitions
@@ -346,6 +586,37 @@ void searchItems(const vector<string>& items) {
     cin.get();
 }
 
+// Live summary box used everywhere
+void printLiveSummary(
+    const string& title,
+    const string& category,
+    const string& deadline,
+    const string& deadlinePriority,
+    const string& notes
+) {
+
+        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
+        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
+        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
+        cout << "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n";
+        cout << "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n";
+        cout << "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n";
+        cout << "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n";
+        cout << "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n";
+        cout << "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
+        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+    
+        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        cout << "                                                                                              𝗧𝗔𝗟𝗟𝗬++ 𝗟𝗜𝗦𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬\n";
+        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        cout << "                                                                             [1] 📄 TITLE      : " << (title.empty() ? "<not set>" : title) << '\n';
+        cout << "                                                                             [2] 🗂️ CATEGORY   : " << (category.empty() ? "<not set>" : category) << '\n';
+        cout << "                                                                             [3] 🗓️ DEADLINE   : " << (deadline.empty() ? "<none>" : deadline) << '\n';
+        cout << "                                                                             [4] ❗ PRIORITY   : " << (deadlinePriority.empty() ? "<none>" : deadlinePriority) << '\n';
+        cout << "                                                                             [5] 📝 NOTES      : " << (notes.empty() ? "<none>" : notes) << '\n';
+        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        cout << "                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  \n\n";
+}
 
 
 // Function to create a new list
@@ -353,6 +624,9 @@ void createNewList(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
     vector<vector<vector<string>>>& list_of_descriptions,
+    vector<string>& list_categories,
+    vector<string>& list_deadlines,
+    vector<string>& list_priorities,
     bool gamificationEnabled,
     int& playerXP,
     int& playerLevel
@@ -397,12 +671,24 @@ void createNewList(
     // GET LIST TITLE
     // ===================================================
 
-    cout << "==============================\n";
-    cout << "        CREATE NEW LIST       \n";
-    cout << "==============================\n\n";
+                                                                                                                 
 
     cin.ignore();
-    cout << "Enter list title: ";
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+    cout << "                                                                                ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n";
+    cout << "                                                                                ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n";
+    cout << "                                                                                ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸             \n\n";
+
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+
+    cout << "                                                                                      ╔════════════════════════╗                              \n";
+    cout << "                                                                                     ╔║                        ║╗                             \n";
+    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+        
+    cout << "\033[2A"; // move UP 2 lines
+    cout << "\033[87C"; // move RIGHT 17 columns (adjust until perfect)
+
     getline(cin, title);
 
     // ===================================================
@@ -410,19 +696,25 @@ void createNewList(
     // ===================================================
 
     system("cls");
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+   
+    cout << "                                                           ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ┏━┓   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓             \n";
+    cout << "                                                           ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸    ┣━┫   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃             \n";
+    cout << "                                                           ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╹ ╹   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹             \n\n";
 
-    cout << "Choose a category for this item: \n";
-
-    cout << "1. Work \n";
-    cout << "2. School \n";
-    cout << "3. Personal \n";
-    cout << "4. Errands \n";
-    cout << "5. Finance \n";
-    cout << "6. Health \n";
-    cout << "7. Appointment \n";
-    cout << "8. Shopping \n";
-    cout << "9. Others \n";
-    cout << "10. None \n";
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+    cout << "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n";
+    cout << "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n";
+    cout << "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n";
+    cout << "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n";
+    cout << "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n";
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    cout << "                                                                                                ╔════╗                              \n";
+    cout << "                                                                                               ╔║    ║╗                             \n";
+    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        
+    cout << "\033[4A"; // move UP 2 lines
+    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
     cin >> categoryInput;
 
@@ -467,9 +759,21 @@ void createNewList(
     // ITEM Deadline
     // ===================================================
     system("cls");
-    cout << "Add Deadline?\n";
-    cout << "1. Yes\n";
-    cout << "2. No\n";
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+    cout << "                                                                                   ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸┏━┓            \n";
+    cout << "                                                                                   ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸  ╺┛            \n";
+    cout << "                                                                                   ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸ ╹             \n\n";
+
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+    cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+    cout << "                                                                                                ╔════╗                              \n";
+    cout << "                                                                                               ╔║    ║╗                             \n";
+    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        
+    cout << "\033[4A"; // move UP 2 lines
+    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
     cin >> deadlineStatus;
 
@@ -480,14 +784,26 @@ void createNewList(
 
     if(deadlineStatus == 1){
         system("cls");
-        cin.ignore();
+        printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "Choose Deadline\n";
-        cout << "1. Today\n";
-        cout << "2. Tommorow\n";
-        cout << "3. This Week\n";
-        cout << "4. Next Week\n";
-        cout << "5. Next Month\n";
+        cout << "                                                                              ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n";
+        cout << "                                                                              ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n";
+        cout << "                                                                              ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n";
+
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n";
+        cout << "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n";
+        cout << "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n";
+        cout << "                                                                                            [𝟕] ⚙️ CUSTOM    \n";
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
+        cin.ignore();
 
         cin >> deadlineChoice;
 
@@ -515,13 +831,23 @@ void createNewList(
 
         cin.ignore();
         system("cls");
-        cout << "Choose Deadline Priority \n";
+        printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "1. Critical\n";
-        cout << "2. High\n";
-        cout << "3. Medium\n";
-        cout << "4. Low\n";
-        cout << "5. None\n";
+        cout << "                                                                 ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n";
+        cout << "                                                                 ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n";
+        cout << "                                                                 ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹           \n\n";
+
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n";
+        cout << "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n";
+        cout << "                                                                                            [𝟓] ⛔ NONE    \n";
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
         cin >> deadlinePrioChoice;
 
@@ -553,9 +879,21 @@ void createNewList(
     // ===================================================
 
     system("cls");
-    cout << "Add Notes?\n";
-    cout << "1. Yes\n";
-    cout << "2. No\n";
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+        cout << "                                                                                     ┏━┓╺┳┓╺┳┓   ┏┓╻┏━┓╺┳╸┏━╸┏━┓┏━┓            \n";
+        cout << "                                                                                     ┣━┫ ┃┃ ┃┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓ ╺┛           \n";
+        cout << "                                                                                     ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛ ╹          \n\n";
+
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
     cin >> noteChoice;
 
@@ -565,7 +903,23 @@ void createNewList(
     }
 
     if(noteChoice == 1){
-        cout << "Enter Note\n";
+    system("cls");
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+        cout << "                                                                                     ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━┓╺┳╸┏━╸            \n";
+        cout << "                                                                                     ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┃ ┃ ┃ ┣╸          \n";
+        cout << "                                                                                     ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛ ╹ ┗━╸          \n\n";
+
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+        cout << "                                                                                      ╔════════════════════════╗                              \n";
+        cout << "                                                                                     ╔║                        ║╗                             \n";
+        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+            
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
         cin.ignore();
         getline(cin, notes); 
     }
@@ -576,17 +930,22 @@ void createNewList(
 
  while (true) {
     system("cls");
-    cout << "\nYou are about to create this list\n\n";
-    cout << "[1] Name: " << title << endl;
-    cout << "[2] Category: " << category << endl;
-    cout << "[3] Deadline: " << deadline << endl;
-    cout << "[4] Priority: " << deadlinePriority << endl;
-    cout << "[5] Notes: " << notes << endl << endl;
+    printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-    cout << "[1-5] Edit a field" << endl;
-    cout << "[6] Confirm and Create" << endl;
-    cout << "[7] Cancel" << endl;
-    cout << "Choice: ";
+        cout << "                                                                                   ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓   ╻  ╻┏━┓╺┳╸┏━┓             \n";
+        cout << "                                                                                   ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃   ┃  ┃┗━┓ ┃  ╺┛           \n";
+        cout << "                                                                                   ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹   ┗━╸╹┗━┛ ╹  ╹           \n\n";
+
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                         [𝟏-𝟓] ⚠️ EDIT A FIELD      [𝟔] 🟠 CONFIRM AND CREATE           \n";
+        cout << "                                                                                            [𝟕] ⛔ CANCEL                              \n";
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
     
     cin >> confirmationValue;
 
@@ -603,12 +962,16 @@ void createNewList(
     switch (confirmationValue) {
 
         case 1: {
+            system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
             cout << "\nEnter new title: ";
             getline(cin, title);
             break;
         }
 
         case 2: {
+            system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
             cout << "\nChoose a new category:\n";
             cout << "1. Work  \n2. School  \n3. Personal  \n4. Errands\n";
             cout << "\n5. Finance  \n6. Health  \n7. Appointment\n";
@@ -627,6 +990,8 @@ void createNewList(
         }
 
         case 3: {
+            system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
             cout << "\nChoose Deadline:\n";
             cout << "1. Today\n2. Tomorrow\n3. This Week\n4. Next Week\n5. Next Month\n";
             int d;
@@ -642,6 +1007,8 @@ void createNewList(
         }
 
         case 4: {
+            system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
             cout << "\nChoose Priority:\n";
             cout << "1. Critical  2. High  3. Medium  4. Low  5. None\n";
             int p;
@@ -656,6 +1023,8 @@ void createNewList(
         }
 
         case 5: {
+            system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
             cout << "\nEnter new Notes: ";
             getline(cin, notes);
             break;
@@ -682,6 +1051,8 @@ void createNewList(
     cout << "----------------------------------------\n\n";
 
     do {
+        system("cls");
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
         cout << "Add item: ";
         getline(cin, item);
 
@@ -767,6 +1138,18 @@ void createNewList(
 
     list_of_descriptions.resize(listIndex + 1);
     list_of_descriptions[listIndex] = descriptions;
+
+        // NEW: make sure metadata arrays are large enough
+    if ((int)list_categories.size() <= listIndex) {
+        list_categories.resize(listIndex + 1);
+        list_deadlines.resize(listIndex + 1);
+        list_priorities.resize(listIndex + 1);
+    }
+
+    // NEW: store category / deadline / priority for this list
+    list_categories[listIndex]   = category;
+    list_deadlines[listIndex]    = deadline;
+    list_priorities[listIndex]   = deadlinePriority;
 
     // Give XP for creating a new list
     addXP(10, gamificationEnabled, playerXP, playerLevel);
@@ -1577,6 +1960,9 @@ void deleteList(
     vector<string> &name_of_list,
     vector<vector<string>> &list_of_lists,
     vector<vector<vector<string>>> &list_of_descriptions,
+    vector<string> &list_categories,
+    vector<string> &list_deadlines,
+    vector<string> &list_priorities,
     bool gamificationEnabled,
     int& playerXP,
     int& playerLevel
@@ -1654,29 +2040,37 @@ void deleteList(
     vector<vector<string>> newLists;
     vector<vector<vector<string>>> newDescriptions;
 
-    for (int i = 0; i < (int)name_of_list.size(); i++) {
+    // NEW: metadata copies
+    vector<string> newCategories;
+    vector<string> newDeadlines;
+    vector<string> newPriorities;
 
-        // Skip the list marked for deletion
+   for (int i = 0; i < (int)name_of_list.size(); i++) {
         if (i != index) {
-
-            // Add list name
             int ni = newNames.size();
             newNames.resize(ni + 1);
             newNames[ni] = name_of_list[i];
 
-            // Add items of this list
             int li = newLists.size();
             newLists.resize(li + 1);
             newLists[li] = list_of_lists[i];
 
-            // Add descriptions (if available)
             int di = newDescriptions.size();
             newDescriptions.resize(di + 1);
-
             if (i < (int)list_of_descriptions.size())
                 newDescriptions[di] = list_of_descriptions[i];
             else
-                newDescriptions[di] = vector<vector<string>>(); // create empty if none
+                newDescriptions[di] = vector<vector<string>>();
+
+            // NEW: copy metadata if present, else empty string
+            int mi = newCategories.size();
+            newCategories.resize(mi + 1);
+            newDeadlines.resize(mi + 1);
+            newPriorities.resize(mi + 1);
+
+            newCategories[mi] = (i < (int)list_categories.size()) ? list_categories[i] : "";
+            newDeadlines[mi]  = (i < (int)list_deadlines.size()) ? list_deadlines[i] : "";
+            newPriorities[mi] = (i < (int)list_priorities.size()) ? list_priorities[i] : "";
         }
     }
 
@@ -1686,6 +2080,11 @@ void deleteList(
     name_of_list = newNames;
     list_of_lists = newLists;
     list_of_descriptions = newDescriptions;
+
+        // NEW: replace metadata
+    list_categories = newCategories;
+    list_deadlines  = newDeadlines;
+    list_priorities = newPriorities;
 
     cout << "\nList deleted successfully!\n";
     cout << "Press Enter to continue...";
@@ -1800,6 +2199,10 @@ int main() {
     vector<vector<vector<int>>> date;
     vector<vector<vector<int>>> year;
 
+    vector<string> list_categories;
+    vector<string> list_deadlines;
+    vector<string> list_priorities;
+
     //For SpecialCharacter Translation Compatability with Terminal
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
@@ -1849,7 +2252,7 @@ int main() {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         cout << "                     ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
 
-        cout << "                                                       𝐀𝐫𝐢𝐬𝐭𝐨𝐤𝐢, 𝐒𝐞𝐠𝐨𝐜𝐢𝐨, 𝐎𝐜𝐜𝐞ñ𝐚 | 𝐁𝐒𝐂𝐒 1-𝐀                                 \n\n\n" ; 
+        cout << "                                                       𝐀𝐫𝐢𝐬𝐭𝐨𝐤𝐢, 𝐒𝐞𝐠𝐨𝐜𝐢𝐨, 𝐎𝐜𝐜𝐞ñ𝐚 | 𝐁𝐒𝐂𝐒 1-𝐀                                 \n\n" ; 
 
         cout << "                                           ╔════════════════════════════════════════════════════╗  \n";    
         cout << "                                           ║╻╻┏━┓┏━┓┏━╸┏━┓┏━┓   ┏━┓   ╺┳╸┏━┓   ┏━╸┏┓╻╺┳╸┏━╸┏━┓╻╻║  \n";
@@ -1869,14 +2272,19 @@ int main() {
     while (started) {
 
         system("cls");
+       
+        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
+        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
+        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
+        cout << "                                                               ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n";
+        cout << "                                                               ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n";
+        cout << "                                                               ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n";
+        cout << "                                                               ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n";
+        cout << "                                                               ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n";
+        cout << "                                                               ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n";
+        cout << "                                                              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
 
-        cout << " ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n";
-        cout << " ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n";
-        cout << " ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n";
-        cout << " ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n";
-        cout << " ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n";
-        cout << " ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n";
-        cout << "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+
                                                                           
         // Display player level & XP in main menu header
         // Show gamification header only when enabled
@@ -1888,68 +2296,40 @@ int main() {
             cout << "-------------------------------------\n";
         }
 
-
-
-        cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
+        cout << "                                                             Current date: " << cmonth << '/' << cdate << '/' << cyear;
         cout << "\n";
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      \n";
-        cout << "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      \n";
-        cout << "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      \n";
-        cout << "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      \n";
-        cout << "       ╚════════════════════════════════════════════════════════╝      \n\n";
+        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
+        cout << "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      ║┏━┓    ╻ ╻┏━┓┏━┓┏━┓╺┳╸┏━╸   ┏━┓┏━┓╺┳╸┏━╸                ║\n";
+        cout << "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      ║  ┃    ┃ ┃┣━┛┃ ┃┣━┫ ┃ ┣╸    ┃ ┃┣━┫ ┃ ┣╸                 ║\n";
+        cout << "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      ║  ╹╹   ┗━┛╹  ┗━┛╹ ╹ ╹ ┗━╸   ┗━┛╹ ╹ ╹ ┗━╸                ║\n";
+        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      \n";
-        cout << "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      \n";
-        cout << "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      \n";
-        cout << "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      \n";
-        cout << "       ╚════════════════════════════════════════════════════════╝      \n\n";                                
+        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
+        cout << "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      ║┏━╸    ┏━┓┏━╸╺┳╸╻ ╻┏━┓┏┓╻    ╻   ┏━╸╻ ╻╻╺┳╸             ║      ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║\n";
+        cout << "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      ║┗━┓    ┣┳┛┣╸  ┃ ┃ ┃┣┳┛┃┗┫   ┏┛   ┣╸ ┏╋┛┃ ┃              ║      ║┣━┫     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║\n";
+        cout << "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      ║┗━┛╹   ╹┗╸┗━╸ ╹ ┗━┛╹┗╸╹ ╹   ╹    ┗━╸╹ ╹╹ ╹              ║      ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹╹╹┗━╸                ║\n";
+        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";                                
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      \n";                          
-        cout << "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      \n";
-        cout << "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      \n";
-        cout << "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      \n";      
-        cout << "       ╚════════════════════════════════════════════════════════╝      \n\n";
+        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";                          
+        cout << "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏━┓╺┳╸┏━╸               ║\n";
+        cout << "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      ║┣━┓    ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫   ┃  ┃┗━┓ ┃                   ║      ║┗━┫    ┣━┫┃  ┣━┫┃┣╸ ┃ ┃┣╸ ┃┃┃┣╸ ┃ ┃ ┃ ┗━┓               ║\n";
+        cout << "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      ║┗━┛╹   ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹   ┗━╸╹┗━┛ ╹                   ║      ║╺━┛╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗━┛┗━╸╹╹╹┗━╸╹ ╹ ╹ ╺━┛               ║ \n";      
+        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      \n";  
-        cout << "       ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      \n";  
-        cout << "       ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      \n";  
-        cout << "       ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      \n";  
-        cout << "       ╚════════════════════════════════════════════════════════╝      \n\n";   
 
-        cout << "       ╔════════════════════════════════════════════════════════╗   \n";      
-        cout << "       ║┏━╸    ┏━┓┏━╸╺┳╸╻ ╻┏━┓┏┓╻    ╻   ┏━╸╻ ╻╻╺┳╸             ║   \n"; 
-        cout << "       ║┗━┓    ┣┳┛┣╸  ┃ ┃ ┃┣┳┛┃┗┫   ┏┛   ┣╸ ┏╋┛┃ ┃              ║   \n"; 
-        cout << "       ║┗━┛╹   ╹┗╸┗━╸ ╹ ┗━┛╹┗╸╹ ╹   ╹    ┗━╸╹ ╹╹ ╹              ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n"; 
-
-        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
-        cout << "       ║┏━┓    ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                  ║   \n"; 
-        cout << "       ║┣━┓    ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫   ┃  ┃┗━┓ ┃                   ║   \n"; 
-        cout << "       ║┗━┛╹   ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹   ┗━╸╹┗━┛ ╹                   ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";    
+        cout << "                                                                          ________________  ________________  ________________      \n";
+        cout << "                                                                         |________________||________________||________________|     \n\n";                                                                                                                                     
+        cout << "                                                                            ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸         \n";
+        cout << "                                                                            ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸ ╹        \n";
+        cout << "                                                                            ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸╹        \n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
         
-        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
-        cout << "       ║┏━┓    ╻ ╻┏━┓┏━┓┏━┓╺┳╸┏━╸   ┏━┓┏━┓╺┳╸┏━╸                ║   \n"; 
-        cout << "       ║  ┃    ┃ ┃┣━┛┃ ┃┣━┫ ┃ ┣╸    ┃ ┃┣━┫ ┃ ┣╸                 ║   \n"; 
-        cout << "       ║  ╹╹   ┗━┛╹  ┗━┛╹ ╹ ╹ ┗━╸   ┗━┛╹ ╹ ╹ ┗━╸                ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
+        cout << "\033[4A"; // move UP 2 lines
+        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
-        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
-        cout << "       ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║   \n"; 
-        cout << "       ║┣━┫     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║   \n"; 
-        cout << "       ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹╹╹┗━╸                ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
-
-        cout << "       ╔════════════════════════════════════════════════════════╗   \n"; 
-        cout << "       ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏━┓╺┳╸┏━╸               ║   \n"; 
-        cout << "       ║┗━┫    ┣━┫┃  ┣━┫┃┣╸ ┃ ┃┣╸ ┃┃┃┣╸ ┃ ┃ ┃ ┗━┓               ║   \n"; 
-        cout << "       ║╺━┛╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗━┛┗━╸╹╹╹┗━╸╹ ╹ ╹ ╺━┛               ║   \n"; 
-        cout << "       ╚════════════════════════════════════════════════════════╝   \n\n";
-
-        cout << "------------------------------------------\n";
-
-        cout << "Enter your choice: ";
         cin >> choice;
 
         if (choice < 1 || choice > 9) {
@@ -1962,7 +2342,17 @@ int main() {
 
         switch (choice) {
             case 1:
-                createNewList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
+                createNewList(
+                name_of_list,
+                list_of_lists,
+                list_of_descriptions,
+                list_categories,
+                list_deadlines,
+                list_priorities,
+                gamificationEnabled,
+                playerXP,
+                playerLevel
+                );
                 // Check achievements after creating a list
                 checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
                                   achNames, achBadges, achUnlocked, achXP,
@@ -1984,7 +2374,17 @@ int main() {
                 break;
 
             case 4:
-                deleteList(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel);
+                 deleteList(
+                name_of_list,
+                list_of_lists,
+                list_of_descriptions,
+                list_categories,
+                list_deadlines,
+                list_priorities,
+                gamificationEnabled,
+                playerXP,
+                playerLevel
+                );
                 // Re-check achievements after deletion
                 checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
                                   achNames, achBadges, achUnlocked, achXP,
@@ -1997,7 +2397,12 @@ int main() {
                 return 0;
 
             case 6:
-                searchLists(name_of_list);
+                  searchOrSortLists(
+            name_of_list,
+            list_categories,
+            list_deadlines,
+            list_priorities
+                );
                 break;
             case 7:
              updatedate(cmonth, cdate, cyear);
