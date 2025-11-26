@@ -128,7 +128,15 @@ void searchOrSortLists(
     cout << " 0. Back\n";
     cout << "-------------------------------------\n";
     cout << "Choice: ";
-    cin >> opt;
+    while (true)
+    {
+        cin >> opt;
+
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
 
     // ---- SEARCH MODE ----
     if (opt == 1) {
@@ -217,7 +225,15 @@ void searchOrSortLists(
         cout << " 9. Others\n";
         cout << "10. None\n";
         cout << "Choice: ";
-        cin >> subChoice;
+        while (true)
+        {
+            cin >> subChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+
+        }
 
         while (subChoice < 1 || subChoice > 10) {
             cout << "Invalid choice. Try again: ";
@@ -241,7 +257,15 @@ void searchOrSortLists(
         cout << " 4. Next Week\n";
         cout << " 5. Next Month\n";
         cout << "Choice: ";
-        cin >> subChoice;
+        
+        while (true)
+        {
+            cin >> subChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
 
         while (subChoice < 1 || subChoice > 5) {
             cout << "Invalid choice. Try again: ";
@@ -263,7 +287,15 @@ void searchOrSortLists(
         cout << " 4. Low\n";
         cout << " 5. None\n";
         cout << "Choice: ";
-        cin >> subChoice;
+
+        while (true)
+        {
+            cin >> subChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
 
         while (subChoice < 1 || subChoice > 5) {
             cout << "Invalid choice. Try again: ";
@@ -723,7 +755,14 @@ void createNewList(
     cout << "\033[4A"; // move UP 2 lines
     cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
-    cin >> categoryInput;
+    while (true)
+    {
+        cin >> categoryInput;
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
 
     while(categoryInput < 1 || categoryInput >10){
         cout << "Invalid Choice! Please enter a number from 1 to 10";
@@ -781,9 +820,14 @@ void createNewList(
         
     cout << "\033[4A"; // move UP 2 lines
     cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
-
-    cin >> deadlineStatus;
-
+    while (true)
+    {
+        cin >> deadlineStatus;
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
     while(deadlineStatus < 1 || deadlineStatus > 2){
         cout << "Invalid Response! Try Again";
         cin >> deadlineStatus;
@@ -811,8 +855,14 @@ void createNewList(
         cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
         cin.ignore();
-
-        cin >> deadlineChoice;
+        while (true)
+        {
+            cin >> deadlineChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
 
         while(deadlineChoice < 1 || deadlineChoice > 5){
             cout << "Invalid Response! Try Again";
@@ -855,8 +905,14 @@ void createNewList(
             
         cout << "\033[4A"; // move UP 2 lines
         cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
-
-        cin >> deadlinePrioChoice;
+        while (true)
+        {
+            cin >> deadlinePrioChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
 
         while(deadlinePrioChoice < 1 || deadlinePrioChoice > 5){
             cout << "Invalid Response! Please Try Again.\n";
@@ -887,11 +943,18 @@ void createNewList(
     cout << "Enter Month: ";
     do
     {
-    cin >> month;
-    if (month < 1 || month > 12)
-    {
-        cout << "Try again\n";
-    }
+        while (true)
+        {
+            cin >> month;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
+        if (month < 1 || month > 12)
+        {
+            cout << "Try again\n";
+        }
     } while (month < 1 || month > 12);
     Mindex = months.size();
     months.resize(Mindex + 1);
@@ -899,7 +962,14 @@ void createNewList(
     cout << "Enter year number: ";
     do
     {
-        cin >> year;
+        while (true)
+        {
+            cin >> year;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
         if (year < 2000 || year > 2100)
         {
             cout << "Try again\n";
@@ -920,7 +990,14 @@ void createNewList(
     case 12:
         do
         {
-            cin >> date;
+            while (true)
+            {
+                cin >> date;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             if (date < 1 || date > 31)
             {
                 cout << "Try again\n";
@@ -935,7 +1012,14 @@ void createNewList(
     case 11:
         do
         {
-            cin >> date;
+            while (true)
+            {
+                cin >> date;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             if (date < 1 || date > 30)
             {
                 cout << "Try again\n";
@@ -949,7 +1033,14 @@ void createNewList(
         {
             do
             {
-                cin >> date;
+                while (true)
+                {
+                    cin >> date;
+                    if (!cin.fail()) break;
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                }
                 if (date < 1 || date > 29)
                 {
                     cout << "Try again\n";
@@ -961,7 +1052,14 @@ void createNewList(
         {
             do
             {
-                cin >> date;
+                while (true)
+                {
+                    cin >> date;
+                    if (!cin.fail()) break;
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                }
                 if (date < 1 || date > 28)
                 {
                     cout << "Try again\n";
@@ -995,7 +1093,14 @@ void createNewList(
         cout << "\033[4A"; // move UP 2 lines
         cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
 
-    cin >> noteChoice;
+    while (true)
+    {
+        cin >> noteChoice;
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
 
     while(noteChoice < 1 || noteChoice > 2){
         cout << "Invalid Response! Please try again.\n";
@@ -1047,7 +1152,14 @@ void createNewList(
         cout << "\033[4A"; // move UP 2 lines
         cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
     
-    cin >> confirmationValue;
+    while (true)
+    {
+        cin >> confirmationValue;
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
 
     // Make sure leftover newline won't affect getline()
     cin.ignore();
@@ -1077,7 +1189,14 @@ void createNewList(
             cout << "\n5. Finance  \n6. Health  \n7. Appointment\n";
             cout << "8. Shopping  \n9. Others  \n10. None\n";
             int cat;
-            cin >> cat;
+            while (true)
+            {
+                cin >> cat;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cin.ignore();
 
             const string categories[] = {
@@ -1095,7 +1214,14 @@ void createNewList(
             cout << "\nChoose Deadline:\n";
             cout << "1. Today\n2. Tomorrow\n3. This Week\n4. Next Week\n5. Next Month\n";
             int d;
-            cin >> d;
+            while (true)
+            {
+                cin >> d;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cin.ignore();
 
             const string deadlines[] = {
@@ -1112,7 +1238,14 @@ void createNewList(
             cout << "\nChoose Priority:\n";
             cout << "1. Critical  2. High  3. Medium  4. Low  5. None\n";
             int p;
-            cin >> p;
+            while (true)
+            {
+                cin >> p;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cin.ignore();
 
             const string prios[] = {
@@ -1615,9 +1748,14 @@ void editList(
 
         int editChoice;
         cout << "\nChoose an option: ";
-        cin >> editChoice;
-        cin.ignore();
-
+        while (true)
+        {
+            cin >> editChoice;
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
         // User wants to search items within this list
         if (editChoice == 8) {
             searchItems(items);
@@ -1678,10 +1816,18 @@ void editList(
             int month, date, year;
             cout << "\nSet target date for this item\n";
             cout << "-------------------------------------\n";
-            cout << " Enter Month: ";
+            cout << "Enter Month: ";
             do
             {
-            cin >> month;
+            while (true)
+            {
+                cin >> month;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
+            
             if (month < 1 || month > 12)
             {
                 cout << "Try again\n";
@@ -1693,7 +1839,15 @@ void editList(
             cout << "Enter year number: ";
             do
             {
-                cin >> year;
+                while (true)
+                {
+                    cin >> year;
+                    if (!cin.fail()) break;
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                }
+                
                 if (year < 2000 || year > 2100)
                 {
                     cout << "Try again\n";
@@ -1714,7 +1868,15 @@ void editList(
             case 12:
                 do
                 {
+                    while (true)
+                    {
                     cin >> date;
+                    if (!cin.fail()) break;
+                    
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                    }
                     if (date < 1 || date > 31)
                     {
                         cout << "Try again\n";
@@ -1728,7 +1890,15 @@ void editList(
             case 11:
                 do
                 {
+                    while (true)
+                    {
                     cin >> date;
+                    if (!cin.fail()) break;
+                    
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                    }
                     if (date < 1 || date > 30)
                     {
                         cout << "Try again\n";
@@ -1740,18 +1910,33 @@ void editList(
                 {
                     do
                     {
+                        while (true){
+                        
                         cin >> date;
+                        if (!cin.fail()) break;
+                        
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                        }
                         if (date < 1 || date > 29)
                         {
                             cout << "Try again\n";
                         }
                     } while (date < 1 || date > 29);
                 }
+                
                 else
                 {
                     do
                     {
+                        while (true){
                         cin >> date;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                        }
                         if (date < 1 || date > 28)
                         {
                             cout << "Try again\n";
@@ -1784,7 +1969,16 @@ void editList(
 
             int itemNum;
             cout << "\nEnter item number to edit: ";
-            cin >> itemNum;
+            while (true)
+            {
+                cin >> itemNum;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
+            
+            
             cin.ignore();
 
             // Validate
@@ -1825,7 +2019,15 @@ void editList(
 
             int delNum;
             cout << "\nEnter item number to delete: ";
-            cin >> delNum;
+            while (true)
+            {
+                cin >> delNum;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
+            
             cin.ignore();
 
             // Validate
@@ -1868,7 +2070,15 @@ void editList(
 
             int markNum;
             cout << "\nEnter item number to mark/unmark: ";
-            cin >> markNum;
+            while (true)
+            {
+                cin >> markNum;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
+
             cin.ignore();
 
             // Validate
@@ -1920,9 +2130,23 @@ void editList(
 
             int a, b;
             cout << "\nEnter first item number: ";
-            cin >> a;
+            while (true)
+            {
+                cin >> a;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cout << "Enter second item number: ";
-            cin >> b;
+            while (true)
+            {
+                cin >> b;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cin.ignore();
 
             // Validate swap positions
@@ -2007,7 +2231,15 @@ void editList(
 
             int itemNum;
             cout << "\nEnter item number to edit descriptions: ";
-            cin >> itemNum;
+            
+            while (true)
+            {
+                cin >> itemNum;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                cout << "Invalid input. Please try again.\n";
+            }
             cin.ignore();
 
             // Validate index
@@ -2051,7 +2283,14 @@ void editList(
 
                 int opt;
                 cout << "Choose: ";
-                cin >> opt;
+                while (true)
+                {
+                    cin >> opt;
+                    if (!cin.fail()) break;
+                    cin.clear();
+                    cin.ignore(1000 , '\n');
+                    cout << "Invalid input. Please try again.\n";
+                }
                 cin.ignore();
 
                 if (opt == 0) break;
@@ -2080,7 +2319,14 @@ void editList(
 
                     int dn;
                     cout << "Enter description number to edit: ";
-                    cin >> dn;
+                    while (true)
+                    {
+                        cin >> dn;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
                     cin.ignore();
 
                     if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
@@ -2107,7 +2353,14 @@ void editList(
 
                     int dn;
                     cout << "Enter description number to delete: ";
-                    cin >> dn;
+                    while (true)
+                    {
+                        cin >> dn;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
                     cin.ignore();
 
                     if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
@@ -2136,9 +2389,25 @@ void editList(
 
                     int a, b;
                     cout << "Enter first description number: ";
-                    cin >> a;
+                    while (true)
+                    {
+                        cin >> a;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
+                    cin.ignore();
+
                     cout << "Enter second description number: ";
-                    cin >> b;
+                    while (true)
+                    {
+                        cin >> b;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
                     cin.ignore();
 
                     if (a < 1 || a > (int)descriptions[itemNum - 1].size() ||
@@ -2220,7 +2489,15 @@ void deleteList(
     // -------------------------------
     int choice;
     cout << "\nSelect list to delete: ";
-    cin >> choice;
+    while (true)
+    {
+        cin >> choice;
+        if (!cin.fail()) break;
+        cin.clear();
+        cin.ignore(1000 , '\n');
+        cout << "Invalid input. Please try again.\n";
+    }
+    cin.ignore();
 
     // User cancels deletion
     if (choice == 0) {
@@ -2337,32 +2614,50 @@ void deleteList(
     cin.get();
 }
 
-int updatedate(int cmonth, int cdate, int cyear
+void updatedate(int &cmonth, int &cdate, int &cyear
 ) {
+    int tempmonth, tempdate, tempyear;
     cout << "\n=====================================\n";
     cout << "               EDIT DATE             \n";
     cout << "=====================================\n";
     cout << "Enter month number: ";
     do
     {
-        cin >> cmonth;
-        if (cmonth < 1 || cmonth > 12)
+        while (true)
         {
+            cin >> tempmonth;
+            if (!cin.fail()) break;
+            
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            if (tempmonth < 1 || tempmonth > 12)
+            {
             cout << "Try again\n";
+            }
         }
         
-    } while (cmonth < 1 || cmonth > 12);
+        
+        
+    } while (tempmonth < 1 || tempmonth > 12);
     cout << "Enter year number: ";
     do
-    {
-        cin >> cyear;
-        if (cyear < 2000 || cyear > 2100)
+    {   while (true)
         {
-            cout << "Try again\n";
+            cin >> tempyear;
+            if (!cin.fail()) break;
+            
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            if (tempyear < 2000 || tempyear > 2100)
+            {
+                cout << "Try again\n";
+            }
         }
-    } while (cyear < 2000 || cyear > 2100);
+    
+        
+    } while (tempyear < 2000 || tempyear > 2100);
     cout << "Enter date number: ";
-    switch (cmonth)
+    switch (tempmonth)
     {
     case 1:
     case 3:
@@ -2372,14 +2667,20 @@ int updatedate(int cmonth, int cdate, int cyear
     case 10:
     case 12:
         do
-    {
-        cin >> cdate;
-        if (cdate < 1 || cdate > 31)
+    {   
+        while (true)
         {
-            cout << "Try again\n";
+            cin >> tempdate;
+            if (!cin.fail()) break;
+            
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            if (tempdate < 1 || tempdate > 31)
+            {
+                cout << "Try again\n";
+            }
         }
-        
-    } while (cdate < 1 || cdate > 31);
+    } while (tempdate < 1 || tempdate > 31);
         break;
     
     case 4:
@@ -2388,44 +2689,67 @@ int updatedate(int cmonth, int cdate, int cyear
     case 11:
    do
     {
-        cin >> cdate;
-        if (cdate < 1 || cdate > 30)
+        while (true)
         {
-            cout << "Try again\n";
-        }
-        
-    } while (cdate < 1 || cdate > 30);    
-        break;
-
-    case 2:
-    if (((cyear%4 == 0 && cyear%100 != 0) || (cyear%400 == 0)))
-    {
-        do
-        {
-            cin >> cdate;
-            if (cdate < 1 || cdate > 29)
+            cin >> tempdate;
+            if (!cin.fail()) break;
+            
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            if (tempdate < 1 || tempdate > 30)
             {
                 cout << "Try again\n";
             }
+        }
+        
+    } while (tempdate < 1 || tempdate > 30);    
+        break;
+
+    case 2:
+    if (((tempyear%4 == 0 && tempyear%100 != 0) || (tempyear%400 == 0)))
+    {
+        do
+        {
+            while (true)
+            {
+                cin >> tempdate;
+                if (!cin.fail()) break;
+                
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                if (tempdate < 1 || tempdate > 29)
+                {
+                    cout << "Try again\n";
+                }
+            }
             
-        } while (cdate < 1 || cdate > 29); 
+        } while (tempdate < 1 || tempdate > 29); 
     }
     else
     {
         do
         {
-            cin >> cdate;
-            if (cdate < 1 || cdate > 28)
+            while (true)
             {
-                cout << "Try again\n";
+                cin >> tempdate;
+                if (!cin.fail()) break;
+                
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                if (tempdate < 1 || tempdate > 28)
+                {
+                    cout << "Try again\n";
+                }
             }
         
-        } while (cdate < 1 || cdate > 28);
+        } while (tempdate < 1 || tempdate > 28);
     }
         break;
     }
-    cout << "Current date: " << cmonth << '/' << cdate << '/' << cyear;
-    return cmonth, cdate, cyear;
+    cmonth = tempmonth;
+    cdate = tempdate;
+    cyear = tempyear;
+    return;
 }
 
 
@@ -2475,7 +2799,7 @@ int main() {
     // Initialize achievements once on startup
     initAchievements(achNames, achBadges, achUnlocked, achXP);
 
-    while (!started) {
+    system("cls");
 
         cout << "                                     ████████╗ █████╗ ██╗     ██╗  ██╗   ██╗     ██╗          ██╗                        \n";             
         cout << "                                     ╚══██╔══╝██╔══██╗██║     ██║  ╚██╗ ██╔╝     ██║          ██║                        \n";     
@@ -2505,14 +2829,26 @@ int main() {
         cout << "                                           ║  ╹  ╹┗╸┗━╸┗━┛┗━┛   ┗━┛    ╹ ┗━┛   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸  ║  \n";
         cout << "                                           ╚════════════════════════════════════════════════════╝  \n";
 
-        cin >> Menu;
-
+        while (true)
+        {
+            cin >> Menu;
+            if (Menu != 0)
+            {
+                cout << "Invalid input. Please try again.\n";
+                continue;
+            }
+            
+            if (!cin.fail()) break;
+            cin.clear();
+            cin.ignore(1000 , '\n');
+            cout << "Invalid input. Please try again.\n";
+        }
+        
+        
         if(Menu == 0){
             started = true;
              system("cls");
         } 
-
-    }
 
     while (started) {
 
@@ -2574,17 +2910,21 @@ int main() {
         
         cout << "\033[4A"; // move UP 2 lines
         cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
-
-        cin >> choice;
-
-        if (choice < 1 || choice > 9) {
-            cout << "\nInvalid choice. Enter a number from 1 to 9.\n";
-            cout << "Press Enter to continue...";
-            cin.ignore();
-            cin.get();
-            continue;
+        while (true)
+        {
+                cin >> choice;
+                if (!cin.fail()) break;
+                
+                cin.clear();
+                cin.ignore(1000 , '\n');
+                if (choice < 1 || choice > 9) {
+                cout << "\nInvalid choice. Enter a number from 1 to 9.\n";
+                    cout << "Press Enter to continue...";
+                    cin.ignore();
+                    cin.get();
+                    continue;
         }
-
+        }
         switch (choice) {
             case 1:
                 createNewList(
@@ -2686,8 +3026,6 @@ int main() {
                 cin.ignore();
                 cin.get();
                 break;
-
-
         }
     }
 
