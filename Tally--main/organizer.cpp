@@ -864,7 +864,7 @@ void createNewList(
             cout << "Invalid input. Please try again.\n";
         }
 
-        while(deadlineChoice < 1 || deadlineChoice > 5){
+        while(deadlineChoice < 1 || deadlineChoice > 7){
             cout << "Invalid Response! Try Again";
             cin >> deadlineChoice;
         }
@@ -882,7 +882,147 @@ void createNewList(
             case 4: deadline = "Next Week";
                 break;
 
-            case 5: deadline = "Next Month";
+            case 5: deadline = "This Month";
+                break;
+            case 6: deadline = "Next Month";
+                break;
+            case 7:
+            system("cls");
+                cout << "\n----------------------------------------\n";
+                cout << " ADD TARGET DATE FOR THIS ITEM\n";
+                cout << "----------------------------------------\n";
+                cout << "Enter Month: ";
+                do
+                {
+                    while (true)
+                    {
+                        cin >> month;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
+                    if (month < 1 || month > 12)
+                    {
+                        cout << "Try again\n";
+                    }
+                } while (month < 1 || month > 12);
+                Mindex = months.size();
+                months.resize(Mindex + 1);
+                months[Mindex] = month;
+                cout << "Enter year number: ";
+                do
+                {
+                    while (true)
+                    {
+                        cin >> year;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
+                    if (year < 2000 || year > 2100)
+                    {
+                        cout << "Try again\n";
+                    }
+                } while (year < 2000 || year > 2100);
+                Yindex = years.size();
+                years.resize(Yindex + 1);
+                years[Yindex] = year;
+                cout << "Enter date number: ";
+                switch (month)
+                {
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    do
+                    {
+                        while (true)
+                        {
+                            cin >> date;
+                            if (!cin.fail()) break;
+                            cin.clear();
+                            cin.ignore(1000 , '\n');
+                            cout << "Invalid input. Please try again.\n";
+                        }
+                        if (date < 1 || date > 31)
+                        {
+                            cout << "Try again\n";
+                        }
+                        
+                    } while (date < 1 || date > 31);
+                        break;
+                
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    do
+                    {
+                        while (true)
+                        {
+                            cin >> date;
+                            if (!cin.fail()) break;
+                            cin.clear();
+                            cin.ignore(1000 , '\n');
+                            cout << "Invalid input. Please try again.\n";
+                        }
+                        if (date < 1 || date > 30)
+                        {
+                            cout << "Try again\n";
+                        }
+                        
+                    } while (date < 1 || date > 30);    
+                        break;
+
+                case 2:
+                    if (((year%4 == 0 && year%100 != 0) || (year%400 == 0)))
+                    {
+                        do
+                        {
+                            while (true)
+                            {
+                                cin >> date;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000 , '\n');
+                                cout << "Invalid input. Please try again.\n";
+                            }
+                            if (date < 1 || date > 29)
+                            {
+                                cout << "Try again\n";
+                            }
+                            
+                        } while (date < 1 || date > 29); 
+                    }
+                    else
+                    {
+                        do
+                        {
+                            while (true)
+                            {
+                                cin >> date;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000 , '\n');
+                                cout << "Invalid input. Please try again.\n";
+                            }
+                            if (date < 1 || date > 28)
+                            {
+                                cout << "Try again\n";
+                            }
+                            
+                        } while (date < 1 || date > 28);
+                    }
+                    break;
+                }
+                Dindex = dates.size();
+                dates.resize(Dindex + 1);
+                dates[Dindex] = date;
                 break;
         }
 
@@ -936,142 +1076,7 @@ void createNewList(
                 break;
         }
     }
-    system("cls");
-    cout << "\n----------------------------------------\n";
-    cout << " ADD TARGET DATE FOR THIS ITEM\n";
-    cout << "----------------------------------------\n";
-    cout << "Enter Month: ";
-    do
-    {
-        while (true)
-        {
-            cin >> month;
-            if (!cin.fail()) break;
-            cin.clear();
-            cin.ignore(1000 , '\n');
-            cout << "Invalid input. Please try again.\n";
-        }
-        if (month < 1 || month > 12)
-        {
-            cout << "Try again\n";
-        }
-    } while (month < 1 || month > 12);
-    Mindex = months.size();
-    months.resize(Mindex + 1);
-    months[Mindex] = month;
-    cout << "Enter year number: ";
-    do
-    {
-        while (true)
-        {
-            cin >> year;
-            if (!cin.fail()) break;
-            cin.clear();
-            cin.ignore(1000 , '\n');
-            cout << "Invalid input. Please try again.\n";
-        }
-        if (year < 2000 || year > 2100)
-        {
-            cout << "Try again\n";
-        }
-    } while (year < 2000 || year > 2100);
-    Yindex = years.size();
-    years.resize(Yindex + 1);
-    years[Yindex] = year;
-    cout << "Enter date number: ";
-    switch (month)
-    {
-    case 1:
-    case 3:
-    case 5:
-    case 7:
-    case 8:
-    case 10:
-    case 12:
-        do
-        {
-            while (true)
-            {
-                cin >> date;
-                if (!cin.fail()) break;
-                cin.clear();
-                cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
-            }
-            if (date < 1 || date > 31)
-            {
-                cout << "Try again\n";
-            }
-            
-        } while (date < 1 || date > 31);
-            break;
     
-    case 4:
-    case 6:
-    case 9:
-    case 11:
-        do
-        {
-            while (true)
-            {
-                cin >> date;
-                if (!cin.fail()) break;
-                cin.clear();
-                cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
-            }
-            if (date < 1 || date > 30)
-            {
-                cout << "Try again\n";
-            }
-            
-        } while (date < 1 || date > 30);    
-            break;
-
-    case 2:
-        if (((year%4 == 0 && year%100 != 0) || (year%400 == 0)))
-        {
-            do
-            {
-                while (true)
-                {
-                    cin >> date;
-                    if (!cin.fail()) break;
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                }
-                if (date < 1 || date > 29)
-                {
-                    cout << "Try again\n";
-                }
-                
-            } while (date < 1 || date > 29); 
-        }
-        else
-        {
-            do
-            {
-                while (true)
-                {
-                    cin >> date;
-                    if (!cin.fail()) break;
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                }
-                if (date < 1 || date > 28)
-                {
-                    cout << "Try again\n";
-                }
-                
-            } while (date < 1 || date > 28);
-        }
-        break;
-    }
-    Dindex = dates.size();
-    dates.resize(Dindex + 1);
-    dates[Dindex] = date;
     // ===================================================
     // ITEM NOTES
     // ===================================================
@@ -1526,7 +1531,7 @@ void viewLists(
     cout << "\n=====================================\n";
     cout << "           " << name_of_list[index] << "\n";
     cout << "=====================================\n";
-
+    cout << "Target date: " << months[index] << "/" << dates[index] << "/" << years[index] << "\n";
     if (items.size() == 0) {
         cout << "(No items)\n";
     } else {
@@ -1535,7 +1540,7 @@ void viewLists(
         // Print each item and its descriptions
         for (int i = 0; i < (int)items.size(); i++) {
             cout << " " << i + 1 << ". " << items[i] << "\n";
-            cout << "Target date: " << months[i] << "/" << dates[i] << "/" << years[i] << "\n";
+            
             // Print all descriptions for this item (if any)
             if (i < (int)descs.size()) {
                 for (int d = 0; d < (int)descs[i].size(); d++) {
@@ -1813,142 +1818,6 @@ void editList(
 
             descriptions[newIndex] = temp;
 
-            int month, date, year;
-            cout << "\nSet target date for this item\n";
-            cout << "-------------------------------------\n";
-            cout << "Enter Month: ";
-            do
-            {
-            while (true)
-            {
-                cin >> month;
-                if (!cin.fail()) break;
-                cin.clear();
-                cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
-            }
-            
-            if (month < 1 || month > 12)
-            {
-                cout << "Try again\n";
-            }
-            } while (month < 1 || month > 12);
-            int monthIndex = months.size();
-            months.resize(monthIndex + 1);
-            months[monthIndex] = month;
-            cout << "Enter year number: ";
-            do
-            {
-                while (true)
-                {
-                    cin >> year;
-                    if (!cin.fail()) break;
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                }
-                
-                if (year < 2000 || year > 2100)
-                {
-                    cout << "Try again\n";
-                }
-            } while (year < 2000 || year > 2100);
-            int yearIndex = years.size();
-            years.resize(yearIndex + 1);
-            years[yearIndex] = year;
-            cout << "Enter date number: ";
-            switch (month)
-            {
-            case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
-            case 12:
-                do
-                {
-                    while (true)
-                    {
-                    cin >> date;
-                    if (!cin.fail()) break;
-                    
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                    }
-                    if (date < 1 || date > 31)
-                    {
-                        cout << "Try again\n";
-                    }
-                } while (date < 1 || date > 31);
-                
-                break;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                do
-                {
-                    while (true)
-                    {
-                    cin >> date;
-                    if (!cin.fail()) break;
-                    
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                    }
-                    if (date < 1 || date > 30)
-                    {
-                        cout << "Try again\n";
-                    }
-                } while (date < 1 || date > 30);
-                break;
-            case 2:
-                if (((year%4 == 0 && year%100 != 0) || (year%400 == 0)))
-                {
-                    do
-                    {
-                        while (true){
-                        
-                        cin >> date;
-                        if (!cin.fail()) break;
-                        
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                        }
-                        if (date < 1 || date > 29)
-                        {
-                            cout << "Try again\n";
-                        }
-                    } while (date < 1 || date > 29);
-                }
-                
-                else
-                {
-                    do
-                    {
-                        while (true){
-                        cin >> date;
-                        if (!cin.fail()) break;
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                        }
-                        if (date < 1 || date > 28)
-                        {
-                            cout << "Try again\n";
-                        }
-                    } while (date < 1 || date > 28);
-                }
-                break;
-            } // end switch(month)
-            int dateIndex = dates.size();
-            dates.resize(dateIndex + 1);
-            dates[dateIndex] = date;
-
             cout << "\nItem added!\n";
             cout << "Press Enter to continue...";
             cin.get();
@@ -2162,18 +2031,7 @@ void editList(
             items[a - 1] = items[b - 1];
             items[b - 1] = temp;
 
-             // Swap target dates
-            int tempMonth = months[a - 1];
-            months[a - 1] = months[b - 1];
-            months[b - 1] = tempMonth;
-
-            int tempDate = dates[a - 1];
-            dates[a - 1] = dates[b - 1];
-            dates[b - 1] = tempDate;
-
-            int tempYear = years[a - 1];
-            years[a - 1] = years[b - 1];
-            years[b - 1] = tempYear;
+            
 
             // Swap descriptions too
             if (a - 1 < (int)descriptions.size() && b - 1 < (int)descriptions.size()) {
