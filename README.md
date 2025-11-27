@@ -93,12 +93,6 @@ Update:
 
 ---
 
-Here is the **updated README section**, rewritten cleanly and clearly to include your new **Class System**, **unique XP-boosting abilities**, **XP as a currency**, and **info page for each class**.
-
-You can copy-paste this directly into your README.md.
-
----
-
 # 🆕 **Class System Update (Major Feature Added!)**
 
 A brand-new **Class System** has been added to Tally++ to enhance progression, strategy, and replayability.
