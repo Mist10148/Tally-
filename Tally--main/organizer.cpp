@@ -764,7 +764,13 @@ void createNewList(
     int& playerLevel,
     vector<vector<int>>& listmonth,
     vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    vector<vector<int>>& listyear, 
+    vector<int>& monthcreated,
+    vector<int>& datecreated,
+    vector<int>& yearcreated,
+    int cmonth,
+    int cdate,
+    int cyear
 ) {
     system("cls");
 
@@ -774,7 +780,8 @@ void createNewList(
 
     string title;                        // The title/name of the new list
     string item;                         // Stores each item typed by the user
-    string descLine;                     // Stores each description line entered
+    string descLine;
+    int cremonth, credate, creyear;                     // Stores each description line entered
     int month, date, year;               // Deadline date components
     int categoryInput;
     string category;
@@ -1570,6 +1577,7 @@ void createNewList(
         default:
             cout << "Invalid choice.\n";
     }
+
 }
 
     
@@ -2016,6 +2024,9 @@ while (true) {
 
 } // end confirm-items while
 
+cremonth = cmonth;
+creyear = cyear;
+credate = cdate;
 
 // ===================================================
 // SAVE FINAL LIST, ITEMS, AND DESCRIPTIONS
@@ -2025,6 +2036,16 @@ while (true) {
     int titleIndex = name_of_list.size();
     name_of_list.resize(titleIndex + 1);
     name_of_list[titleIndex] = title;
+
+    monthcreated.resize(titleIndex + 1);
+    monthcreated[titleIndex] = cremonth;
+
+    yearcreated.resize(titleIndex + 1);
+    yearcreated[titleIndex] = creyear;
+
+    datecreated.resize(titleIndex + 1);
+    datecreated[titleIndex] = credate;
+
 
     int listIndex = list_of_lists.size();
     list_of_lists.resize(listIndex + 1);
@@ -2100,7 +2121,14 @@ void viewLists(
     int& playerLevel,
     vector<vector<int>>& listmonth,
     vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    vector<vector<int>>& listyear,
+    vector<int>& monthcreated,
+    vector<int>& datecreated,
+    vector<int>& yearcreated,
+    vector<string>& list_deadlines,
+    int& cdate,
+    int& cmonth,
+    int& cyear
 ) {
 
         if (name_of_list.size() == 0) {
@@ -2216,16 +2244,104 @@ void viewLists(
     }
     cin.ignore();
 
-
+    int index = choice - 1; // convert to 0-based index
     // Validate chosen list
     if (choice < 1 || choice > (int)name_of_list.size()) {
         cout << "\nInvalid.\nPress Enter...";
         cin.get();
         continue;   
     }
+    string missing;
+    if (!datecreated.empty() && !monthcreated.empty() && !yearcreated.empty()) {
+    
+        if (list_deadlines[index] == "Today")
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
+            {
+                missing = to_string(cdate - datecreated[index]) + " day(s)";
+            }
+        }
+        else if (list_deadlines[index] == "This Week")
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > (datecreated[index] + 7))
+            {
+                missing = to_string(cdate - datecreated[index]) + " day(s)";
+            }
+        }
+        else if (list_deadlines[index] == "Next Week")
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > (datecreated[index]+14))
+            {
+                missing = to_string(cdate - datecreated[index]) + " day(s)";
+            }
+        }
+        else if (list_deadlines[index] == "This month")
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+        }
+        else if (list_deadlines[index] == "Next month")
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index]+1)
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+        }  
+    }
+    else
+        {
+            if(cyear > yearcreated[index])
+            {
+                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            {
+                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+            }
+            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
+            {
+                missing = to_string(cdate - datecreated[index]) + " day(s)";
+            }
+        }
+    
+    
+    
 
-
-    int index = choice - 1; // convert to 0-based index
+    
 
     // Access selected list's items and descriptions
     vector<string>& items = list_of_lists[index];
@@ -2251,6 +2367,10 @@ void viewLists(
         cout << "                                                                             ""𝐋𝐈𝐒𝐓 𝐍𝐀𝐌𝐄: " << name_of_list[index] << "\n";
         cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
 
+        cout << "                                                                              📂 CREATED ON  : "
+             << monthcreated[index] << "/"
+             << datecreated[index] << "/"
+             << yearcreated[index] << "\n";
         cout << "                                                                              📅 TARGET DATE : ";
 
             if (!months.empty() && !dates.empty() && !years.empty()) {
@@ -2301,7 +2421,8 @@ void viewLists(
         cout << "\n                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
         cout << "                                                                                                   𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n";
         cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
-  
+        
+        cout << "                                                                                       Missing         : " << missing << "\n";
         cout << "                                                                                       Total Items       : " << items.size() << "\n";
         cout << "                                                                                       Completed Items   : " << completedCount << "\n";
         cout << "                                                                                       Not Done          : " << notDone << "\n";
@@ -3356,6 +3477,9 @@ int main() {
     vector<vector<string>> list_of_lists;
     vector<vector<vector<string>>> list_of_descriptions;
     int cmonth = 0, cdate = 0, cyear = 0;
+    vector<int> monthcreated;
+    vector<int> datecreated;
+    vector<int> yearcreated;
     vector<vector<int>> listmonth;
     vector<vector<int>> listdate;
     vector<vector<int>> listyear;
@@ -3590,7 +3714,11 @@ int main() {
                 playerLevel,
                 listmonth,
                 listdate,
-                listyear
+                listyear,
+                monthcreated,
+                datecreated,
+                yearcreated,
+                cmonth, cdate, cyear
                 );
                 // Check achievements after creating a list
                 checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
@@ -3600,7 +3728,7 @@ int main() {
                 break;
 
             case 2:
-                viewLists(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear);
+                viewLists(name_of_list, list_of_lists, list_of_descriptions, gamificationEnabled, playerXP, playerLevel, listmonth, listdate, listyear,datecreated, monthcreated, yearcreated, list_deadlines, cdate, cmonth, cyear);
                 break;
 
             case 3:
