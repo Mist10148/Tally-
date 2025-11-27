@@ -6,6 +6,39 @@
 
 using namespace std;
 
+enum PlayerClass {
+    DEFAULT_CLASS,
+    HERO_CLASS,
+    GAMBLER_CLASS,
+    ASSASSIN_CLASS,
+    WIZARD_CLASS,
+    ARCHER_CLASS,
+    TANK_CLASS
+
+};
+
+// Global class system variables
+PlayerClass playerClass = DEFAULT_CLASS;
+int assassinStreak = 0; // Assassin consecutive success counter
+int assassinStacks = 0; // Assassin stack system
+int wizardCounter = 0; // Wizard spell combo counter
+int archerStreak = 0; // Archer hit streak
+int tankStacks = 0;   // Tank momentum system
+
+// Class ownership flags
+bool ownsHero = false;
+bool ownsGambler = false;
+bool ownsAssassin = false;
+bool ownsWizard = false;
+bool ownsArcher = false;
+bool ownsTank = false;
+
+
+
+
+
+
+
 
 
 
@@ -33,6 +66,350 @@ void addXP(int amount, bool gamificationEnabled, int& playerXP, int& playerLevel
     cout << "-------------------------------------\n";
 }
 
+void showClassInfo(int c) {
+    system("cls");
+
+    cout << "=========================================\n";
+    cout << "              CLASS INFORMATION          \n";
+    cout << "=========================================\n\n";
+
+    switch (c) {
+
+    case 1:
+        cout << "[DEFAULT CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • No XP bonus\n";
+        cout << " • Balanced starter class\n";
+        cout << " • Good for new players\n";
+        break;
+
+    case 2:
+        cout << "[HERO CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • +25 XP on every action\n";
+        cout << " • Best constant XP gain\n";
+        cout << " • Reliable and simple\n";
+        break;
+
+    case 3:
+        cout << "[GAMBLER CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • RNG-based XP system\n";
+        cout << " • Can gain massive XP\n";
+        cout << " • 20% chance to lose XP\n";
+        cout << " • High-risk, high-reward\n";
+        break;
+
+    case 4:
+        cout << "[ASSASSIN CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • XP streak mechanic starts after 3 actions\n";
+        cout << " • +5% XP per stack (up to 10 stacks)\n";
+        cout << " • Strong burst XP class\n";
+        break;
+
+    case 5:
+        cout << "[WIZARD CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • Spell Combo: bonus every 3rd XP gain\n";
+        cout << " • Crit Combo: double bonus every 5th gain\n";
+        cout << " • Wisdom Scaling: +5 XP per level\n";
+        cout << " • Very strategic class\n";
+        break;
+
+    case 6:
+        cout << "[ARCHER CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • Precision Shot streak system\n";
+        cout << " • Big streak = big XP\n";
+        cout << " • Headshots = crit XP\n";
+        cout << " • Rare Perfect Shot = huge burst\n";
+        break;
+
+    case 7:
+        cout << "[TANK CLASS]\n";
+        cout << "-----------------------------------------\n";
+        cout << " • Shield Momentum stacking system\n";
+        cout << " • Gains stacks every action\n";
+        cout << " • Max stacks = 20 - level\n";
+        cout << " • Strong early, weaker late\n";
+        cout << " • Always gives a bonus\n";
+        break;
+
+    default:
+        cout << "Invalid class selection.\n";
+        break;
+    }
+
+    cout << "\n-----------------------------------------\n";
+}
+
+void classMenu(PlayerClass& playerClass, int& playerXP) {
+    while (true) {
+        system("cls");
+        cout << "\n=========================================\n";
+        cout << "               CLASS SYSTEM              \n";
+        cout << "=========================================\n";
+        cout << " Current XP: " << playerXP << "\n";
+        cout << "-----------------------------------------\n";
+        cout << " Available Classes:\n\n";
+
+        cout << " [1] Default            (Free)           "
+             << (playerClass == DEFAULT_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [2] Hero               (Cost: 500 XP)   "
+             << (ownsHero ? "[OWNED]" : "")
+             << (playerClass == HERO_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [3] Gambler            (Cost: 300 XP)   "
+             << (ownsGambler ? "[OWNED]" : "")
+             << (playerClass == GAMBLER_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [4] Assassin           (Cost: 400 XP)   "
+             << (ownsAssassin ? "[OWNED]" : "")
+             << (playerClass == ASSASSIN_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [5] Wizard             (Cost: 700 XP)   "
+             << (ownsWizard ? "[OWNED]" : "")
+             << (playerClass == WIZARD_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [6] Archer             (Cost: 600 XP)   "
+             << (ownsArcher ? "[OWNED]" : "")
+             << (playerClass == ARCHER_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << " [7] Tank               (Cost: 500 XP)   "
+             << (ownsTank ? "[OWNED]" : "")
+             << (playerClass == TANK_CLASS ? " <== Equipped" : "") << "\n";
+
+        cout << "\n-----------------------------------------\n";
+        cout << " [8] View Class Details\n";
+        cout << " [0] Back\n";
+        cout << "-----------------------------------------\n";
+        cout << " Choice: ";
+
+        int c;
+        cin >> c;
+
+        if (c == 0) return;
+
+        // Class info cards
+        if (c == 8) {
+            int infoChoice;
+            cout << "Enter class number (1-7): ";
+            cin >> infoChoice;
+
+            showClassInfo(infoChoice);  
+            system("pause");
+            continue;
+        }
+
+        // Select default (free)
+        if (c == 1) {
+            playerClass = DEFAULT_CLASS;
+            cout << "Switched to Default Class.\n";
+            system("pause");
+            continue;
+        }
+
+        int cost = 0;
+        PlayerClass chosen;
+
+        if (c == 2) { chosen = HERO_CLASS; cost = 500; }
+        else if (c == 3) { chosen = GAMBLER_CLASS; cost = 300; }
+        else if (c == 4) { chosen = ASSASSIN_CLASS; cost = 400; }
+        else if (c == 5) { chosen = WIZARD_CLASS; cost = 700; }
+        else if (c == 6) { chosen = ARCHER_CLASS; cost = 600; }
+        else if (c == 7) { chosen = TANK_CLASS; cost = 500; }
+        else { continue; }
+
+        // If already own → equip it
+        if ((chosen == HERO_CLASS && ownsHero) ||
+            (chosen == GAMBLER_CLASS && ownsGambler) ||
+            (chosen == ASSASSIN_CLASS && ownsAssassin) ||
+            (chosen == WIZARD_CLASS && ownsWizard) ||
+            (chosen == ARCHER_CLASS && ownsArcher) ||
+            (chosen == TANK_CLASS && ownsTank)) 
+        {
+            playerClass = chosen;
+            cout << "Class equipped!\n";
+            system("pause");
+            continue;
+        }
+
+        // Not owned → check XP
+        if (playerXP < cost) {
+            cout << "Not enough XP to buy this class.\n";
+            system("pause");
+            continue;
+        }
+
+        // Deduct cost & unlock
+        playerXP -= cost;
+
+        if (chosen == HERO_CLASS) ownsHero = true;
+        if (chosen == GAMBLER_CLASS) ownsGambler = true;
+        if (chosen == ASSASSIN_CLASS) ownsAssassin = true;
+        if (chosen == WIZARD_CLASS) ownsWizard = true;
+        if (chosen == ARCHER_CLASS) ownsArcher = true;
+        if (chosen == TANK_CLASS) ownsTank = true;
+
+        playerClass = chosen;
+
+        cout << "Class purchased and equipped!\n";
+        system("pause");
+    }
+}
+
+
+
+
+// for the class xp system
+void addClassXP(
+    int baseXP,
+    bool gamificationEnabled,
+    int& playerXP,
+    int& playerLevel,
+    PlayerClass playerClass,
+    int& assassinStreak,
+    int& assassinStacks,
+    int& wizardCounter,
+    int& archerStreak,
+    int& tankStacks
+) {
+    int finalXP = baseXP;
+
+    switch (playerClass) {
+
+    case HERO_CLASS:
+        finalXP += 25;  
+        break;
+
+    case GAMBLER_CLASS: {
+        int bonus = rand() % (baseXP + 100);
+        bool lose = (rand() % 5 == 0);
+
+        if (lose) {
+            finalXP -= bonus;
+            if (finalXP < 1) finalXP = 1;
+        } else {
+            finalXP += bonus;
+        }
+        break;
+    }
+
+    case ASSASSIN_CLASS: {    
+        assassinStreak++;
+
+        if (assassinStreak >= 3) {
+            if (assassinStacks < 10) assassinStacks++;
+            int percent = 5 * assassinStacks;
+            finalXP += (baseXP * percent) / 100;
+        }
+        break;
+}
+
+
+    case WIZARD_CLASS: {   
+        wizardCounter++;
+
+        int wisdomBonus = playerLevel * 5;
+
+        if (wizardCounter % 5 == 0) {
+            finalXP += wisdomBonus * 2;  // Crit
+        }
+        else if (wizardCounter % 3 == 0) {
+            finalXP += wisdomBonus;      // Spell combo
+        }
+
+        if (wizardCounter >= 5) wizardCounter = 0;
+
+        break;
+    }
+
+    case ARCHER_CLASS: {
+
+        // Base hit chance
+        float hitChance = 80.0f + (playerLevel * 0.5f);
+        if (hitChance > 97.0f) hitChance = 97.0f;
+
+        int roll = rand() % 100;
+
+        if (roll < hitChance) {
+
+            // On hit, streak grows
+            archerStreak++;
+            if (archerStreak > 15) archerStreak = 15;  // Streak cap raised!
+
+            // (Damage = 8% per streak + flat 3 XP per hit)
+            int bonus = (baseXP * (archerStreak * 8)) / 100 + (3 + archerStreak);
+            finalXP += bonus;
+
+            // HEADSHOT CRIT
+            int headshotChance = hitChance * 0.20f;  // 20% of hitChance = crit
+            if (headshotChance > 30) headshotChance = 30; // Crit cap 30%
+
+            if (roll < headshotChance) {
+                int crit = baseXP * 2 + (archerStreak * 3);
+                finalXP += crit;
+
+                cout << " **HEADSHOT!! (" << crit << " EXTRA XP)** ";
+            }
+
+            // PERFECT SHOT
+            // 5% chance to trigger a massive burst
+            if (rand() % 100 < 5) {
+                int superCrit = baseXP * 4 + archerStreak * 10;
+                finalXP += superCrit;
+
+                cout << " ***PERFECT SHOT!!! (+" << superCrit << " XP)*** ";
+            }
+
+    } else {
+        // Miss means full reset
+        archerStreak = 0;
+    }
+
+    break;
+}
+    case TANK_CLASS: {
+
+        // Gain shield momentum every action
+        tankStacks++;
+
+        // Max stacks depend on level (strong early, weaker late)
+        int maxStacks = 20 - playerLevel;
+
+        // Tank weakest state
+        if (maxStacks < 3) maxStacks = 3;
+
+        // Clamp tankStacks to maxStacks
+        if (tankStacks > maxStacks)
+            tankStacks = maxStacks;
+
+        // XP BONUS CALCULATION
+        // 4% per stack + small flat bonus
+        int percentBonus = (baseXP * (tankStacks * 4)) / 100;
+        int flatBonus = tankStacks / 2;
+
+        int totalBonus = percentBonus + flatBonus;
+        finalXP += totalBonus;
+
+        cout << " [Shield Momentum +" << totalBonus << " XP] ";
+
+        break;
+}
+
+
+
+    default: 
+        break;
+
+    }
+
+    addXP(finalXP, gamificationEnabled, playerXP, playerLevel);
+}
+
+
 
 // -----------------------------
 // XP PROGRESS BAR 
@@ -59,8 +436,18 @@ string getXPBar(int xp) {
     return bar;
 }
 
-
-
+// -------------------------
+// PLAYER PROGRESS BAR  
+// -------------------------
+string getProgressBar(float percent) {
+    int filled = percent / 5;  // 0–20 blocks
+    string bar = "[";
+    for (int i = 0; i < 20; i++) {
+        bar += (i < filled ? "█" : "-");
+    }
+    bar += "]";
+    return bar;
+}
 
 // -------------------------
 // SEARCH LIST NAMES
@@ -481,104 +868,135 @@ void checkAchievements(
         }
     }
 
-    for (i = 0; i < (int)achNames.size(); i++) {
-        if (achUnlocked[i]) continue;
+for (i = 0; i < (int)achNames.size(); i++) {
+    if (achUnlocked[i]) continue;
 
-        if (achNames[i] == "Add First Item" && totalItems >= 1) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Add 10 Items" && totalItems >= 10) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Add 50 Items" && totalItems >= 50) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-
-        if (achNames[i] == "Complete First Item" && totalCompleted >= 1) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Complete 10 Items" && totalCompleted >= 10) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Complete 50 Items" && totalCompleted >= 50) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-
-        if (achNames[i] == "Create First List" && totalLists >= 1) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Create 5 Lists" && totalLists >= 5) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Create 10 Lists" && totalLists >= 10) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-
-        if (achNames[i] == "Reach Level 3" && playerLevel >= 3) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Reach Level 5" && playerLevel >= 5) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "Reach Level 10" && playerLevel >= 10) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-
-        if (achNames[i] == "1-Day Streak" && streakCount >= 1) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "3-Day Streak" && streakCount >= 3) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
-        if (achNames[i] == "7-Day Streak" && streakCount >= 7) {
-            achUnlocked[i] = 1;
-            cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i] << " (+" << achXP[i] << " XP) ***\n";
-            addXP(achXP[i], gamificationEnabled, playerXP, playerLevel);
-            continue;
-        }
+    if (achNames[i] == "Add First Item" && totalItems >= 1) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
     }
+    if (achNames[i] == "Add 10 Items" && totalItems >= 10) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Add 50 Items" && totalItems >= 50) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Complete First Item" && totalCompleted >= 1) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Complete 10 Items" && totalCompleted >= 10) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Complete 50 Items" && totalCompleted >= 50) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Create First List" && totalLists >= 1) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Create 5 Lists" && totalLists >= 5) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Create 10 Lists" && totalLists >= 10) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Reach Level 3" && playerLevel >= 3) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Reach Level 5" && playerLevel >= 5) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "Reach Level 10" && playerLevel >= 10) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "1-Day Streak" && streakCount >= 1) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "3-Day Streak" && streakCount >= 3) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+    if (achNames[i] == "7-Day Streak" && streakCount >= 7) {
+        achUnlocked[i] = 1;
+        cout << "\n*** Achievement Unlocked: " << achBadges[i] << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+}
+
 
     cout << "-------------------------------------";
 }
@@ -1633,7 +2051,9 @@ do {
     items[index] = item;
 
     // Give XP for adding an item
-    addXP(5, gamificationEnabled, playerXP, playerLevel);
+    addClassXP(5, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
     // 🔹 Refresh screen so the new item appears in the live list
     system("cls");
@@ -1679,7 +2099,9 @@ do {
             tempDescriptions.resize(dindex + 1);
             tempDescriptions[dindex] = descLine;
 
-            addXP(1, gamificationEnabled, playerXP, playerLevel);
+            addClassXP(1, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
             // 🔹 LIVE PREVIEW: show list including this item's in-progress descriptions
             system("cls");
@@ -2076,7 +2498,9 @@ credate = cdate;
 
 
     // Give XP for creating a new list
-    addXP(10, gamificationEnabled, playerXP, playerLevel);
+    addClassXP(10, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
     // ===================================================
     // COMPLETION MESSAGE
@@ -2637,7 +3061,9 @@ void editList(
             items[newIndex] = newItem;
 
             // Give XP for adding an item
-            addXP(5, gamificationEnabled, playerXP, playerLevel);
+            addClassXP(5, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
             // Prompt for descriptions immediately
             cout << "\nAdd descriptions for this new item\n";
@@ -2662,7 +3088,9 @@ void editList(
                 temp[di] = nd;
 
                 // Give XP for adding a description
-                addXP(1, gamificationEnabled, playerXP, playerLevel);
+                addClassXP(1, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
             }
 
             // Ensure description vector is same size as items
@@ -2772,7 +3200,9 @@ void editList(
             }
 
             // Give XP for deleting an item (small consolation)
-            addXP(2, gamificationEnabled, playerXP, playerLevel);
+            addClassXP(2, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
             cout << "Item deleted!\n";
             cout << "Press Enter to continue...";
@@ -2823,13 +3253,16 @@ void editList(
                 target = "[DONE] " + target;
 
                 // Give XP for marking item done
-                addXP(8, gamificationEnabled, playerXP, playerLevel);
+                addClassXP(8, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
 
                 // If this marking finishes the entire list give a completion bonus
                 // completedCount contains current number of done items before this toggle,
                 // so if completedCount + 1 == items.size(), the list is now fully completed.
                 if (completedCount + 1 == (int)items.size() && items.size() > 0) {
-                    addXP(50, gamificationEnabled, playerXP, playerLevel); // completion bonus
+                    addClassXP(50, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);// completion bonus
                 }
 
                 cout << "Item marked as DONE.\n";
@@ -2920,7 +3353,7 @@ void editList(
 
             string newName;
             cout << "\nEnter new list name: ";
-            getline(cin, newName);
+            getline(cin >> ws, newName);
 
             name_of_list[index] = newName;
 
@@ -3018,7 +3451,9 @@ void editList(
                     descriptions[itemNum - 1][di] = nd;
 
                     // Give XP for adding a description
-                    addXP(1, gamificationEnabled, playerXP, playerLevel);
+                    addClassXP(1, gamificationEnabled, playerXP, playerLevel,
+           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
                 }
 
                 // Edit description
@@ -3512,6 +3947,8 @@ int main() {
     int streakCount = 0;
     int lastActiveDay = 0;
 
+
+
     // Initialize achievements once on startup
     initAchievements(achNames, achBadges, achUnlocked, achXP);
 
@@ -3588,10 +4025,77 @@ int main() {
         if (gamificationEnabled) {
             cout << " Player Level : " << playerLevel
                 << "    Player XP : " << playerXP << "\n";
+
             cout << " XP Progress   : " << getXPBar(playerXP)
                 << " " << (playerXP % 100) << "%\n";
+
+            // Class display
+            cout << " Current Class : ";
+            switch (playerClass) {
+                case DEFAULT_CLASS:  cout << "Default"; break;
+                case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
+                case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
+                case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
+                case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
+                case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
+                case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;   
+            }
+            cout << "\n";
+
+            // Assassin display
+            if (playerClass == ASSASSIN_CLASS) {
+
+                float percent = (assassinStacks / 10.0f) * 100.0f; 
+                cout << " Assassin Streak : " << assassinStreak
+                    << "   Stacks: " << assassinStacks << "/10\n"
+                    << " Progress: " << getProgressBar(percent)
+                    << " " << (int)percent << "%\n";
+            }
+
+            // Wizard display
+            if (playerClass == WIZARD_CLASS) {
+
+                float percent = (wizardCounter / 5.0f) * 100.0f;
+                cout << " Wizard Counter : " << wizardCounter << "/5\n"
+                    << " Progress: " << getProgressBar(percent)
+                    << " " << (int)percent << "%\n";
+            }
+
+            // Archer display
+            if (playerClass == ARCHER_CLASS) {
+
+                float percent = (archerStreak / 10.0f) * 100.0f;
+                if (percent > 100) percent = 100;
+
+                cout << " Archer Streak : " << archerStreak 
+                    << "  Bonus: " << (archerStreak * 5) << "%\n"
+                    << " Progress: " << getProgressBar(percent)
+                    << " " << (int)percent << "%\n";
+            }
+
+            // Tank display
+            if (playerClass == TANK_CLASS) {
+
+                int maxStacks = 20 - playerLevel;
+                if (maxStacks < 3) maxStacks = 3;
+
+                // Tank progress decays with level
+                // Level 1: 19/19 = 100%
+                // Level 20: 3/3 = 100% but lower cap → shows weakness differently
+                float percent = (maxStacks / 20.0f) * 100.0f;
+
+                cout << " Tank Stacks : " << tankStacks 
+                    << " / " << maxStacks
+                    << "  (Shield Momentum)\n"
+                    << " Durability: " << getProgressBar(percent)
+                    << " " << (int)percent << "%\n";
+            }
+
+
             cout << "-------------------------------------\n";
         }
+
+
 
         cout << "                                                             Current date: " << cmonth << '/' << cdate << '/' << cyear;
         cout << "\n";
@@ -3655,10 +4159,76 @@ int main() {
             if (gamificationEnabled) {
                 cout << " Player Level : " << playerLevel
                     << "    Player XP : " << playerXP << "\n";
+
                 cout << " XP Progress   : " << getXPBar(playerXP)
                     << " " << (playerXP % 100) << "%\n";
+
+                // Class display 
+                cout << " Current Class : ";
+                switch (playerClass) {
+                    case DEFAULT_CLASS:  cout << "Default"; break;
+                    case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
+                    case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
+                    case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
+                    case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
+                    case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
+                    case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;   
+                }
+                cout << "\n";
+
+                // Assassin display
+                if (playerClass == ASSASSIN_CLASS) {
+
+                    float percent = (assassinStacks / 10.0f) * 100.0f; 
+                    cout << " Assassin Streak : " << assassinStreak
+                        << "   Stacks: " << assassinStacks << "/10\n"
+                        << " Progress: " << getProgressBar(percent)
+                        << " " << (int)percent << "%\n";
+                }
+
+                // Wizard display
+                if (playerClass == WIZARD_CLASS) {
+
+                    float percent = (wizardCounter / 5.0f) * 100.0f;
+                    cout << " Wizard Counter : " << wizardCounter << "/5\n"
+                        << " Progress: " << getProgressBar(percent)
+                        << " " << (int)percent << "%\n";
+                }
+
+                // Archer display
+                if (playerClass == ARCHER_CLASS) {
+
+                    float percent = (archerStreak / 10.0f) * 100.0f;
+                    if (percent > 100) percent = 100;
+
+                    cout << " Archer Streak : " << archerStreak 
+                        << "  Bonus: " << (archerStreak * 5) << "%\n"
+                        << " Progress: " << getProgressBar(percent)
+                        << " " << (int)percent << "%\n";
+                }
+
+                // Tank display
+                if (playerClass == TANK_CLASS) {
+
+                    int maxStacks = 20 - playerLevel;
+                    if (maxStacks < 3) maxStacks = 3;
+
+                    // Tank progress decays with level
+                    // Level 1: 19/19 = 100%
+                    // Level 20: 3/3 = 100% but lower cap (shows weakness differently)
+                    float percent = (maxStacks / 20.0f) * 100.0f;
+
+                    cout << " Tank Stacks : " << tankStacks 
+                        << " / " << maxStacks
+                        << "  (Shield Momentum)\n"
+                        << " Durability: " << getProgressBar(percent)
+                        << " " << (int)percent << "%\n";
+                }
+
+
                 cout << "-------------------------------------\n";
             }
+
 
             cout << "                                                             Current date: " << cmonth << '/' << cdate << '/' << cyear;
             cout << "\n";
@@ -3805,8 +4375,14 @@ int main() {
                 cin.ignore();
                 cin.get();
                 break;
+            
+            case 10:
+                classMenu(playerClass, playerXP);
+                break;
+
         }
     }
 
     return 0;
 }
+
