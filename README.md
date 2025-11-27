@@ -93,6 +93,137 @@ Update:
 
 ---
 
-## 🛠️ How to Compile & Run
+Here is the **updated README section**, rewritten cleanly and clearly to include your new **Class System**, **unique XP-boosting abilities**, **XP as a currency**, and **info page for each class**.
 
-### Compile  
+You can copy-paste this directly into your README.md.
+
+---
+
+# 🆕 **Class System Update (Major Feature Added!)**
+
+A brand-new **Class System** has been added to Tally++ to enhance progression, strategy, and replayability.
+This system introduces **7 unique classes**, each with its own **XP-boosting mechanics**, strengths, and playstyles.
+
+XP now serves **two roles**:
+
+* **Progression XP** → increases your level
+* **Currency XP** → used to purchase new classes
+
+You start as the **Default Class**, and you may buy or switch to any class as long as you have enough XP.
+
+---
+
+# 🧩 **Available Classes & Their Abilities**
+
+Each class modifies your XP gain through **unique passive abilities**, allowing players to choose their preferred playstyle.
+
+### **1. Default Class (Free)**
+
+* No XP bonus
+* Balanced starter class
+* Ideal for new users
+
+---
+
+### **2. Hero Class (Cost: 500 XP)**
+
+**Ability:**
+
+* +25 XP bonus on every XP-gain event
+* Reliable, consistent, and easy to use
+
+**Best for:** Users who want steady progress without randomness.
+
+---
+
+### **3. Gambler Class (Cost: 300 XP)**
+
+**Ability:**
+
+* RNG-based: Gain *up to* +100 XP extra
+* 20% chance to lose XP instead
+* High risk, high reward
+
+**Best for:** Users willing to take chances for huge XP spikes.
+
+---
+
+### **4. Assassin Class (Cost: 400 XP)**
+
+**Ability:**
+
+* Builds XP streaks after every action
+* After 3 actions, stacks start building
+* +5% bonus per stack (up to 10 stacks)
+* Explosive XP potential at high stacks
+
+**Best for:** Users who perform many actions in a session.
+
+---
+
+### **5. Wizard Class (Cost: 700 XP)**
+
+**Ability:**
+
+* **Spell Combo:** Bonus every 3rd XP gain
+* **Crit Combo:** Double bonus every 5th XP gain
+* **Wisdom Scaling:** +5 XP per player level
+* Requires strategic planning for maximum effect
+
+**Best for:** Users who want tactical and level-based XP progression.
+
+---
+
+### **6. Archer Class (Cost: 600 XP)**
+
+**Ability:**
+
+* Precision streak system
+* Streak increases XP multiplier
+* Chance of **Headshot Crits**
+* 5% chance for a **Perfect Shot** (+huge XP)
+* Missing resets streak
+
+**Best for:** Users who enjoy risk-reward stacking mechanics.
+
+---
+
+### **7. Tank Class (Cost: 500 XP)**
+
+**Ability:**
+
+* Gains **Shield Momentum** every action
+* More stacks = more bonus XP
+* Max stacks decrease slightly as level increases
+* Very strong early-game
+
+**Best for:** Users who want constant XP boosts without streaks or RNG.
+
+---
+
+# 📝 **Viewing Class Info**
+
+Inside the Class Menu, you can choose **"View Class Details"** to see complete descriptions of every class, including:
+
+* XP gain formula
+* Special mechanics
+* Advantages and weaknesses
+
+This helps players decide which class fits their style before purchasing.
+
+---
+
+# 💰 **XP as a Currency**
+
+XP is no longer just for leveling — it is also used as **currency** to purchase classes.
+
+* Buying a class **deducts XP permanently**
+* Once purchased, a class becomes **owned forever**
+* You can switch between owned classes anytime for free
+
+This introduces **progression choice**, rewarding players who actively manage their lists and complete tasks.
+
+---
+
+
+
