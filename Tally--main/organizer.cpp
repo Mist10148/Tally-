@@ -3044,74 +3044,407 @@ void viewLists(
         cin.get();
         continue;   
     }
-    string missing;
+    int dmonth = 0, dday = 0, dyear = 0;
+    if (list_deadlines[index] == "Today")
+    {
+        dmonth = monthcreated[index];
+        dday = datecreated[index];
+        dyear = yearcreated[index];
+    }
+    else if (list_deadlines[index] == "Tomorrow")
+    {
+        dmonth = monthcreated[index];
+        dyear = yearcreated[index];
+        switch (dmonth)
+        {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            if (datecreated[index] + 1 > 31)
+            {
+                dmonth += 1;
+                dday = 1;
+            }
+            else
+            {   
+                dday = datecreated[index] + 1;
+            }
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            if (datecreated[index] + 1 > 30)
+            {
+                dmonth += 1;
+                dday = 1;
+            }
+            else
+            {   
+                dday = datecreated[index] + 1;
+            }    
+            break;
+        case 2:
+            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
+            {
+                if (datecreated[index] + 1 > 29)
+                {
+                    dmonth += 1;
+                    dday = 1;
+                }
+                else
+                {
+                    dday = datecreated[index] + 1;
+                }
+            }
+            else
+            {
+                if (datecreated[index] + 1 > 28)
+                {
+                    dmonth += 1;
+                    dday = 1;
+                }
+                else
+                {
+                    dday = datecreated[index] + 1;
+                }
+            }
+            break;
+        }
+        if(dmonth > 12)
+        {
+            dmonth = 1;
+            dyear = yearcreated[index] + 1;
+        }
+    }
+    else if (list_deadlines[index] == "This Week")
+    {
+        dmonth = monthcreated[index];
+        dyear = yearcreated[index];
+        switch (dmonth)
+        {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            if (datecreated[index] + 7 > 31)
+            {
+                dmonth += 1;
+                dday = (datecreated[index] + 7) - 31;
+            }
+            else
+            {   
+                dday = datecreated[index] + 7;
+            }
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            if (datecreated[index] + 7 > 30)
+            {
+                dmonth += 1;
+                dday = (datecreated[index] + 7) - 30;
+            }
+            else
+            {   
+                dday = datecreated[index] + 7;
+            }    
+            break;
+        case 2:
+            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
+            {
+                if (datecreated[index] + 7 > 29)
+                {
+                    dmonth += 1;
+                    dday = (datecreated[index] + 7) - 29;
+                }
+                else
+                {
+                    dday = datecreated[index] + 7;
+                }
+            }
+            else
+            {
+                if (datecreated[index] + 7 > 28)
+                {
+                    dmonth += 1;
+                    dday = (datecreated[index] + 7) - 28; 
+                }
+                else
+                {
+                    dday = datecreated[index] + 7;
+                }
+            }
+            break;
+        }
+        if(dmonth > 12)
+        {
+            dmonth = 1;
+            dyear = yearcreated[index] + 1;
+        }
+    }
+    else if (list_deadlines[index] == "Next Week")
+    {
+        dmonth = monthcreated[index];
+        dyear = yearcreated[index];
+        switch (dmonth)
+        {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            if (datecreated[index] + 14 > 31)
+            {
+                dmonth += 1;
+                dday = (datecreated[index] + 14) - 31;
+            }
+            else
+            {   
+                dday = datecreated[index] + 14;
+            }
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            if (datecreated[index] + 14 > 30)
+            {
+                dmonth += 1;
+                dday = (datecreated[index] + 14) - 30;
+            }
+            else
+            {   
+                dday = datecreated[index] + 14;
+            }    
+            break;
+        case 2:
+            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
+            {
+                if (datecreated[index] + 14 > 29)
+                {
+                    dmonth += 1;
+                    dday = (datecreated[index] + 14) - 29;
+                }
+                else
+                {
+                    dday = datecreated[index] + 14;
+                }
+            }
+            else
+            {
+                if (datecreated[index] + 14 > 28)
+                {
+                    dmonth += 1;
+                    dday = (datecreated[index] + 14) - 28;
+                }
+                else
+                {
+                    dday = datecreated[index] + 14;
+                }
+            }
+            break;
+        }
+        if(dmonth > 12)
+        {
+            dmonth = 1;
+            dyear = yearcreated[index] + 1;
+        }
+    }
+    else if (list_deadlines[index] == "This Month")
+    {
+        dmonth = monthcreated[index];
+        dyear = yearcreated[index];
+        dday = datecreated[index];
+        if (dmonth == 2) {
+            bool leap = ((dyear % 4 == 0 && dyear % 100 != 0) || (dyear % 400 == 0));
+            if (!leap && dday > 28) dday = 1;
+            if (leap && dday > 29) dday = 1;
+        } else if (dmonth==4 || dmonth==6 || dmonth==9 || dmonth==11) {
+            if (dday > 30) dday = 1;
+        } else {
+            if (dday > 31) dday = 1;
+        }
+        if (dmonth > 12) {
+            dmonth = 1;
+            dyear = yearcreated[index] + 1;
+        }
+    }
+    else if (list_deadlines[index] == "Next Month")
+    {
+        dmonth = monthcreated[index] + 1;
+        dyear = yearcreated[index];
+        if(dmonth > 12)
+        {
+            dmonth = 1;
+            dyear = yearcreated[index] + 1;
+        }
+        switch (dmonth)
+        {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            if (datecreated[index] > 31)
+            {
+                dmonth += 1;
+                dday = 1;
+            }
+            else
+            {   
+                dday = datecreated[index];
+            }
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            if (datecreated[index] > 30)
+            {
+                dmonth += 1;
+                dday = 1;
+            }
+            else
+            {   
+                dday = datecreated[index];
+            }    
+            break;
+        case 2:
+            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
+            {
+                if (datecreated[index] > 29)
+                {
+                    dmonth += 1;
+                    dday = 1;
+                }
+                else
+                {
+                    dday = datecreated[index];
+                }
+            }
+            else
+            {
+                if (datecreated[index] > 28)
+                {
+                    dmonth += 1;
+                    dday = 1;
+                }
+                else
+                {
+                    dday = datecreated[index];
+                }
+            }
+            break;
+        }  
+    }
+    
+    
+    
+    string missing = "False";
     if (!datecreated.empty() && !monthcreated.empty() && !yearcreated.empty()) {
     
         if (list_deadlines[index] == "Today")
         {
-            if(cyear > yearcreated[index])
+            if(cyear > dyear)
             {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+                missing = to_string(cyear - dyear) + " year(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            else if(cyear == dyear && cmonth > dmonth)
             {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+                missing = to_string(cmonth - dmonth) + " month(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
             {
-                missing = to_string(cdate - datecreated[index]) + " day(s)";
+                missing = to_string(cdate - dday) + " day(s)";
             }
         }
+        else if (list_deadlines[index] == "Tomorrow")
+        {
+            if(cyear > dyear)
+            {
+                missing = to_string(cyear - dyear) + " year(s)";
+            }
+            else if(cyear == dyear && cmonth > dmonth)
+            {
+                missing = to_string(cmonth - dmonth) + " month(s)";
+            }
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
+            {
+                missing = to_string(cdate - dday) + " day(s)";
+            }
+        }
+        
         else if (list_deadlines[index] == "This Week")
         {
-            if(cyear > yearcreated[index])
+            if(cyear > dyear)
             {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+                missing = to_string(cyear - dyear) + " year(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            else if(cyear == dyear && cmonth > dmonth)
             {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+                missing = to_string(cmonth - dmonth) + " month(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > (datecreated[index] + 7))
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
             {
-                missing = to_string(cdate - datecreated[index]) + " day(s)";
+                missing = to_string(cdate - dday) + " day(s)";
             }
         }
         else if (list_deadlines[index] == "Next Week")
         {
-            if(cyear > yearcreated[index])
+            if(cyear > dyear)
             {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+                missing = to_string(cyear - dyear) + " year(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
+            else if(cyear == dyear && cmonth > dmonth)
             {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+                missing = to_string(cmonth - dmonth) + " month(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > (datecreated[index]+14))
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
             {
-                missing = to_string(cdate - datecreated[index]) + " day(s)";
-            }
-        }
-        else if (list_deadlines[index] == "This month")
-        {
-            if(cyear > yearcreated[index])
-            {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
-            }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
-            {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+                missing = to_string(cdate - dday) + " day(s)";
             }
         }
-        else if (list_deadlines[index] == "Next month")
+        else if (list_deadlines[index] == "This Month")
         {
-            if(cyear > yearcreated[index])
+            if(cyear > dyear)
             {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
+                missing = to_string(cyear - dyear) + " year(s)";
             }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index]+1)
+            else if(cyear == dyear && cmonth > dmonth)
             {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+                missing = to_string(cmonth - dmonth) + " month(s)";
+            }
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
+            {
+                missing = to_string(cdate - dday) + " day(s)";
+            }
+        }
+        else if (list_deadlines[index] == "Next Month")
+        {
+           if(cyear > dyear)
+            {
+                missing = to_string(cyear - dyear) + " year(s)";
+            }
+            else if(cyear == dyear && cmonth > dmonth)
+            {
+                missing = to_string(cmonth - dmonth) + " month(s)";
+            }
+            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
+            {
+                missing = to_string(cdate - dday) + " day(s)";
             }
         }  
     }
@@ -3169,7 +3502,14 @@ void viewLists(
             if (!months.empty() && !dates.empty() && !years.empty()) {
                 cout << months[0] << "/" << dates[0] << "/" << years[0] << "\n\n";
             } else {
-                cout << "<none>\n";
+                if (missing != "False")
+                {
+                    cout << "Already Late for " << missing << "\n\n";
+                }
+                else
+                {
+                cout << dmonth << '/' << dday << '/' << dyear << "\n\n";
+                }
             }
 
         if (items.size() == 0) {
@@ -3215,7 +3555,7 @@ void viewLists(
         cout << "                                                                                                   𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n";
         cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
         
-        cout << "                                                                                       Missing         : " << missing << "\n";
+        cout << "                                                                                       Missing           : " << missing << "\n";
         cout << "                                                                                       Total Items       : " << items.size() << "\n";
         cout << "                                                                                       Completed Items   : " << completedCount << "\n";
         cout << "                                                                                       Not Done          : " << notDone << "\n";
@@ -3318,9 +3658,6 @@ void editList(
 
         // Items in this list
         vector<string> &items = list_of_lists[index];
-        vector<int>& months = listmonth[index];
-        vector<int>& dates = listdate[index];
-        vector<int>& years = listyear[index];
 
 
         // Ensure description array matches list count
@@ -3561,9 +3898,6 @@ void editList(
 
             // Remove item + its descriptions
             items.erase(items.begin() + (delNum - 1));
-            dates.erase(dates.begin() + (delNum - 1));
-            months.erase(months.begin() + (delNum - 1));
-            years.erase(years.begin() + (delNum - 1));
             if (delNum - 1 < (int)descriptions.size()) {
                 descriptions.erase(descriptions.begin() + (delNum - 1));
             }
@@ -3978,7 +4312,10 @@ void deleteList(
     int& playerLevel,
     vector<vector<int>>& listmonth,
     vector<vector<int>>& listdate,
-    vector<vector<int>>& listyear
+    vector<vector<int>>& listyear,
+    vector<int>& monthcreated,
+    vector<int>& datecreated,
+    vector<int>& yearcreated
 ) {
 
     // If no lists exist, there's nothing to delete
@@ -4065,6 +4402,9 @@ void deleteList(
     vector<string> newCategories;
     vector<string> newDeadlines;
     vector<string> newPriorities;
+    vector<int> newMonthCreated;
+    vector<int> newDateCreated;
+    vector<int> newYearCreated;
     vector<vector<int>> newListmonth;
     vector<vector<int>> newListdate;
     vector<vector<int>> newListyear;
@@ -4090,6 +4430,18 @@ void deleteList(
             int yeari = newListyear.size();
             newListyear.resize(yeari + 1);
             newListyear[yeari] = listyear[i];
+
+            int mci = newMonthCreated.size();
+            newMonthCreated.resize(mci + 1);
+            newMonthCreated[mci] = monthcreated[i];
+
+            int dci = newDateCreated.size();
+            newDateCreated.resize(dci + 1);
+            newDateCreated[dci] = datecreated[i];
+
+            int yci = newYearCreated.size();
+            newYearCreated.resize(yci + 1);
+            newYearCreated[yci] = yearcreated[i];
 
             int di = newDescriptions.size();
             newDescriptions.resize(di + 1);
@@ -4120,6 +4472,10 @@ void deleteList(
     listdate = newListdate;
     listmonth = newListmonth;
     listyear = newListyear;
+
+    monthcreated = newMonthCreated;
+    datecreated = newDateCreated;
+    yearcreated = newYearCreated;
         // NEW: replace metadata
     list_categories = newCategories;
     list_deadlines  = newDeadlines;
@@ -4690,7 +5046,12 @@ int main() {
                 gamificationEnabled,
                 playerXP,
                 playerLevel,
-                listmonth, listdate, listyear
+                listmonth,
+                listdate, 
+                listyear, 
+                monthcreated, 
+                datecreated,
+                yearcreated
                 );
                 // Re-check achievements after deletion
                 checkAchievements(name_of_list, list_of_lists, list_of_descriptions,
