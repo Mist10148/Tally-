@@ -1839,12 +1839,23 @@ void createNewList(
                 break;
             case 6: deadline = "Next Month";
                 break;
-            case 7:
+
+        case 7:
             system("cls");
-                cout << "\n----------------------------------------\n";
-                cout << " ADD TARGET DATE FOR THIS ITEM\n";
-                cout << "----------------------------------------\n";
-                cout << "Enter Month: ";
+            printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+            cout << "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n";
+            cout << "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n";
+            cout << "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+            cout << "\033[2A"; // move UP 2 lines
+            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
+        
                 do
                 {
                     while (true)
@@ -1863,7 +1874,20 @@ void createNewList(
                 Mindex = months.size();
                 months.resize(Mindex + 1);
                 months[Mindex] = month;
-                cout << "Enter year number: ";
+
+                    system("cls");
+                    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+                    cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
+                    cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
+                    cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+                    cout << "                                                                                                ╔════╗                              \n";
+                    cout << "                                                                                               ╔║    ║╗                             \n";
+                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+                    cout << "\033[2A"; // move UP 2 lines
+                    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
                 do
                 {
                     while (true)
@@ -1882,7 +1906,21 @@ void createNewList(
                 Yindex = years.size();
                 years.resize(Yindex + 1);
                 years[Yindex] = year;
-                cout << "Enter date number: ";
+
+                    system("cls");
+                    printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+                    cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━┓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
+                    cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
+                    cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+                    cout << "                                                                                                ╔════╗                              \n";
+                    cout << "                                                                                               ╔║    ║╗                             \n";
+                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+                    cout << "\033[2A"; // move UP 2 lines
+                    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
                 switch (month)
                 {
                 case 1:
@@ -1973,10 +2011,16 @@ void createNewList(
                     }
                     break;
                 }
+
                 Dindex = dates.size();
                 dates.resize(Dindex + 1);
                 dates[Dindex] = date;
+
+                // 🔹 NEW: show custom date in live summary as MM/DD/YYYY
+                deadline = to_string(month) + "/" + to_string(date) + "/" + to_string(year);
+
                 break;
+
         }
 
         cin.ignore();
@@ -2263,7 +2307,6 @@ void createNewList(
 
             int d;
 
-            
             while (true)
             {
                 cin >> d;
@@ -2274,13 +2317,192 @@ void createNewList(
             }
             cin.ignore();
 
-            const string deadlines[] = {
-                "Today","Tomorrow","This Week",
-                "Next Week","Next Month"
-            };
-            if (d >= 1 && d <= 5) deadline = deadlines[d - 1];
+            // ✅ Predefined shortcuts (1–6)
+            if (d >= 1 && d <= 6) {
+                switch (d) {
+                    case 1: deadline = "Today";       break;
+                    case 2: deadline = "Tomorrow";    break;
+                    case 3: deadline = "This Week";   break;
+                    case 4: deadline = "Next Week";   break;
+                    case 5: deadline = "This Month";  break;
+                    case 6: deadline = "Next Month";  break;
+                }
+            }
+            // ✅ Custom date (7) – same logic as earlier case 7
+            else if (d == 7) {
+                system("cls");
+                printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+                cout << "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n";
+                cout << "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n";
+                cout << "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+                cout << "                                                                                                ╔════╗                              \n";
+                cout << "                                                                                               ╔║    ║╗                             \n";
+                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+                cout << "\033[2A"; // move UP 2 lines
+                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
+                // 🔹 MONTH
+                do
+                {
+                    while (true)
+                    {
+                        cin >> month;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
+                    if (month < 1 || month > 12)
+                    {
+                        cout << "Try again\n";
+                    }
+                } while (month < 1 || month > 12);
+                Mindex = months.size();
+                months.resize(Mindex + 1);
+                months[Mindex] = month;
+
+                // 🔹 YEAR
+                system("cls");
+                printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+                cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
+                cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
+                cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+                cout << "                                                                                                ╔════╗                              \n";
+                cout << "                                                                                               ╔║    ║╗                             \n";
+                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+                cout << "\033[2A"; // move UP 2 lines
+                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
+                do
+                {
+                    while (true)
+                    {
+                        cin >> year;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000 , '\n');
+                        cout << "Invalid input. Please try again.\n";
+                    }
+                    if (year < 2000 || year > 2100)
+                    {
+                        cout << "Try again\n";
+                    }
+                } while (year < 2000 || year > 2100);
+                Yindex = years.size();
+                years.resize(Yindex + 1);
+                years[Yindex] = year;
+
+                // 🔹 DATE (day)
+                system("cls");
+                printLiveSummary(title, category, deadline, deadlinePriority, notes);
+
+                cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓            \n";
+                cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
+                cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
+                cout << "                                                                                                ╔════╗                              \n";
+                cout << "                                                                                               ╔║    ║╗                             \n";
+                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+
+                cout << "\033[2A"; // move UP 2 lines
+                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+
+                switch (month)
+                {
+                    case 1: case 3: case 5: case 7:
+                    case 8: case 10: case 12:
+                        do
+                        {
+                            while (true)
+                            {
+                                cin >> date;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000 , '\n');
+                                cout << "Invalid input. Please try again.\n";
+                            }
+                            if (date < 1 || date > 31)
+                            {
+                                cout << "Try again\n";
+                            }
+                        } while (date < 1 || date > 31);
+                        break;
+
+                    case 4: case 6: case 9: case 11:
+                        do
+                        {
+                            while (true)
+                            {
+                                cin >> date;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000 , '\n');
+                                cout << "Invalid input. Please try again.\n";
+                            }
+                            if (date < 1 || date > 30)
+                            {
+                                cout << "Try again\n";
+                            }
+                        } while (date < 1 || date > 30);
+                        break;
+
+                    case 2:
+                        if (((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+                        {
+                            do
+                            {
+                                while (true)
+                                {
+                                    cin >> date;
+                                    if (!cin.fail()) break;
+                                    cin.clear();
+                                    cin.ignore(1000 , '\n');
+                                    cout << "Invalid input. Please try again.\n";
+                                }
+                                if (date < 1 || date > 29)
+                                {
+                                    cout << "Try again\n";
+                                }
+                            } while (date < 1 || date > 29);
+                        }
+                        else
+                        {
+                            do
+                            {
+                                while (true)
+                                {
+                                    cin >> date;
+                                    if (!cin.fail()) break;
+                                    cin.clear();
+                                    cin.ignore(1000 , '\n');
+                                    cout << "Invalid input. Please try again.\n";
+                                }
+                                if (date < 1 || date > 28)
+                                {
+                                    cout << "Try again\n";
+                                }
+                            } while (date < 1 || date > 28);
+                        }
+                        break;
+                }
+
+                Dindex = dates.size();
+                dates.resize(Dindex + 1);
+                dates[Dindex] = date;
+
+                // 🔹 Show custom date in summary as MM/DD/YYYY
+                deadline = to_string(month) + "/" + to_string(date) + "/" + to_string(year);
+            }
+
             break;
         }
+
 
         case 4: {
 
@@ -2905,6 +3127,240 @@ void headerVoidList() {
  
 }
 
+// NEW: helper to display one selected list by index
+void showSingleList(
+    int index,
+    vector<string>& name_of_list,
+    vector<vector<string>>& list_of_lists,
+    vector<vector<vector<string>>>& list_of_descriptions,
+    vector<vector<int>>& listmonth,
+    vector<vector<int>>& listdate,
+    vector<vector<int>>& listyear,
+    vector<int>& monthcreated,
+    vector<int>& datecreated,
+    vector<int>& yearcreated,
+    vector<string>& list_deadlines,
+    int& cdate,
+    int& cmonth,
+    int& cyear
+) {
+    int dmonth = 0, dday = 0, dyear = 0;
+
+    if (list_deadlines[index] == "Today") {
+        dmonth = monthcreated[index];
+        dday   = datecreated[index];
+        dyear  = yearcreated[index];
+    } else if (list_deadlines[index] == "Tomorrow") {
+        dmonth = monthcreated[index];
+        dyear  = yearcreated[index];
+        switch (dmonth) {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                if (datecreated[index] + 1 > 31) { dmonth += 1; dday = 1; }
+                else { dday = datecreated[index] + 1; }
+                break;
+            case 4: case 6: case 9: case 11:
+                if (datecreated[index] + 1 > 30) { dmonth += 1; dday = 1; }
+                else { dday = datecreated[index] + 1; }
+                break;
+            case 2:
+                if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0))) {
+                    if (datecreated[index] + 1 > 29) { dmonth += 1; dday = 1; }
+                    else { dday = datecreated[index] + 1; }
+                } else {
+                    if (datecreated[index] + 1 > 28) { dmonth += 1; dday = 1; }
+                    else { dday = datecreated[index] + 1; }
+                }
+                break;
+        }
+        if (dmonth > 12) { dmonth = 1; dyear = yearcreated[index] + 1; }
+    } else if (list_deadlines[index] == "This Week") {
+        dmonth = monthcreated[index];
+        dyear  = yearcreated[index];
+        switch (dmonth) {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                if (datecreated[index] + 7 > 31) { dmonth += 1; dday = (datecreated[index] + 7) - 31; }
+                else { dday = datecreated[index] + 7; }
+                break;
+            case 4: case 6: case 9: case 11:
+                if (datecreated[index] + 7 > 30) { dmonth += 1; dday = (datecreated[index] + 7) - 30; }
+                else { dday = datecreated[index] + 7; }
+                break;
+            case 2:
+                if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0))) {
+                    if (datecreated[index] + 7 > 29) { dmonth += 1; dday = (datecreated[index] + 7) - 29; }
+                    else { dday = datecreated[index] + 7; }
+                } else {
+                    if (datecreated[index] + 7 > 28) { dmonth += 1; dday = (datecreated[index] + 7) - 28; }
+                    else { dday = datecreated[index] + 7; }
+                }
+                break;
+        }
+        if (dmonth > 12) { dmonth = 1; dyear = yearcreated[index] + 1; }
+    } else if (list_deadlines[index] == "Next Week") {
+        dmonth = monthcreated[index];
+        dyear  = yearcreated[index];
+        switch (dmonth) {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                if (datecreated[index] + 14 > 31) { dmonth += 1; dday = (datecreated[index] + 14) - 31; }
+                else { dday = datecreated[index] + 14; }
+                break;
+            case 4: case 6: case 9: case 11:
+                if (datecreated[index] + 14 > 30) { dmonth += 1; dday = (datecreated[index] + 14) - 30; }
+                else { dday = datecreated[index] + 14; }
+                break;
+            case 2:
+                if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0))) {
+                    if (datecreated[index] + 14 > 29) { dmonth += 1; dday = (datecreated[index] + 14) - 29; }
+                    else { dday = datecreated[index] + 14; }
+                } else {
+                    if (datecreated[index] + 14 > 28) { dmonth += 1; dday = (datecreated[index] + 14) - 28; }
+                    else { dday = datecreated[index] + 14; }
+                }
+                break;
+        }
+        if (dmonth > 12) { dmonth = 1; dyear = yearcreated[index] + 1; }
+    } else if (list_deadlines[index] == "This Month") {
+        dmonth = monthcreated[index];
+        dyear  = yearcreated[index];
+        dday   = datecreated[index];
+
+        if (dmonth == 2) {
+            bool leap = ((dyear % 4 == 0 && dyear % 100 != 0) || (dyear % 400 == 0));
+            if (!leap && dday > 28) dday = 1;
+            if (leap && dday > 29)  dday = 1;
+        } else if (dmonth==4 || dmonth==6 || dmonth==9 || dmonth==11) {
+            if (dday > 30) dday = 1;
+        } else {
+            if (dday > 31) dday = 1;
+        }
+        if (dmonth > 12) { dmonth = 1; dyear = yearcreated[index] + 1; }
+    } else if (list_deadlines[index] == "Next Month") {
+        dmonth = monthcreated[index] + 1;
+        dyear  = yearcreated[index];
+        if (dmonth > 12) {
+            dmonth = 1;
+            dyear  = yearcreated[index] + 1;
+        }
+        switch (dmonth) {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                if (datecreated[index] > 31) { dmonth += 1; dday = 1; }
+                else { dday = datecreated[index]; }
+                break;
+            case 4: case 6: case 9: case 11:
+                if (datecreated[index] > 30) { dmonth += 1; dday = 1; }
+                else { dday = datecreated[index]; }
+                break;
+            case 2:
+                if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0))) {
+                    if (datecreated[index] > 29) { dmonth += 1; dday = 1; }
+                    else { dday = datecreated[index]; }
+                } else {
+                    if (datecreated[index] > 28) { dmonth += 1; dday = 1; }
+                    else { dday = datecreated[index]; }
+                }
+                break;
+        }
+    }
+
+    string missing = "False";
+    if (!datecreated.empty() && !monthcreated.empty() && !yearcreated.empty()) {
+        auto diffCalc = [&](int td, int tm, int ty) {
+            if (cyear > ty)                        return to_string(cyear - ty) + " year(s)";
+            else if (cyear == ty && cmonth > tm)   return to_string(cmonth - tm) + " month(s)";
+            else if (cyear == ty && cmonth == tm && cdate > td)
+                                                  return to_string(cdate - td) + " day(s)";
+            return string("False");
+        };
+
+        if (list_deadlines[index] == "Today"     ||
+            list_deadlines[index] == "Tomorrow"  ||
+            list_deadlines[index] == "This Week" ||
+            list_deadlines[index] == "Next Week" ||
+            list_deadlines[index] == "This Month"||
+            list_deadlines[index] == "Next Month")
+        {
+            missing = diffCalc(dday, dmonth, dyear);
+        }
+    } else {
+        if (cyear > yearcreated[index])                         missing = to_string(cyear - yearcreated[index]) + " year(s)";
+        else if (cyear == yearcreated[index] && cmonth > monthcreated[index])
+            missing = to_string(cmonth - monthcreated[index]) + " month(s)";
+        else if (cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
+            missing = to_string(cdate - datecreated[index]) + " day(s)";
+    }
+
+    vector<string>& items = list_of_lists[index];
+    vector<int>&    months= listmonth[index];
+    vector<int>&    dates = listdate[index];
+    vector<int>&    years = listyear[index];
+
+    vector<vector<string>> emptyVecVec;
+    vector<vector<string>>& descs =
+        (index < (int)list_of_descriptions.size()) ? list_of_descriptions[index] : emptyVecVec;
+
+    system("cls");
+    headerVoidList();
+
+    cout << "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+
+    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
+    cout << "                                                                         " "𝐋𝐈𝐒𝐓 𝐍𝐀𝐌𝐄: " << name_of_list[index] << "\n";
+    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n\n";
+
+    cout << "                                                                           📂 CREATED ON : " << monthcreated[index] << "/" << datecreated[index] << "/" << yearcreated[index] << "\n";
+    cout << "                                                                           📅 TARGET DATE : ";
+    if (!months.empty() && !dates.empty() && !years.empty()) {
+        cout << months[0] << "/" << dates[0] << "/" << years[0] << "\n\n";
+    } else {
+        if (missing != "False") {
+            cout << "Already Late for " << missing << "\n\n";
+        } else {
+            cout << dmonth << '/' << dday << '/' << dyear << "\n\n";
+        }
+    }
+
+    if (items.empty()) {
+        cout << "                                                                               (No items)\n";
+    } else {
+        int completedCount = 0;
+        cout << "                                                                               📦 ITEMS:\n ";
+
+        for (int i = 0; i < (int)items.size(); i++) {
+            cout << "                                                                                     " << i + 1 << ". " << items[i] << "\n";
+
+            if (i < (int)descs.size()) {
+                for (int d = 0; d < (int)descs[i].size(); d++) {
+                    cout << "                                                                                       • " << descs[i][d] << "\n";
+                }
+            }
+
+            if (items[i].find("✅") != string::npos) completedCount++;
+        }
+
+        int    notDone     = (int)items.size() - completedCount;
+        double percentDone = items.empty() ? 0 : (completedCount * 100.0) / items.size();
+        double percentNot  = items.empty() ? 0 : (notDone * 100.0) / items.size();
+
+        cout << endl;
+        
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
+        cout << "                                                                                               𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 \n";
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
+        cout << "                                                                          Missing : "          << missing      << "\n";
+        cout << "                                                                          Total Items : "      << items.size() << "\n";
+        cout << "                                                                          Completed Items : "  << completedCount << "\n";
+        cout << "                                                                          Not Done : "         << notDone      << "\n";
+        cout <<                                                                            fixed << setprecision(2);
+        cout << "                                                                          % Completed : "      << percentDone << "%\n";
+        cout << "                                                                          % Not Completed : "  << percentNot  << "%\n\n";
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
+    }
+
+    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+    cin.get();
+}
+
+
 void viewLists(
     vector<string>& name_of_list,
     vector<vector<string>>& list_of_lists,
@@ -2981,45 +3437,129 @@ void viewLists(
     // SEARCH MODE (User typed S)
     // ================================
     if (choiceStr == "S" || choiceStr == "s") {
+
+
+        
         cin.ignore();
         string key;
+        system("cls");
+        headerVoidList();
+
+        cout << "                                                                                 ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻   ┏┓╻┏━┓┏┳┓┏━╸     \n";
+        cout << "                                                                                 ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫   ┃┗┫┣━┫┃┃┃┣╸           \n";
+        cout << "                                                                                 ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹   ╹ ╹╹ ╹╹ ╹┗━╸         \n\n";
+
+        cout << "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        cout << "                                                                                      ╔════════════════════════╗                                                   \n";
+        cout << "                                                                                     ╔║                        ║╗                                                  \n";
+        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n" ; 
+
+        cout << "\033[2A";     // Move cursor up 2 lines
+        cout << "\033[98C";    // Move cursor right 98 columns
+        getline(cin, key);
+
 
         system("cls");
         headerVoidList();
 
-        cout << "                                                                              ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸               \n";
-        cout << "                                                                              ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸                \n";
-        cout << "                                                                              ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸               \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+        cout << "                                                                                       ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸┏━┓     \n";
+        cout << "                                                                                       ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃ ┗━┓          \n";
+        cout << "                                                                                       ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹ ┗━┛       \n\n";
 
-        cout << "                                                                                      ╔════════════════════════╗                                                   \n";
-        cout << "                                                                                     ╔║                        ║╗                                                  \n";
-        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n" ;
-
-            cout << "\033[2A";
-            cout << "\033[98C";
-
-        getline(cin, key);
-
-        cout << "\n--------------- RESULTS --------------\n";
-
+        cout << "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         bool found = false;
 
-        // Scan all list names for keyword match
+        // NEW: store matching original indices, but number them 1..N in the search results
+        vector<int> foundIndices;
         for (int i = 0; i < (int)name_of_list.size(); i++) {
             if (name_of_list[i].find(key) != string::npos) {
-                cout << " " << i + 1 << ". " << name_of_list[i] << "\n";
+                int displayNum = (int)foundIndices.size() + 1;
+                cout << "                                                                              " << displayNum << ". " << name_of_list[i] << "\n";
                 found = true;
+                foundIndices.push_back(i); // store original index
             }
         }
 
-              if (!found)
-            cout << "( No matching list names found )\n";
+        if (!found) {
 
-        cout << "-------------------------------------\n";
-        cout << "Press Enter to go back...";
-        cin.get();
-        continue;   // 🔁 back to the top of while(true)
+            system("cls");
+            headerVoidList();
+
+            cout << "                                                           ┏┓╻┏━┓   ┏┳┓┏━┓╺┳╸┏━╸╻ ╻╻┏┓╻┏━╸   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸┏━┓   ┏━╸┏━┓╻ ╻┏┓╻╺┳┓    \n";
+            cout << "                                                           ┃┗┫┃ ┃   ┃┃┃┣━┫ ┃ ┃  ┣━┫┃┃┗┫┃╺┓   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸ ┗━┓   ┣╸ ┃ ┃┃ ┃┃┗┫ ┃┃       \n";
+            cout << "                                                           ╹ ╹┗━┛   ╹ ╹╹ ╹ ╹ ┗━╸╹ ╹╹╹ ╹┗━┛   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸┗━┛   ╹  ┗━┛┗━┛╹ ╹╺┻┛     \n\n";
+
+            cout << "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+
+
+
+            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            cin.get();
+            continue; // back to main view loop
+        }
+
+      
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+        cout << "                                                             ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ╻ ╻╻┏━╸╻ ╻            \n";
+        cout << "                                                             ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃┏┛┃┣╸ ┃╻┃           \n";
+        cout << "                                                             ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗┛ ╹┗━╸┗┻┛            \n\n";
+        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+        cout << "                                                                                                ╔════╗                                     \n";
+        cout << "                                                                                               ╔║    ║╗                                    \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+
+
+        cout << "\033[2A";
+        cout << "\033[98C";
+
+        string searchChoiceStr;
+        cin >> searchChoiceStr;      // 🔹 read like the main menu
+        cin.ignore();                // 🔹 eat the leftover '\n'
+
+        if (searchChoiceStr == "0" || searchChoiceStr.empty()) {
+            // just go back to main view
+            continue;
+        }
+
+
+        int resultChoice = 0;
+        try {
+            resultChoice = stoi(searchChoiceStr);
+        } catch (...) {
+            cout << "\nInvalid.\nPress Enter...";
+            cin.get();
+            continue;
+        }
+
+        if (resultChoice < 1 || resultChoice > (int)foundIndices.size()) {
+            cout << "\nInvalid.\nPress Enter...";
+            cin.get();
+            continue;
+        }
+
+        // Map the chosen result (1..N) back to the real list index
+        int index = foundIndices[resultChoice - 1];
+
+        // Show that list using the same helper as normal selection
+        showSingleList(
+            index,
+            name_of_list,
+            list_of_lists,
+            list_of_descriptions,
+            listmonth,
+            listdate,
+            listyear,
+            monthcreated,
+            datecreated,
+            yearcreated,
+            list_deadlines,
+            cdate,
+            cmonth,
+            cyear
+        );
+
+        // After viewing, go back to the main view loop
+        continue;
     }
 
 
@@ -3035,543 +3575,114 @@ void viewLists(
         cin.get();
         continue;   // 🔁 back to list selection
     }
-    cin.ignore();
+        cin.ignore();
+        int index = choice - 1; // convert to 0-based index
 
-    int index = choice - 1; // convert to 0-based index
-    // Validate chosen list
-    if (choice < 1 || choice > (int)name_of_list.size()) {
-        cout << "\nInvalid.\nPress Enter...";
-        cin.get();
-        continue;   
+        // Validate chosen list
+        if (choice < 1 || choice > (int)name_of_list.size()) {
+            cout << "\nInvalid.\nPress Enter...";
+            cin.get();
+            continue;
+        }
+
+        // NEW: just call the helper instead of repeating the giant block
+        showSingleList(
+            index,
+            name_of_list,
+            list_of_lists,
+            list_of_descriptions,
+            listmonth,
+            listdate,
+            listyear,
+            monthcreated,
+            datecreated,
+            yearcreated,
+            list_deadlines,
+            cdate,
+            cmonth,
+            cyear
+        );
     }
-    int dmonth = 0, dday = 0, dyear = 0;
-    if (list_deadlines[index] == "Today")
-    {
-        dmonth = monthcreated[index];
-        dday = datecreated[index];
-        dyear = yearcreated[index];
-    }
-    else if (list_deadlines[index] == "Tomorrow")
-    {
-        dmonth = monthcreated[index];
-        dyear = yearcreated[index];
-        switch (dmonth)
-        {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            if (datecreated[index] + 1 > 31)
-            {
-                dmonth += 1;
-                dday = 1;
-            }
-            else
-            {   
-                dday = datecreated[index] + 1;
-            }
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            if (datecreated[index] + 1 > 30)
-            {
-                dmonth += 1;
-                dday = 1;
-            }
-            else
-            {   
-                dday = datecreated[index] + 1;
-            }    
-            break;
-        case 2:
-            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
-            {
-                if (datecreated[index] + 1 > 29)
-                {
-                    dmonth += 1;
-                    dday = 1;
-                }
-                else
-                {
-                    dday = datecreated[index] + 1;
-                }
-            }
-            else
-            {
-                if (datecreated[index] + 1 > 28)
-                {
-                    dmonth += 1;
-                    dday = 1;
-                }
-                else
-                {
-                    dday = datecreated[index] + 1;
-                }
-            }
-            break;
-        }
-        if(dmonth > 12)
-        {
-            dmonth = 1;
-            dyear = yearcreated[index] + 1;
-        }
-    }
-    else if (list_deadlines[index] == "This Week")
-    {
-        dmonth = monthcreated[index];
-        dyear = yearcreated[index];
-        switch (dmonth)
-        {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            if (datecreated[index] + 7 > 31)
-            {
-                dmonth += 1;
-                dday = (datecreated[index] + 7) - 31;
-            }
-            else
-            {   
-                dday = datecreated[index] + 7;
-            }
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            if (datecreated[index] + 7 > 30)
-            {
-                dmonth += 1;
-                dday = (datecreated[index] + 7) - 30;
-            }
-            else
-            {   
-                dday = datecreated[index] + 7;
-            }    
-            break;
-        case 2:
-            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
-            {
-                if (datecreated[index] + 7 > 29)
-                {
-                    dmonth += 1;
-                    dday = (datecreated[index] + 7) - 29;
-                }
-                else
-                {
-                    dday = datecreated[index] + 7;
-                }
-            }
-            else
-            {
-                if (datecreated[index] + 7 > 28)
-                {
-                    dmonth += 1;
-                    dday = (datecreated[index] + 7) - 28; 
-                }
-                else
-                {
-                    dday = datecreated[index] + 7;
-                }
-            }
-            break;
-        }
-        if(dmonth > 12)
-        {
-            dmonth = 1;
-            dyear = yearcreated[index] + 1;
-        }
-    }
-    else if (list_deadlines[index] == "Next Week")
-    {
-        dmonth = monthcreated[index];
-        dyear = yearcreated[index];
-        switch (dmonth)
-        {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            if (datecreated[index] + 14 > 31)
-            {
-                dmonth += 1;
-                dday = (datecreated[index] + 14) - 31;
-            }
-            else
-            {   
-                dday = datecreated[index] + 14;
-            }
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            if (datecreated[index] + 14 > 30)
-            {
-                dmonth += 1;
-                dday = (datecreated[index] + 14) - 30;
-            }
-            else
-            {   
-                dday = datecreated[index] + 14;
-            }    
-            break;
-        case 2:
-            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
-            {
-                if (datecreated[index] + 14 > 29)
-                {
-                    dmonth += 1;
-                    dday = (datecreated[index] + 14) - 29;
-                }
-                else
-                {
-                    dday = datecreated[index] + 14;
-                }
-            }
-            else
-            {
-                if (datecreated[index] + 14 > 28)
-                {
-                    dmonth += 1;
-                    dday = (datecreated[index] + 14) - 28;
-                }
-                else
-                {
-                    dday = datecreated[index] + 14;
-                }
-            }
-            break;
-        }
-        if(dmonth > 12)
-        {
-            dmonth = 1;
-            dyear = yearcreated[index] + 1;
-        }
-    }
-    else if (list_deadlines[index] == "This Month")
-    {
-        dmonth = monthcreated[index];
-        dyear = yearcreated[index];
-        dday = datecreated[index];
-        if (dmonth == 2) {
-            bool leap = ((dyear % 4 == 0 && dyear % 100 != 0) || (dyear % 400 == 0));
-            if (!leap && dday > 28) dday = 1;
-            if (leap && dday > 29) dday = 1;
-        } else if (dmonth==4 || dmonth==6 || dmonth==9 || dmonth==11) {
-            if (dday > 30) dday = 1;
-        } else {
-            if (dday > 31) dday = 1;
-        }
-        if (dmonth > 12) {
-            dmonth = 1;
-            dyear = yearcreated[index] + 1;
-        }
-    }
-    else if (list_deadlines[index] == "Next Month")
-    {
-        dmonth = monthcreated[index] + 1;
-        dyear = yearcreated[index];
-        if(dmonth > 12)
-        {
-            dmonth = 1;
-            dyear = yearcreated[index] + 1;
-        }
-        switch (dmonth)
-        {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            if (datecreated[index] > 31)
-            {
-                dmonth += 1;
-                dday = 1;
-            }
-            else
-            {   
-                dday = datecreated[index];
-            }
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            if (datecreated[index] > 30)
-            {
-                dmonth += 1;
-                dday = 1;
-            }
-            else
-            {   
-                dday = datecreated[index];
-            }    
-            break;
-        case 2:
-            if (((yearcreated[index]%4 == 0 && yearcreated[index]%100 != 0) || (yearcreated[index]%400 == 0)))
-            {
-                if (datecreated[index] > 29)
-                {
-                    dmonth += 1;
-                    dday = 1;
-                }
-                else
-                {
-                    dday = datecreated[index];
-                }
-            }
-            else
-            {
-                if (datecreated[index] > 28)
-                {
-                    dmonth += 1;
-                    dday = 1;
-                }
-                else
-                {
-                    dday = datecreated[index];
-                }
-            }
-            break;
-        }  
-    }
-    
-    
-    
-    string missing = "False";
-    if (!datecreated.empty() && !monthcreated.empty() && !yearcreated.empty()) {
-    
-        if (list_deadlines[index] == "Today")
-        {
-            if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }
-        else if (list_deadlines[index] == "Tomorrow")
-        {
-            if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }
-        
-        else if (list_deadlines[index] == "This Week")
-        {
-            if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }
-        else if (list_deadlines[index] == "Next Week")
-        {
-            if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }
-        else if (list_deadlines[index] == "This Month")
-        {
-            if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }
-        else if (list_deadlines[index] == "Next Month")
-        {
-           if(cyear > dyear)
-            {
-                missing = to_string(cyear - dyear) + " year(s)";
-            }
-            else if(cyear == dyear && cmonth > dmonth)
-            {
-                missing = to_string(cmonth - dmonth) + " month(s)";
-            }
-            else if(cyear == dyear && cmonth == dmonth && cdate > dday)
-            {
-                missing = to_string(cdate - dday) + " day(s)";
-            }
-        }  
-    }
-    else
-        {
-            if(cyear > yearcreated[index])
-            {
-                missing = to_string(cyear - yearcreated[index]) + " year(s)";
-            }
-            else if(cyear == yearcreated[index] && cmonth > monthcreated[index])
-            {
-                missing = to_string(cmonth - monthcreated[index]) + " month(s)";
-            }
-            else if(cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
-            {
-                missing = to_string(cdate - datecreated[index]) + " day(s)";
-            }
-        }
-    
-    
-    
-
-    
-
-    // Access selected list's items and descriptions
-    vector<string>& items = list_of_lists[index];
-    
-    vector<int>& months = listmonth[index];
-    vector<int>& dates  = listdate[index];
-    vector<int>& years  = listyear[index];
-
-    // Prevent crash for lists without descriptions
-    vector<vector<string>> emptyVecVec;
-    vector<vector<string>>& descs =
-        (index < (int)list_of_descriptions.size())
-        ? list_of_descriptions[index]
-        : emptyVecVec;
-
-    // ================================
-    // DISPLAY SELECTED LIST CONTENT
-    // ================================
-        system("cls");
-        headerVoidList();
-        
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
-        cout << "                                                                             ""𝐋𝐈𝐒𝐓 𝐍𝐀𝐌𝐄: " << name_of_list[index] << "\n";
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
-
-        cout << "                                                                              📂 CREATED ON  : "
-             << monthcreated[index] << "/"
-             << datecreated[index] << "/"
-             << yearcreated[index] << "\n";
-        cout << "                                                                              📅 TARGET DATE : ";
-
-            if (!months.empty() && !dates.empty() && !years.empty()) {
-                cout << months[0] << "/" << dates[0] << "/" << years[0] << "\n\n";
-            } else {
-                if (missing != "False")
-                {
-                    cout << "Already Late for " << missing << "\n\n";
-                }
-                else
-                {
-                cout << dmonth << '/' << dday << '/' << dyear << "\n\n";
-                }
-            }
-
-        if (items.size() == 0) {
-            cout << "(No items)\n";
-        } else {
-            int completedCount = 0;
-
-        cout << "                                                                                   📦 ITEMS:\n ";  
-        // Print each item and its descriptions
-        for (int i = 0; i < (int)items.size(); i++) {
-
-            cout << "                                                                                       " << i + 1 << ". " << items[i] << "\n";
-            
-            // Print all descriptions for this item (if any)
-            if (i < (int)descs.size()) {
-                for (int d = 0; d < (int)descs[i].size(); d++) {
-            cout << "                                                                                            • " << descs[i][d] << "\n";
-                }
-            }
-
-            // Track [DONE] items
-            if (items[i].find("[DONE]") != string::npos)
-                completedCount++;
-        }
-
-        // ================================
-        // STATISTICS CALCULATION
-        // ================================
-        int notDone = items.size() - completedCount;
-
-        double percentDone = (items.size() > 0)
-            ? (completedCount * 100.0) / items.size()
-            : 0;
-
-        double percentNot = (items.size() > 0)
-            ? (notDone * 100.0) / items.size()
-            : 0;
-
-        // ================================
-        // STATISTICS DISPLAY
-        // ================================
-        cout << "\n                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
-        cout << "                                                                                                   𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n";
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
-        
-        cout << "                                                                                       Missing           : " << missing << "\n";
-        cout << "                                                                                       Total Items       : " << items.size() << "\n";
-        cout << "                                                                                       Completed Items   : " << completedCount << "\n";
-        cout << "                                                                                       Not Done          : " << notDone << "\n";
-        cout <<                                                                                         fixed << setprecision(2);
-        cout << "                                                                                       % Completed       : " << percentDone << "%\n";
-        cout << "                                                                                       % Not Completed   : " << percentNot << "%\n\n";
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
-    }
-
-    
-        cout << "                                                                                       \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO GO BACK...  \033[0m";
-    cin.get();
-
-    } 
+  
 }
 
+
+void headerEditList() {
+
+        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
+        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
+        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
+        cout << "                                                           ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗    ██╗     ██╗███████╗████████╗    \n";
+        cout << "                                                           ██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══      \n";
+        cout << "                                                           ██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗      ██║     ██║███████╗   ██║           \n";
+        cout << "                                                           ██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n";
+        cout << "                                                           ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗    ███████╗██║███████║   ██║         \n";
+        cout << "                                                            ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
+        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+    
+ 
+}
+
+// ------------------------------------------------------
+// Reusable list preview for edit screens
+// ------------------------------------------------------
+void printListPreviewForEdit(
+    const vector<string>& items,
+    const vector<vector<string>>& descriptions
+) {
+    cout << "\n";
+    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
+    cout << "                                                                                             Your List                               \n";
+    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+
+    if (items.empty()) {
+        cout << "                                                                      (No items in this list yet)\n\n";
+        return;
+    }
+
+    for (int i = 0; i < (int)items.size(); ++i) {
+        cout << "                                                                            " << i + 1 << ". " << items[i] << "\n";
+        // print item descriptions
+        if (i < (int)descriptions.size()) {
+            for (const string& desc : descriptions[i]) {
+                cout << "                                                                                • " << desc << "\n";
+         
+            }
+        }
+    }
+
+    cout << "\n";
+    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+}
+
+
+// ------------------------------------------------------
+// Helper: show all descriptions for a given item number
+// ------------------------------------------------------
+void printDescriptionsForItem(const vector<vector<string>>& descriptions,
+                              int itemNum)
+{
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+    cout << "                                                                                  Current descriptions:\n";
+
+    // safety + empty check
+    if (itemNum - 1 < 0 ||
+        itemNum - 1 >= (int)descriptions.size() ||
+        descriptions[itemNum - 1].empty())
+    {
+ 
+        cout << "                                                                                               (no descriptions)\n";
+        return;
+    }
+
+    for (int d = 0; d < (int)descriptions[itemNum - 1].size(); ++d) {
+        cout << "                                                                                  " << d + 1 << ". " << descriptions[itemNum - 1][d] << "\n";
+    }
+
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+    cout << "\n";
+    
+}
 
 
 // -----------------------------
@@ -3600,19 +3711,29 @@ void editList(
     // ================================
     // DISPLAY ALL LISTS TO CHOOSE FROM
     // ================================
-    cout << "\n=====================================\n";
-    cout << "               EDIT LIST             \n";
-    cout << "=====================================\n";
+   
+    system("cls");
+    headerEditList();
+
+    cout << "                                                             ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏━╸╺┳┓╻╺┳╸          \n";
+    cout << "                                                             ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┣╸  ┃┃┃ ┃         \n";
+    cout << "                                                             ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗━╸╺┻┛╹ ╹           \n\n";
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+    cout << "                                                                                      [S] 🔎 SEARCH LIST NAMES                             \n";
+    cout << "                                                                                      [0] 🔙 BACK TO MAIN MENU                            \n";
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+
 
     for (int i = 0; i < (int)name_of_list.size(); i++) {
-        cout << " " << i + 1 << ". " << name_of_list[i] << "\n";
+        cout << "                                                                                  " << i + 1 << ". " << name_of_list[i] << "\n";
     }
 
-    cout << "\n S. Search list names\n";
-    cout << "-------------------------------------\n";
+    cout << endl;
+    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+    cout << "                                                                                                ╔════╗                                     \n";
+    cout << "                                                                                               ╔║    ║╗                                    \n";
+    cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
 
-    // Let the user choose which list to modify
-    cout << "Select a list number to edit: ";
     string choiceStr;
     cin >> choiceStr;
 
@@ -3651,10 +3772,22 @@ void editList(
     while (true) {
 
         system("cls");
+        headerEditList();
 
-        cout << "=====================================\n";
-        cout << "         Editing: " << name_of_list[index] << "\n";
-        cout << "=====================================\n\n";
+                        cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻            \n";
+                        cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃   ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫         \n";
+                        cout << "                                                                               ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛   ┗━┛╹   ╹ ╹┗━┛╹ ╹          \n\n";
+                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                        cout << "                                                                         Editing: " << name_of_list[index] << "\n";
+                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                        cout << "                                                                         [1] ✚ ADD NEW ITEM            [2] ✏️ EDIT AN ITEM                \n";
+                        cout << "                                                                         [3] 🗑️ DELETE AN ITEM         [4] ✅ MARK / UNMARK DONE       \n";
+                        cout << "                                                                         [5] 🔁 REORDER ITEMS (SWAP)   [6] 📝 RENAME LIST               \n";
+                        cout << "                                                                                     [7] 🔙 RETURN TO MAIN MENU            \n";
+                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
+                        cout << endl;
+
+
 
         // Items in this list
         vector<string> &items = list_of_lists[index];
@@ -3680,17 +3813,17 @@ void editList(
             cout << "(No items yet)\n";
         } else {
             for (int i = 0; i < (int)items.size(); i++) {
-                cout << " " << i + 1 << ". " << items[i] << "\n";
+                cout << "                                                                            " << i + 1 << ". " << items[i] << "\n";
 
                 // Show descriptions of this item
                 if (i < (int)descriptions.size()) {
                     for (int d = 0; d < (int)descriptions[i].size(); d++) {
-                        cout << "      > " << descriptions[i][d] << "\n";
+                        cout << "                                                                               • " << descriptions[i][d] << "\n";
                     }
                 }
 
                 // Count completed items
-                if (items[i].find("[DONE]") != string::npos)
+                if (items[i].find("✅") != string::npos)
                     completedCount++;
             }
         }
@@ -3711,33 +3844,35 @@ void editList(
         // -------------------------------
         // SHOW LIST STATISTICS
         // -------------------------------
-        cout << "\n--------------- STATISTICS -----------\n";
-        cout << " Total Items       : " << items.size() << "\n";
-        cout << " Completed Items   : " << completedCount << "\n";
-        cout << " Not Done Items    : " << notDone << "\n";
-        cout << fixed << setprecision(2);
-        cout << " % Completed       : " << percentDone << "%\n";
-        cout << " % Not Completed   : " << percentNotDone << "%\n";
-        cout << "-------------------------------------\n";
+        cout << endl;
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
+        cout << "                                                                                             𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n";
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+        
+       // cout << "                                                                        Missing           : " << missing << "\n";
+        cout << "                                                                          Total Items       : " << items.size() << "\n";
+        cout << "                                                                          Completed Items   : " << completedCount << "\n";
+        cout << "                                                                          Not Done          : " << notDone << "\n";
+        cout <<                                                                            fixed << setprecision(2);
+        cout << "                                                                          % Completed       : " << percentDone << "%\n";
+       // cout << "                                                                        % Not Completed   : " << percentNot << "%\n\n";
+
 
         // ================================
-        // EDIT MENU OPTIONS
+        // EDIT MENU OPTIONS  (fancy layout)
         // ================================
-        cout << "\nEDIT MENU\n";
-        cout << "-------------------------------------\n";
-        cout << " 1. Add New Item\n";
-        cout << " 2. Edit an Item\n";
-        cout << " 3. Delete an Item\n";
-        cout << " 4. Mark / Unmark Item as DONE\n";
-        cout << " 5. Reorder Items (Swap)\n";
-        cout << " 6. Rename List\n";
-        cout << " 7. Edit Item Descriptions\n";
-        cout << " 8. Search Items\n";
-        cout << " 9. Return to Main Menu\n";
-        cout << "-------------------------------------\n";
+        cout << "\n";
+
+
+        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+        cout << "                                                                                                ╔════╗                              \n";
+        cout << "                                                                                               ╔║    ║╗                             \n";
+        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+        cout << "\033[2A";   // move cursor up into the small box
+        cout << "\033[98C";  // move cursor horizontally to center input
 
         int editChoice;
-        cout << "\nChoose an option: ";
         while (true)
         {
             cin >> editChoice;
@@ -3746,100 +3881,215 @@ void editList(
             cin.ignore(1000 , '\n');
             cout << "Invalid input. Please try again.\n";
         }
-        // User wants to search items within this list
-        if (editChoice == 8) {
-            searchItems(items);
-            continue;
-        }
+
+        
+    
+
+   
 
         // ============================================
         // OPTION 1 — ADD NEW ITEM
         // ============================================
         if (editChoice == 1) {
 
-            string newItem;
-            cout << "\nEnter new item: ";
-            getline(cin, newItem);
+            // 🔹 Clear leftover newline from "cin >> editChoice"
+            cin.ignore();
 
-            // Add item using resize
-            int newIndex = items.size();
-            items.resize(newIndex + 1);
-            items[newIndex] = newItem;
-
-            // Give XP for adding an item
-            addClassXP(5, gamificationEnabled, playerXP, playerLevel,
-           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
-
-
-            // Prompt for descriptions immediately
-            cout << "\nAdd descriptions for this new item\n";
-            cout << "-------------------------------------\n";
-            cout << "• Type a description and press Enter\n";
-            cout << "• Type 'done' when finished\n";
-            cout << "• Type 'none' to skip\n";
-            cout << "-------------------------------------\n";
-
-            vector<string> temp;
-            string nd;
+            // Local variables that mirror createNewList logic
+            string item, descLine;
+            vector<string> tempDescriptions;
+            int itemIndex, dindex, dsaveIndex;
 
             while (true) {
-                cout << "Description: ";
-                getline(cin, nd);
-                if (nd == "done") break;
-                if (nd == "none") { temp.clear(); break; }
-                if (nd == "") continue;
+                system("cls");
+                headerEditList();
+                printListPreviewForEdit(items, descriptions);   // current list state
 
-                int di = temp.size();
-                temp.resize(di + 1);
-                temp[di] = nd;
+                cout << "                                                        ┏━┓╺┳╸┏━┓┏━┓╺┳╸   ┏━┓╺┳┓╺┳┓╻┏┓╻┏━╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ╺┳╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ╻  ╻┏━┓╺┳╸╻            \n";
+                cout << "                                                        ┗━┓ ┃ ┣━┫┣┳┛ ┃    ┣━┫ ┃┃ ┃┃┃┃┗┫┃╺┓   ┃ ┃ ┣╸ ┃┃┃┗━┓    ┃ ┃ ┃   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┃┗━┓ ┃ ╹  \n";
+                cout << "                                                        ┗━┛ ╹ ╹ ╹╹┗╸ ╹    ╹ ╹╺┻┛╺┻┛╹╹ ╹┗━┛   ╹ ╹ ┗━╸╹ ╹┗━┛    ╹ ┗━┛    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹┗━┛ ╹ ╹          \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
 
-                // Give XP for adding a description
-                addClassXP(1, gamificationEnabled, playerXP, playerLevel,
-           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+                cout << "                                                                                    🟢 TYPE AN ITEM AND PRESS ENTER!\n";
+                cout << "                                                                       Type 💾[1] DONE ADDING ITEMS | 🗑️[2] CANCEL THIS NEW ITEM \n\n";
 
+                cout << "                                                                                      ╔════════════════════════╗                              \n";
+                cout << "                                                                                     ╔║                        ║╗                             \n";
+                cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+                        
+                cout << "\033[2A"; // move UP 2 lines
+                cout << "\033[87C"; // move RIGHT (adjust as needed)
+
+                cout << "Add item: ";
+                getline(cin, item);
+
+                // --- User wants to stop adding new items and go back to edit menu ---
+                if (item == "1") {
+                    break; // exit OPTION 1 and return to main edit menu
+                }
+
+                // --- User cancels creation of this item only ---
+                if (item == "2") {
+                    cout << "\nNew item creation cancelled.\n";
+                    cout << "Press Enter to continue...";
+                    cin.get();
+                    break; // back to main edit menu, list unchanged
+                }
+
+                if (item.empty()) {
+                    cout << "\nNo item entered. Item creation cancelled.\n";
+                    cout << "Press Enter to continue...";
+                    cin.get();
+                    break;
+                }
+
+                // Add new item at the end (same pattern as createNewList)
+                itemIndex = static_cast<int>(items.size());
+                items.resize(itemIndex + 1);
+                items[itemIndex] = item;
+
+                // Give XP for adding an item
+                addClassXP(5, gamificationEnabled, playerXP, playerLevel,
+                    playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
+                // 🔹 Refresh screen so the new item appears in the live list
+                system("cls");
+                headerEditList();
+                printListPreviewForEdit(items, descriptions);   // still no descriptions for this new item yet
+
+                // ===================================================
+                // ENTER DESCRIPTIONS FOR THIS NEW ITEM
+                // ===================================================
+                cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
+                cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
+                cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           \n";
+
+                cout << "                                                                                🟢 TYPE A DESCRIPTION AND PRESS ENTER!\n";
+                cout << "                                                                                   Type [1] 🗑️ FINISH / SKIP DESCRIPTIONS \n\n";
+
+                cout << "                                                                                      ╔════════════════════════╗                              \n";
+                cout << "                                                                                     ╔║                        ║╗                             \n";
+                cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+
+                tempDescriptions.clear();
+
+                while (true) {
+                    cout << "\033[2A"; // move UP 2 lines
+                    cout << "\033[90C"; // move RIGHT
+                    getline(cin, descLine);
+
+                    // Finish / skip descriptions for this item
+                    if (descLine == "1")
+                        break;
+
+                    if (descLine.empty())
+                        continue;
+
+                    // Add this description line to tempDescriptions
+                    dindex = static_cast<int>(tempDescriptions.size());
+                    tempDescriptions.resize(dindex + 1);
+                    tempDescriptions[dindex] = descLine;
+
+                    addClassXP(1, gamificationEnabled, playerXP, playerLevel,
+                        playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
+                    // 🔹 LIVE PREVIEW: show list including this item's in-progress descriptions
+                    system("cls");
+                    headerEditList();
+
+                    // 👇 build preview copy = existing descriptions + current tempDescriptions
+                    vector<vector<string>> previewDescriptions = descriptions;
+                    previewDescriptions.push_back(tempDescriptions);
+
+                    // 👈 IMPORTANT: use previewDescriptions here
+                    printListPreviewForEdit(items, previewDescriptions);
+
+                    cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
+                    cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
+                    cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                             \n";
+                    cout << "                                                                                     Type [1] 💾 FINISH DESCRIPTION \n\n";
+
+                    cout << "                                                                                      ╔════════════════════════╗                              \n";
+                    cout << "                                                                                     ╔║                        ║╗                             \n";
+                    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+                }
+
+                // Save this item’s description list to the real descriptions vector
+                dsaveIndex = static_cast<int>(descriptions.size());
+                descriptions.resize(dsaveIndex + 1);
+                descriptions[dsaveIndex] = tempDescriptions;
+
+                // 🔹 Re-show the updated list after saving this item
+                system("cls");
+                headerEditList();
+                printListPreviewForEdit(items, descriptions);
+
+                cout << "\nItem + descriptions saved!\n\n";
+
+
+                                cout << "                                                                        ╻╺┳╸┏━╸┏┳┓    ╻    ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━┓┏━┓╻ ╻┏━╸╺┳┓       \n";
+                                cout << "                                                                        ┃ ┃ ┣╸ ┃┃┃   ╺╋╸    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┗━┓┣━┫┃┏┛┣╸  ┃┃    \n";
+                                cout << "                                                                        ╹ ╹ ┗━╸╹ ╹    ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹ ╹┗┛ ┗━╸╺┻┛     \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                cin.get();
+
+                // After one item + description cycle, we return to the main edit menu
+                break;
             }
 
-            // Ensure description vector is same size as items
-            int descVecOld = descriptions.size();
-            descriptions.resize(items.size());
-            for (int i = descVecOld; i < (int)descriptions.size(); i++)
-                descriptions[i] = vector<string>();
-
-            descriptions[newIndex] = temp;
-
-            cout << "\nItem added!\n";
-            cout << "Press Enter to continue...";
-            cin.get();
             continue;
         }
 
+
+
+
+
         // ============================================
-        // OPTION 2 — EDIT ITEM TEXT
+        // OPTION 2 — EDIT ITEM (NAME / DESCRIPTIONS / DELETE)
         // ============================================
         else if (editChoice == 2) {
 
-            if (items.size() == 0) {
+            if (items.empty()) {
                 cout << "\nNo items to edit.\n";
                 cout << "Press Enter to continue...";
                 cin.get();
                 continue;
             }
 
+            // -------- 2A: choose which item to work on --------
             int itemNum;
-            cout << "\nEnter item number to edit: ";
-            while (true)
-            {
+
+            system("cls");
+            headerEditList();
+            printListPreviewForEdit(items, descriptions);   // your live copy of the list
+
+            cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓\n";
+            cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛ \n";
+            cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸\n\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+            while (true) {
+                cout << "\033[2A\033[98C";   // cursor inside small box
                 cin >> itemNum;
                 if (!cin.fail()) break;
                 cin.clear();
-                cin.ignore(1000 , '\n');
+                cin.ignore(1000, '\n');
                 cout << "Invalid input. Please try again.\n";
             }
-            
-            
             cin.ignore();
 
-            // Validate
+            // validate chosen item
             if (itemNum < 1 || itemNum > (int)items.size()) {
                 cout << "\nInvalid item number!\n";
                 cout << "Press Enter to continue...";
@@ -3847,26 +4097,585 @@ void editList(
                 continue;
             }
 
-            // Replace text while preserving [DONE] tag
-            string updatedText;
-            cout << "Enter new text: ";
-            getline(cin, updatedText);
+            // -------- 2B: main ITEM EDIT MENU for that item --------
+            bool itemDeleted = false;
 
-            if (items[itemNum - 1].find("[DONE]") != string::npos)
-                items[itemNum - 1] = "[DONE] " + updatedText;
-            else
-                items[itemNum - 1] = updatedText;
+            while (true) {
+                system("cls");
+                headerEditList();
+                printListPreviewForEdit(items, descriptions);
 
-            cout << "Item updated!\n";
-            cout << "Press Enter to continue...";
-            cin.get();
-            continue;
+                cout << "                                                                                 ╻╺┳╸┏━╸┏┳┓   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n";
+                cout << "                                                                                 ┃ ┃ ┣╸ ┃┃┃   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                 \n";
+                cout << "                                                                                 ╹ ╹ ┗━╸╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛                \n\n";
+
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                cout << "                                                                                  Editing item: " << items[itemNum - 1] << "\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                cout << "                                                                                  [1] ✏️ EDIT ITEM NAME\n";
+                cout << "                                                                                  [2] 📝 EDIT ITEM DESCRIPTIONS\n";
+                cout << "                                                                                  [3] 🗑️ DELETE ITEM\n";
+                cout << "                                                                                  [4] ↩️ BACK\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                cout << "                                                                                                ╔════╗                              \n";
+                cout << "                                                                                               ╔║    ║╗                             \n";
+                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                 cout << "\033[2A";   // move cursor up into the small box
+                 cout << "\033[98C";  // move cursor horizontally to center input
+
+                int subChoice;
+                while (true) {
+                    cout << "\033[2A\033[98C";
+                    cin >> subChoice;
+                    if (!cin.fail()) break;
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                }
+                cin.ignore(1000, '\n');
+
+                // -------- SUB 4: back to main edit menu --------
+                if (subChoice == 4) {
+                    break;
+                }
+
+                // -------- SUB 1: edit item name (with confirmation) --------
+                else if (subChoice == 1) {
+                    string newName;
+
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+               
+                        cout << "                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━┓┏┳┓┏━╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓            \n";
+                        cout << "                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┣━┫┃┃┃┣╸    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃            \n";
+                        cout << "                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹╹ ╹╹ ╹┗━╸   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹            \n\n";
+
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+
+                        cout << "                                                                                      ╔════════════════════════╗                              \n";
+                        cout << "                                                                                     ╔║                        ║╗                             \n";
+                        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+        
+                        cout << "\033[2A";   // move cursor up into the small box
+                        cout << "\033[98C";  // move cursor horizontally to center input
+
+                    getline(cin, newName);
+
+                    // confirmation
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+                    cout << "                                                                                           ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸                 \n";
+                    cout << "                                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸             \n";
+                    cout << "                                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸               \n\n";
+
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                    cout << "                                                                                  \"" << items[itemNum - 1] << "\"\n";
+                    cout << "                                                                                   to \"" << newName << "\" ?\n";
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                    cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
+                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                    cout << "                                                                                                ╔════╗                              \n";
+                    cout << "                                                                                               ╔║    ║╗                             \n";
+                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                 
+                 
+                    cout << "\033[2A";   // move cursor up into the small box
+                    cout << "\033[98C";  // move cursor horizontally to center input
+
+                    int confirm;
+                    while (true) {
+                        cin >> confirm;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                    }
+                    cin.ignore(1000, '\n');
+
+                    if (confirm == 1) {
+                        if (items[itemNum - 1].find("[DONE]") != string::npos)
+                            items[itemNum - 1] = "[DONE] " + newName;
+                        else
+                            items[itemNum - 1] = newName;
+
+                            // confirmation
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+
+                            cout << "                                                                                  ╻╺┳╸┏━╸┏┳┓   ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸╺┳┓╻         \n";
+                            cout << "                                                                                  ┃ ┃ ┣╸ ┃┃┃   ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃╹      \n";
+                            cout << "                                                                                  ╹ ╹ ┗━╸╹ ╹   ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛╹          \n\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                        
+
+                    
+                    } else {
+                        cout << "Rename cancelled.\n";
+                                                   
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+
+                            cout << "                                                                           ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓         \n";
+                            cout << "                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n";
+                            cout << "                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛      \n\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                    }
+                   
+                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    cin.get();
+                }
+
+                // -------- SUB 2: edit descriptions (edit/add/delete) --------
+                else if (subChoice == 2) {
+                    while (true) {
+                        system("cls");
+                        headerEditList();
+                        
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+                        cout << "                                                                                 Descriptions for item: " << items[itemNum - 1] << "\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+
+                         // show current descriptions
+                        printDescriptionsForItem(descriptions, itemNum);
+
+                        
+                        cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n";
+                        cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                \n";
+                        cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛          \n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                        cout << "                                                                                  [1] ✏️ EDIT DESCRIPTION TEXT\n";
+                        cout << "                                                                                  [2] 📝 ADD NEW DESCRIPTION\n";
+                        cout << "                                                                                  [3] 🗑️ DELETE A DESCRIPTION\n";
+                        cout << "                                                                                  [4] ↩️ BACK\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                        cout << "                                                                                                ╔════╗                              \n";
+                        cout << "                                                                                               ╔║    ║╗                             \n";
+                        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+
+                        cout << "\033[2A";   // move cursor up into the small box
+                        cout << "\033[98C";  // move cursor horizontally to center input
+
+                        int descChoice;
+                        while (true) {
+                            cin >> descChoice;
+                            if (!cin.fail()) break;
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                        }
+                        cin.ignore(1000, '\n');
+
+                        if (descChoice == 4) break;
+
+                        // ensure vector exists
+                        if ((int)descriptions.size() <= itemNum - 1)
+                            descriptions.resize(itemNum);
+
+                        // ---- 2.1 edit desc text (with confirmation) ----
+                        if (descChoice == 1) {
+                            if (descriptions[itemNum - 1].empty()) {
+                                cout << "No descriptions to edit.\n";
+                                cout << "Press Enter to continue...";
+                                cin.get();
+                                continue;
+                            }
+
+                            int dn;
+
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+                           
+
+                            cout << "                                                                 ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓\n";
+                            cout << "                                                                 ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛ \n";
+                            cout << "                                                                 ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸╸\n\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+                            while (true) {
+                                cin >> dn;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                            }
+                            cin.ignore(1000, '\n');
+
+                            if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
+                                cout << "Invalid description number.\n";
+                                cout << "Press Enter to continue...";
+                                cin.get();
+                                continue;
+                            }
+
+                            string newDesc;
+
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+                      
+                    
+                                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻               \n";
+                                cout << "                                                                               ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫         \n";
+                                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹             \n\n";
+
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+
+                                cout << "                                                                                      ╔════════════════════════╗                              \n";
+                                cout << "                                                                                     ╔║                        ║╗                             \n";
+                                cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+                          
+                                cout << "\033[2A";   // move cursor up into the small box
+                                cout << "\033[98C";  // move cursor horizontally to center input
+
+                            getline(cin, newDesc);
+
+
+                            // confirmation
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+                           
+
+                            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                            cout << "                                                                                  Change description to:\n";
+                            cout << "                                                                                    \"" << newDesc << "\" ?\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+                            int c;
+                            while (true) {
+                                cin >> c;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                            }
+                            cin.ignore(1000, '\n');
+
+                            if (c == 1) {
+                                descriptions[itemNum - 1][dn - 1] = newDesc;
+                              
+
+                                                                
+                                system("cls");
+                                headerEditList();
+                                printDescriptionsForItem(descriptions, itemNum);
+                               
+
+
+                                cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓        \n";
+                                cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃     \n";
+                                cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛     \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+
+                            } else {
+                                cout << "Edit cancelled.\n";
+
+                                system("cls");
+                                headerEditList();
+                                printDescriptionsForItem(descriptions, itemNum);
+                                
+
+
+                                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                                cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
+                                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+
+                            }
+                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            cin.get();
+                        }
+
+                        // ---- 2.2 add new desc (no confirm needed) ----
+                        else if (descChoice == 2) {
+                            string nd;
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+
+
+                            cout << "                                                                       ┏━┓╺┳┓╺┳┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻           \n";
+                            cout << "                                                                       ┣━┫ ┃┃ ┃┃   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫           \n";
+                            cout << "                                                                       ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹          \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+
+                            cout << "                                                                                      ╔════════════════════════╗                              \n";
+                            cout << "                                                                                     ╔║                        ║╗                             \n";
+                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+                         
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+                            getline(cin, nd);
+
+                            if (!nd.empty()) {
+                                descriptions[itemNum - 1].push_back(nd);
+
+                                // XP for adding description (same as before)
+                                addClassXP(1, gamificationEnabled, playerXP, playerLevel,
+                                        playerClass, assassinStreak, assassinStacks,
+                                        wizardCounter, archerStreak, tankStacks);
+
+                                system("cls");
+                                headerEditList();
+                                printDescriptionsForItem(descriptions, itemNum);
+
+
+                                cout << "                                                                            ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━┓╺┳┓╺┳┓┏━╸╺┳┓        \n";
+                                cout << "                                                                             ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣━┫ ┃┃ ┃┃┣╸  ┃┃    \n";
+                                cout << "                                                                            ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹ ╹╺┻┛╺┻┛┗━╸╺┻┛    \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+                            }
+                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+
+                                
+                            cin.get();
+                        }
+
+                        // ---- 2.3 delete description (with confirmation) ----
+                        else if (descChoice == 3) {
+                            if (descriptions[itemNum - 1].empty()) {
+                                cout << "No descriptions to delete.\n";
+                                cout << "Press Enter to continue...";
+                                cin.get();
+                                continue;
+                            }
+
+                            int dn;
+
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+                           
+
+                            cout << "                                                  ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸    \n";
+                            cout << "                                                  ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸      \n";
+                            cout << "                                                  ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸    \n\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                               \n";
+                            cout << "                                                                                                ╔════╗                                                                    \n";
+                            cout << "                                                                                               ╔║    ║╗                                                                 \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                                                              \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+                            while (true) {
+                                cin >> dn;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                            }
+                            cin.ignore(1000, '\n');
+
+                            if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
+                                cout << "Invalid description number.\n";
+                                cout << "Press Enter to continue...";
+                                cin.get();
+                                continue;
+                            }
+
+                            string toDelete = descriptions[itemNum - 1][dn - 1];
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+
+                            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                            cout << "                                                                                      Delete this description?\n";
+                            cout << "                                                                                       \"" << toDelete << "\"\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+                            int c;
+                            while (true) {
+                                cin >> c;
+                                if (!cin.fail()) break;
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                            }
+                            cin.ignore(1000, '\n');
+
+                            if (c == 1) {
+                                descriptions[itemNum - 1].erase(
+                                    descriptions[itemNum - 1].begin() + (dn - 1)
+                                );
+
+                                 system("cls");
+                                 headerEditList();
+                                 printDescriptionsForItem(descriptions, itemNum);
+
+
+                                cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓        \n";
+                                cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃    \n";
+                                cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛    \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                cout << "Description deleted.\n";
+                            } else {
+
+                                 system("cls");
+                                 headerEditList();
+                                 printDescriptionsForItem(descriptions, itemNum);
+
+                                cout << "                                                                        ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                                cout << "                                                                         ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
+                                cout << "                                                                        ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
+                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                             
+                            }
+                                 cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            cin.get();
+                        }
+                    } // end desc submenu
+                }
+
+                // -------- SUB 3: delete whole item (with confirmation) --------
+                else if (subChoice == 3) {
+
+                            system("cls");
+                            headerEditList();
+                            printDescriptionsForItem(descriptions, itemNum);
+
+                            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                            cout << "                                                                                  You are about to DELETE item:\n";
+                            cout << "                                                                                  \"" << items[itemNum - 1] << "\"\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n";
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+        
+                  
+
+                    int confirmDel;
+                    while (true) {
+                        cin >> confirmDel;
+                        if (!cin.fail()) break;
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                    }
+                    cin.ignore(1000, '\n');
+
+                    if (confirmDel == 1) {
+                        items.erase(items.begin() + (itemNum - 1));
+                        if (itemNum - 1 < (int)descriptions.size()) {
+                            descriptions.erase(descriptions.begin() + (itemNum - 1));
+                        }
+
+                        // XP for deleting item (keep your existing call)
+                        addClassXP(2, gamificationEnabled, playerXP, playerLevel,
+                                playerClass, assassinStreak, assassinStacks,
+                                wizardCounter, archerStreak, tankStacks);
+
+                        system("cls");
+                        headerEditList();
+                        printListPreviewForEdit(items, descriptions);
+
+
+                        cout << "                                                                                  ╻╺┳╸┏━╸┏┳┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓        \n";
+                        cout << "                                                                                  ┃ ┃ ┣╸ ┃┃┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃    \n";
+                        cout << "                                                                                  ╹ ╹ ┗━╸╹ ╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛    \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+                        
+                        itemDeleted = true;
+                    } else {
+                       
+
+                        system("cls");
+                        headerEditList();
+                        printListPreviewForEdit(items, descriptions);
+
+
+                        cout << "                                                                            ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                        cout << "                                                                             ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
+                        cout << "                                                                            ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛   \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                    }
+
+                        cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    cin.get();
+                    break;  // leave item edit menu
+                }
+
+                else {
+                    cout << "Invalid option.\n";
+                    cout << "Press Enter to continue...";
+                    cin.get();
+                }
+            } // end while item edit menu
+
+            if (itemDeleted) {
+                // go back to main edit loop with updated list
+                continue;
+            }
         }
+
 
         // ============================================
         // OPTION 3 — DELETE ITEM
         // ============================================
         else if (editChoice == 3) {
+
+            system("cls");
+            headerEditList();
+            printListPreviewForEdit(items, descriptions);
+
 
             if (items.size() == 0) {
                 cout << "\nNo items to delete.\n";
@@ -3875,8 +4684,24 @@ void editList(
                 continue;
             }
 
+
             int delNum;
-            cout << "\nEnter item number to delete: ";
+          
+
+                            cout << "                                                        ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸               \n";
+                            cout << "                                                        ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n";
+                            cout << "                                                        ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸             \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                        
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+
             while (true)
             {
                 cin >> delNum;
@@ -3896,6 +4721,65 @@ void editList(
                 continue;
             }
 
+            // ==========================
+            // CONFIRMATION UI
+            // ==========================
+            system("cls");
+            headerEditList();
+            printListPreviewForEdit(items, descriptions);
+
+
+            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                  You chose to DELETE item:\n";
+            cout << "                                                                                      -> " << items[delNum - 1] << "\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                      [1] 🗑️ CONFIRM DELETE\n";
+            cout << "                                                                                      [2] 🔙 CANCEL\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+            int confirmDel;
+            while (true) {
+                cout << "\033[2A\033[98C";
+                cin >> confirmDel;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
+            cin.ignore(1000, '\n');
+
+            if (confirmDel != 1) {
+
+
+                        system("cls");
+                        headerEditList();
+                        printListPreviewForEdit(items, descriptions);
+                        
+
+
+                        cout << "                                                                            ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                        cout << "                                                                             ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
+                        cout << "                                                                            ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛   \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+
+
+
+                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                cin.get();
+                continue;
+            }
+
             // Remove item + its descriptions
             items.erase(items.begin() + (delNum - 1));
             if (delNum - 1 < (int)descriptions.size()) {
@@ -3904,11 +4788,19 @@ void editList(
 
             // Give XP for deleting an item (small consolation)
             addClassXP(2, gamificationEnabled, playerXP, playerLevel,
-           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+            playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
 
 
-            cout << "Item deleted!\n";
-            cout << "Press Enter to continue...";
+            system("cls");
+            headerEditList();
+            printListPreviewForEdit(items, descriptions);
+
+                        cout << "                                                                                    ╻╺┳╸┏━╸┏┳┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓        \n";
+                        cout << "                                                                                    ┃ ┃ ┣╸ ┃┃┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃    \n";
+                        cout << "                                                                                    ╹ ╹ ┗━╸╹ ╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛  \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+             cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
             cin.get();
             continue;
         }
@@ -3926,7 +4818,25 @@ void editList(
             }
 
             int markNum;
-            cout << "\nEnter item number to mark/unmark: ";
+
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+                            cout << "                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏┳┓┏━┓┏━┓╻┏     ╻   ╻ ╻┏┓╻┏┳┓┏━┓┏━┓╻┏                \n";
+                            cout << "                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃┃┃┣━┫┣┳┛┣┻┓   ┏┛   ┃ ┃┃┗┫┃┃┃┣━┫┣┳┛┣┻┓           \n";
+                            cout << "                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╹ ╹╹ ╹╹┗╸╹ ╹   ╹    ┗━┛╹ ╹╹ ╹╹ ╹╹┗╸╹ ╹           \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                        
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+          
+
             while (true)
             {
                 cin >> markNum;
@@ -3936,7 +4846,7 @@ void editList(
                 cout << "Invalid input. Please try again.\n";
             }
 
-            cin.ignore();
+               cin.ignore();
 
             // Validate
             if (markNum < 1 || markNum > (int)items.size()) {
@@ -3946,18 +4856,74 @@ void editList(
                 continue;
             }
 
+            // ==========================
+            // CONFIRMATION UI
+            // ==========================
+            system("cls");
+            headerEditList();
+            printListPreviewForEdit(items, descriptions);
+
+            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                  Toggle DONE status for:\n";
+            cout << "                                                                                      -> " << items[markNum - 1] << "\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                      [1] ✅ CONFIRM TOGGLE\n";
+            cout << "                                                                                      [2] 🔙 CANCEL\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+            int confirmMark;
+            while (true) {
+                cout << "\033[2A\033[98C";
+                cin >> confirmMark;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
+            cin.ignore(1000, '\n');
+
+            if (confirmMark != 1) {
+
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+                        cout << "                                                                            ┏━┓┏━╸╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                        cout << "                                                                            ┣━┫┃   ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n";
+                        cout << "                                                                            ╹ ╹┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛  \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                
+                
+                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                cin.get();
+                continue;
+            }
+
             string &target = items[markNum - 1];
 
             // Toggle DONE tag
-            if (target.find("[DONE]") != string::npos) {
+            if (target.find("✅") != string::npos) {
                 if (target.size() >= 7) target = target.substr(7);
                 cout << "Item unmarked.\n";
+
             } else {
-                target = "[DONE] " + target;
+                target = "✅ " + target;
 
                 // Give XP for marking item done
                 addClassXP(8, gamificationEnabled, playerXP, playerLevel,
-           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+                playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
+
+        
+
 
 
                 // If this marking finishes the entire list give a completion bonus
@@ -3968,10 +4934,20 @@ void editList(
            playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);// completion bonus
                 }
 
-                cout << "Item marked as DONE.\n";
+                system("cls");
+                headerEditList();
+                printListPreviewForEdit(items, descriptions);
+
+                cout << "                                                                            ╻╺┳╸┏━╸┏┳┓   ┏┳┓┏━┓┏━┓╻┏ ┏━╸╺┳┓   ┏━┓┏━┓   ╺┳┓┏━┓┏┓╻┏━╸        \n";
+                cout << "                                                                            ┃ ┃ ┣╸ ┃┃┃   ┃┃┃┣━┫┣┳┛┣┻┓┣╸  ┃┃   ┣━┫┗━┓    ┃┃┃ ┃┃┗┫┣╸    \n";
+                cout << "                                                                            ╹ ╹ ┗━╸╹ ╹   ╹ ╹╹ ╹╹┗╸╹ ╹┗━╸╺┻┛   ╹ ╹┗━┛   ╺┻┛┗━┛╹ ╹┗━╸  \n\n";
+                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                
+                
+                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
             }
 
-            cout << "Press Enter to continue...";
+          
             cin.get();
             continue;
         }
@@ -3989,7 +4965,25 @@ void editList(
             }
 
             int a, b;
-            cout << "\nEnter first item number: ";
+
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+                            cout << "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸╻┏━┓┏━┓╺┳╸   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                \n";
+                            cout << "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┃┣┳┛┗━┓ ┃    ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
+                            cout << "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹  ╹╹┗╸┗━┛ ╹    ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                        
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+           
             while (true)
             {
                 cin >> a;
@@ -3998,7 +4992,24 @@ void editList(
                 cin.ignore(1000 , '\n');
                 cout << "Invalid input. Please try again.\n";
             }
-            cout << "Enter second item number: ";
+
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+                            cout << "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━┓┏━╸┏━╸┏━┓┏┓╻╺┳┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                \n";
+                            cout << "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗━┓┣╸ ┃  ┃ ┃┃┗┫ ┃┃   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n";
+                            cout << "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━┛┗━╸┗━╸┗━┛╹ ╹╺┻┛   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸       \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";       
+                        
+                            cout << "                                                                                                ╔════╗                              \n";
+                            cout << "                                                                                               ╔║    ║╗                             \n";
+                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
             while (true)
             {
                 cin >> b;
@@ -4007,12 +5018,67 @@ void editList(
                 cin.ignore(1000 , '\n');
                 cout << "Invalid input. Please try again.\n";
             }
+
             cin.ignore();
 
             // Validate swap positions
             if (a < 1 || a > (int)items.size() || b < 1 || b > (int)items.size()) {
                 cout << "\nInvalid item numbers!\n";
                 cout << "Press Enter to continue...";
+                cin.get();
+                continue;
+            }
+
+            // ==========================
+            // CONFIRMATION UI
+            // ==========================
+            system("cls");
+            headerEditList();
+
+            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                  You are about to SWAP:\n";
+            cout << "                                                                                      A) " << items[a - 1] << "\n";
+            cout << "                                                                                      B) " << items[b - 1] << "\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                      [1] 🔁 CONFIRM SWAP\n";
+            cout << "                                                                                      [2] 🔙 CANCEL\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+            int confirmSwap;
+            while (true) {
+                cout << "\033[2A\033[98C";
+                cin >> confirmSwap;
+                if (!cin.fail()) break;
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
+            cin.ignore(1000, '\n');
+
+            if (confirmSwap != 1) {
+               
+
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+                        cout << "                                                                               ┏━┓╻ ╻┏━┓┏━┓   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
+                        cout << "                                                                               ┗━┓┃╻┃┣━┫┣━┛   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃  \n";
+                        cout << "                                                                               ┗━┛┗┻┛╹ ╹╹     ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛ \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+
+
+                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
                 cin.get();
                 continue;
             }
@@ -4043,8 +5109,18 @@ void editList(
                 descriptions[b - 1] = tempD;
             }
 
-            cout << "Items swapped!\n";
-            cout << "Press Enter to continue...";
+
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+                        cout << "                                                                                  ╻╺┳╸┏━╸┏┳┓┏━┓   ┏━┓╻ ╻┏━┓┏━┓┏━┓┏━╸╺┳┓        \n";
+                        cout << "                                                                                  ┃ ┃ ┣╸ ┃┃┃┗━┓   ┗━┓┃╻┃┣━┫┣━┛┣━┛┣╸  ┃┃   \n";
+                        cout << "                                                                                  ╹ ╹ ┗━╸╹ ╹┗━┛   ┗━┛┗┻┛╹ ╹╹  ╹  ┗━╸╺┻┛  \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+
+            
+            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
             cin.get();
             continue;
         }
@@ -4056,238 +5132,65 @@ void editList(
 
             string newName;
             cout << "\nEnter new list name: ";
+
+                            system("cls");
+                            headerEditList();
+                            printListPreviewForEdit(items, descriptions);
+
+
+                            cout << "                                                                      ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸           \n";
+                            cout << "                                                                      ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸           \n";
+                            cout << "                                                                      ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸       \n\n";
+
+                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+
+                            cout << "                                                                                      ╔════════════════════════╗                              \n";
+                            cout << "                                                                                     ╔║                        ║╗                             \n";
+                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+                         
+
+                            cout << "\033[2A";   // move cursor up into the small box
+                            cout << "\033[98C";  // move cursor horizontally to center input
+
+
+
+
+
             getline(cin >> ws, newName);
 
             name_of_list[index] = newName;
 
-            cout << "List renamed!\n";
-            cout << "Press Enter to continue...";
+
+
+                    system("cls");
+                    headerEditList();
+                    printListPreviewForEdit(items, descriptions);
+
+                        cout << "                                                                                  ╻  ╻┏━┓╺┳╸   ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸╺┳┓        \n";
+                        cout << "                                                                                  ┃  ┃┗━┓ ┃    ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃ \n";
+                        cout << "                                                                                  ┗━╸╹┗━┛ ╹    ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛ \n\n";
+                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+           
+            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
             cin.get();
             continue;
         }
 
+
         // ============================================
-        // OPTION 7 — EDIT ITEM DESCRIPTIONS
+        // OPTION 7 — EXIT
         // ============================================
-        else if (editChoice == 7) {
-
-            if (items.size() == 0) {
-                cout << "\nNo items to edit descriptions for.\n";
-                cout << "Press Enter to continue...";
-                cin.get();
-                continue;
-            }
-
-            int itemNum;
-            cout << "\nEnter item number to edit descriptions: ";
-            
-            while (true)
-            {
-                cin >> itemNum;
-                if (!cin.fail()) break;
-                cin.clear();
-                cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
-            }
-            cin.ignore();
-
-            // Validate index
-            if (itemNum < 1 || itemNum > (int)items.size()) {
-                cout << "\nInvalid item number!\n";
-                cout << "Press Enter to continue...";
-                cin.get();
-                continue;
-            }
-
-            // Ensure descriptions exist for all items
-            if ((int)descriptions.size() < (int)items.size()) {
-                int old = descriptions.size();
-                descriptions.resize(items.size());
-                for (int i = old; i < (int)descriptions.size(); i++)
-                    descriptions[i] = vector<string>();
-            }
-
-            // -----------------------------------------
-            // DESCRIPTIONS EDIT SUB-MENU
-            // -----------------------------------------
-            while (true) {
-                cout << "\nDescriptions for item: " << items[itemNum - 1] << "\n";
-
-                // Display current descriptions
-                if (descriptions[itemNum - 1].size() == 0) {
-                    cout << "(no descriptions)\n";
-                } else {
-                    for (int d = 0; d < (int)descriptions[itemNum - 1].size(); d++) {
-                        cout << "  " << d + 1 << ". " << descriptions[itemNum - 1][d] << "\n";
-                    }
-                }
-
-                // Description editing options
-                cout << "\n 1. Add new description\n";
-                cout << " 2. Edit a description\n";
-                cout << " 3. Delete a description\n";
-                cout << " 4. Clear all descriptions\n";
-                cout << " 5. Reorder descriptions (Swap)\n";
-                cout << " 0. Return\n";
-
-                int opt;
-                cout << "Choose: ";
-                while (true)
-                {
-                    cin >> opt;
-                    if (!cin.fail()) break;
-                    cin.clear();
-                    cin.ignore(1000 , '\n');
-                    cout << "Invalid input. Please try again.\n";
-                }
-                cin.ignore();
-
-                if (opt == 0) break;
-
-                // Add description
-                if (opt == 1) {
-                    string nd;
-                    cout << "Enter new description: ";
-                    getline(cin, nd);
-                    int di = descriptions[itemNum - 1].size();
-                    descriptions[itemNum - 1].resize(di + 1);
-                    descriptions[itemNum - 1][di] = nd;
-
-                    // Give XP for adding a description
-                    addClassXP(1, gamificationEnabled, playerXP, playerLevel,
-           playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
-
-                }
-
-                // Edit description
-                else if (opt == 2) {
-                    if (descriptions[itemNum - 1].size() == 0) {
-                        cout << "No descriptions to edit.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    int dn;
-                    cout << "Enter description number to edit: ";
-                    while (true)
-                    {
-                        cin >> dn;
-                        if (!cin.fail()) break;
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                    }
-                    cin.ignore();
-
-                    if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
-                        cout << "Invalid description number.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    string updated;
-                    cout << "New text: ";
-                    getline(cin, updated);
-                    descriptions[itemNum - 1][dn - 1] = updated;
-                }
-
-                // Delete description
-                else if (opt == 3) {
-                    if (descriptions[itemNum - 1].size() == 0) {
-                        cout << "No descriptions to delete.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    int dn;
-                    cout << "Enter description number to delete: ";
-                    while (true)
-                    {
-                        cin >> dn;
-                        if (!cin.fail()) break;
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                    }
-                    cin.ignore();
-
-                    if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
-                        cout << "Invalid description number.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    descriptions[itemNum - 1].erase(descriptions[itemNum - 1].begin() + (dn - 1));
-                }
-
-                // Clear all descriptions
-                else if (opt == 4) {
-                    descriptions[itemNum - 1].clear();
-                }
-
-                // Swap descriptions
-                else if (opt == 5) {
-                    if (descriptions[itemNum - 1].size() < 2) {
-                        cout << "Not enough descriptions to reorder.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    int a, b;
-                    cout << "Enter first description number: ";
-                    while (true)
-                    {
-                        cin >> a;
-                        if (!cin.fail()) break;
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                    }
-                    cin.ignore();
-
-                    cout << "Enter second description number: ";
-                    while (true)
-                    {
-                        cin >> b;
-                        if (!cin.fail()) break;
-                        cin.clear();
-                        cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
-                    }
-                    cin.ignore();
-
-                    if (a < 1 || a > (int)descriptions[itemNum - 1].size() ||
-                        b < 1 || b > (int)descriptions[itemNum - 1].size()) {
-                        cout << "Invalid description numbers.\n";
-                        cout << "Press Enter to continue...";
-                        cin.get();
-                        continue;
-                    }
-
-                    string temp = descriptions[itemNum - 1][a - 1];
-                    descriptions[itemNum - 1][a - 1] = descriptions[itemNum - 1][b - 1];
-                    descriptions[itemNum - 1][b - 1] = temp;
-                }
-
-                cout << "Action completed. Press Enter...";
-                cin.get();
-            }
-        }
 
         // Exit editList()
-        else if (editChoice == 9) {
+        else if (editChoice == 7) {
             break;
         }
 
         // Invalid option
         else {
             cout << "\nInvalid option.\n";
-            cout << "Press Enter to continue...";
+            cout << endl;
+            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
             cin.get();
             continue;
         }
@@ -4295,7 +5198,21 @@ void editList(
     } // end while
 }
 
+void headerDeleteList() {
 
+        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
+        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
+        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
+        cout << "                                                             ██████╗ ███████╗██╗     ███████╗████████╗███████╗    ██╗     ██╗███████╗████████╗   \n";
+        cout << "                                                             ██╔══██╗██╔════╝██║     ██╔════╝╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══╝     \n";
+        cout << "                                                             ██║  ██║█████╗  ██║     █████╗     ██║   █████╗      ██║     ██║███████╗   ██          \n";
+        cout << "                                                             ██║  ██║██╔══╝  ██║     ██╔══╝     ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n";
+        cout << "                                                             ██████╔╝███████╗███████╗███████╗   ██║   ███████╗    ███████╗██║███████║   ██║         \n";
+        cout << "                                                             ╚═════╝ ╚══════╝╚══════╝╚══════╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝           \n";
+        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+    
+ 
+}
 
 // -----------------------------
 // DELETE LIST
@@ -4327,22 +5244,40 @@ void deleteList(
         return;
     }
 
-    cout << "\n===== DELETE A LIST =====\n";
+    system("cls");
+    headerDeleteList();
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
 
     // -------------------------------
     // DISPLAY ALL LISTS
     // -------------------------------
     for (int i = 0; i < (int)name_of_list.size(); i++) {
-        cout << i + 1 << ". " << name_of_list[i] << endl;
+            cout << "                                                                                 " << i + 1 << ". " << name_of_list[i] << endl;
+
     }
 
-    cout << "\n0. Cancel / Return to Main Menu\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                      ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ╻  ╻┏━┓╺┳╸   ╺┳╸┏━┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸                 \n";
+            cout << "                                                                      ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃  ┃┗━┓ ┃     ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n";
+            cout << "                                                                      ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━╸╹┗━┛ ╹     ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸       \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                        [0] ↩️ BACK TO MAIN MENU\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+
 
     // -------------------------------
     // USER SELECTS LIST TO DELETE
     // -------------------------------
     int choice;
-    cout << "\nSelect list to delete: ";
     while (true)
     {
         cin >> choice;
@@ -4355,10 +5290,6 @@ void deleteList(
 
     // User cancels deletion
     if (choice == 0) {
-        cout << "Returning to main menu...\n";
-        cout << "Press Enter to continue...";
-        cin.ignore();
-        cin.get();
         return;
     }
 
@@ -4377,14 +5308,47 @@ void deleteList(
     // DELETION CONFIRMATION
     // -------------------------------
     char confirm;
-    cout << "Are you sure you want to delete \""
-         << name_of_list[index] << "\"? (y/n): ";
+    
+            system("cls");
+            headerDeleteList();
+            
+            cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
+            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
+            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                               Are you sure you want to delete \"";
+            cout << name_of_list[index] << " ";
+            cout << endl;
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                           [1] 🗑️ CONFIRM\n";
+            cout << "                                                                                           [2] 🔙 CANCEL\n";
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            cout << "                                                                                                ╔════╗                              \n";
+            cout << "                                                                                               ╔║    ║╗                             \n";
+            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+
+            cout << "\033[2A";   // move cursor up into the small box
+            cout << "\033[98C";  // move cursor horizontally to center input
+
+
+
+      
     cin >> confirm;
 
     // If user cancels, stop deletion
-    if (confirm != 'y' && confirm != 'Y') {
-        cout << "Deletion cancelled.\n";
-        cout << "Press Enter to continue...";
+    if (confirm != '1' && confirm != '1') {
+
+            system("cls");
+            headerDeleteList();
+
+            cout << "                                                                        ╺┳┓┏━╸╻  ┏━╸╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓                \n";
+            cout << "                                                                         ┃┃┣╸ ┃  ┣╸  ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃          \n";
+            cout << "                                                                        ╺┻┛┗━╸┗━╸┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛       \n\n";
+
+            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        
+        cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
         cin.ignore();
         cin.get();
         return;
@@ -4481,8 +5445,18 @@ void deleteList(
     list_deadlines  = newDeadlines;
     list_priorities = newPriorities;
 
-    cout << "\nList deleted successfully!\n";
-    cout << "Press Enter to continue...";
+    
+        system("cls");
+        headerDeleteList();
+
+        cout << "                                                                ╻  ╻┏━┓╺┳╸   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻                 \n";
+        cout << "                                                                ┃  ┃┗━┓ ┃     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛          \n";
+        cout << "                                                                ┗━╸╹┗━┛ ╹    ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹        \n\n";
+
+         cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        
+        cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+
     cin.ignore();
     cin.get();
 }
@@ -5076,8 +6050,18 @@ int main() {
              updatedate(cmonth, cdate, cyear);
              break;
             case 8:
-                gamificationEnabled = !gamificationEnabled;
-                cout << "\nGamification is now " << (gamificationEnabled ? "ENABLED" : "DISABLED") << ".\n";
+               gamificationEnabled = !gamificationEnabled;
+                cout << "\033[0B";   // move DOWN 2 lines (you labeled this UP, but 0B is down)
+                cout << "\033[80C";  // move RIGHT 80 columns (adjust as needed)
+
+                cout << "\033[1;97;" << (gamificationEnabled ? "42" : "41") << "m"
+                    << "  ✔  GAMIFICATION IS NOW:  "
+                    << (gamificationEnabled ? "ENABLED" : "DISABLED")
+                    << "  \033[0m\n";
+
+
+           
+
 
                 break;
 
