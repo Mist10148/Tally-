@@ -4717,9 +4717,7 @@ int main() {
             case 8:
                 gamificationEnabled = !gamificationEnabled;
                 cout << "\nGamification is now " << (gamificationEnabled ? "ENABLED" : "DISABLED") << ".\n";
-                cout << "Press Enter to continue...";
-                cin.ignore();
-                cin.get();
+
                 break;
 
             case 9:
