@@ -34,12 +34,8 @@ bool ownsArcher = false;
 bool ownsTank = false;
 
 
-
-
-
-
-
-
+// Achievement system global flag(for saving unlocked characters and have them as an achievement)
+bool achievementsNeedUpdate = false;
 
 
 // -------------------------
@@ -214,12 +210,12 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         int cost = 0;
         PlayerClass chosen;
 
-        if (c == 2) { chosen = HERO_CLASS; cost = 500; }
-        else if (c == 3) { chosen = GAMBLER_CLASS; cost = 300; }
-        else if (c == 4) { chosen = ASSASSIN_CLASS; cost = 400; }
-        else if (c == 5) { chosen = WIZARD_CLASS; cost = 700; }
-        else if (c == 6) { chosen = ARCHER_CLASS; cost = 600; }
-        else if (c == 7) { chosen = TANK_CLASS; cost = 500; }
+        if (c == 2) { chosen = HERO_CLASS; cost = 5; }
+        else if (c == 3) { chosen = GAMBLER_CLASS; cost = 3; }
+        else if (c == 4) { chosen = ASSASSIN_CLASS; cost = 4; }
+        else if (c == 5) { chosen = WIZARD_CLASS; cost = 7; }
+        else if (c == 6) { chosen = ARCHER_CLASS; cost = 6; }
+        else if (c == 7) { chosen = TANK_CLASS; cost = 5; }
         else { continue; }
 
         // If already own → equip it
@@ -232,6 +228,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         {
             playerClass = chosen;
             cout << "Class equipped!\n";
+            
             system("pause");
             continue;
         }
@@ -257,6 +254,8 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
 
         cout << "Class purchased and equipped!\n";
         system("pause");
+        achievementsNeedUpdate = true;
+
     }
 }
 
@@ -281,7 +280,7 @@ void addClassXP(
     switch (playerClass) {
 
     case HERO_CLASS:
-        finalXP += 25;  
+        finalXP += 25;
         break;
 
     case GAMBLER_CLASS: {
@@ -297,118 +296,101 @@ void addClassXP(
         break;
     }
 
-    case ASSASSIN_CLASS: {    
+    case ASSASSIN_CLASS: {
         assassinStreak++;
 
         if (assassinStreak >= 3) {
-            if (assassinStacks < 10) assassinStacks++;
+            if (assassinStacks < 10)
+                assassinStacks++;
+
             int percent = 5 * assassinStacks;
             finalXP += (baseXP * percent) / 100;
         }
         break;
-}
+    }
 
-
-    case WIZARD_CLASS: {   
-        wizardCounter++;
+    case WIZARD_CLASS: {
+        wizardCounter++;   // Count every wizard action
 
         int wisdomBonus = playerLevel * 5;
 
         if (wizardCounter % 5 == 0) {
-            finalXP += wisdomBonus * 2;  // Crit
+            finalXP += wisdomBonus * 2;  // Critical spell
         }
         else if (wizardCounter % 3 == 0) {
             finalXP += wisdomBonus;      // Spell combo
         }
 
-        if (wizardCounter >= 5) wizardCounter = 0;
+        // Reset AFTER the bonuses are applied to avoid skipping
+        if (wizardCounter >= 5)
+            wizardCounter = 0;
 
         break;
     }
 
     case ARCHER_CLASS: {
 
-        // Base hit chance
         float hitChance = 80.0f + (playerLevel * 0.5f);
         if (hitChance > 97.0f) hitChance = 97.0f;
 
         int roll = rand() % 100;
 
         if (roll < hitChance) {
-
-            // On hit, streak grows
             archerStreak++;
-            if (archerStreak > 15) archerStreak = 15;  // Streak cap raised!
+            if (archerStreak > 15)
+                archerStreak = 15;
 
-            // (Damage = 8% per streak + flat 3 XP per hit)
+            // Streak damage XP
             int bonus = (baseXP * (archerStreak * 8)) / 100 + (3 + archerStreak);
             finalXP += bonus;
 
-            // HEADSHOT CRIT
-            int headshotChance = hitChance * 0.20f;  // 20% of hitChance = crit
-            if (headshotChance > 30) headshotChance = 30; // Crit cap 30%
+            // Headshot crit
+            int headshotChance = hitChance * 0.20f;
+            if (headshotChance > 30) headshotChance = 30;
 
             if (roll < headshotChance) {
                 int crit = baseXP * 2 + (archerStreak * 3);
                 finalXP += crit;
-
-                cout << " **HEADSHOT!! (" << crit << " EXTRA XP)** ";
             }
 
-            // PERFECT SHOT
-            // 5% chance to trigger a massive burst
+            // Perfect shot burst
             if (rand() % 100 < 5) {
                 int superCrit = baseXP * 4 + archerStreak * 10;
                 finalXP += superCrit;
-
-                cout << " ***PERFECT SHOT!!! (+" << superCrit << " XP)*** ";
             }
+        }
+        else {
+            // Soft reset instead of full reset for smoother streaks
+            archerStreak = max(0, archerStreak - 2);
+        }
 
-    } else {
-        // Miss means full reset
-        archerStreak = 0;
+        break;
     }
 
-    break;
-}
     case TANK_CLASS: {
-
-        // Gain shield momentum every action
         tankStacks++;
 
-        // Max stacks depend on level (strong early, weaker late)
         int maxStacks = 20 - playerLevel;
-
-        // Tank weakest state
         if (maxStacks < 3) maxStacks = 3;
 
-        // Clamp tankStacks to maxStacks
         if (tankStacks > maxStacks)
             tankStacks = maxStacks;
 
-        // XP BONUS CALCULATION
-        // 4% per stack + small flat bonus
         int percentBonus = (baseXP * (tankStacks * 4)) / 100;
         int flatBonus = tankStacks / 2;
 
-        int totalBonus = percentBonus + flatBonus;
-        finalXP += totalBonus;
-
-        cout << " [Shield Momentum +" << totalBonus << " XP] ";
+        finalXP += percentBonus + flatBonus;
 
         break;
-}
-
-
-
-    default: 
-        break;
-
     }
 
+    default:
+        break;
+    }
+
+    // Apply XP to actual player XP
     addXP(finalXP, gamificationEnabled, playerXP, playerLevel);
 }
-
 
 
 // -----------------------------
@@ -758,69 +740,338 @@ void searchOrSortLists(
 
 
 
-// ----------------------------------
-// Initialize Achievement Definitions
-// ----------------------------------
+// ------------------------------------------------------------
+// Initialize All Achievement Definitions
+// (Names, Badges, Unlock Flags, XP Rewards)
+// ------------------------------------------------------------
 void initAchievements(
-    vector<string>& n,
-    vector<string>& b,
-    vector<int>& u,
-    vector<int>& x
+    vector<string>& achievementNames,      // Names of each achievement
+    vector<string>& achievementBadges,     // Badge / emoji shown when unlocked
+    vector<int>& achievementUnlocked,      // 0 = locked, 1 = unlocked
+    vector<int>& achievementXPRewards      // XP gained when unlocked
 ) {
     int i;
 
-    n.clear(); b.clear(); u.clear(); x.clear();
+    // Clear all existing data
+    achievementNames.clear();
+    achievementBadges.clear();
+    achievementUnlocked.clear();
+    achievementXPRewards.clear();
 
-    // Productivity
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Add First Item"; b[i] = "🔹"; u[i] = 0; x[i] = 10;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Add 10 Items"; b[i] = "🟩"; u[i] = 0; x[i] = 20;
+    // ============================================================
+    // PRODUCTIVITY ACHIEVEMENTS
+    // ============================================================
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Add 50 Items"; b[i] = "🟪"; u[i] = 0; x[i] = 50;
+    // Add First Item
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
 
-    // Completion
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Complete First Item"; b[i] = "🔸"; u[i] = 0; x[i] = 10;
+    achievementNames[i] = "Add First Item";
+    achievementBadges[i] = "🔹";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 10;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Complete 10 Items"; b[i] = "🟨"; u[i] = 0; x[i] = 25;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Complete 50 Items"; b[i] = "🟫"; u[i] = 0; x[i] = 50;
+    // Add 10 Items
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
 
-    // Lists
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Create First List"; b[i] = "📘"; u[i] = 0; x[i] = 10;
+    achievementNames[i] = "Add 10 Items";
+    achievementBadges[i] = "🟩";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 20;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Create 5 Lists"; b[i] = "📗"; u[i] = 0; x[i] = 25;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Create 10 Lists"; b[i] = "📕"; u[i] = 0; x[i] = 50;
+    // Add 50 Items
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
 
-    // Level Achievements
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Reach Level 3"; b[i] = "⭐"; u[i] = 0; x[i] = 20;
+    achievementNames[i] = "Add 50 Items";
+    achievementBadges[i] = "🟪";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 50;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Reach Level 5"; b[i] = "🌟"; u[i] = 0; x[i] = 30;
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "Reach Level 10"; b[i] = "🏆"; u[i] = 0; x[i] = 50;
 
-    // Streaks
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "1-Day Streak"; b[i] = "✨"; u[i] = 0; x[i] = 10;
+    // ============================================================
+    // COMPLETION ACHIEVEMENTS
+    // ============================================================
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "3-Day Streak"; b[i] = "🔥"; u[i] = 0; x[i] = 20;
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
 
-    i = n.size(); n.resize(i + 1); b.resize(i + 1); u.resize(i + 1); x.resize(i + 1);
-    n[i] = "7-Day Streak"; b[i] = "🏅"; u[i] = 0; x[i] = 40;
+    achievementNames[i] = "Complete First Item";
+    achievementBadges[i] = "🔸";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 10;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Complete 10 Items";
+    achievementBadges[i] = "🟨";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Complete 50 Items";
+    achievementBadges[i] = "🟫";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 50;
+
+
+
+    // ============================================================
+    // LIST CREATION ACHIEVEMENTS
+    // ============================================================
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Create First List";
+    achievementBadges[i] = "📘";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 10;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Create 5 Lists";
+    achievementBadges[i] = "📗";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Create 10 Lists";
+    achievementBadges[i] = "📕";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 50;
+
+
+
+    // ============================================================
+    // LEVEL ACHIEVEMENTS
+    // ============================================================
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Reach Level 3";
+    achievementBadges[i] = "⭐";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 20;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Reach Level 5";
+    achievementBadges[i] = "🌟";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 30;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Reach Level 10";
+    achievementBadges[i] = "🏆";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 50;
+
+
+
+    // ============================================================
+    // DAILY STREAK ACHIEVEMENTS
+    // ============================================================
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "1-Day Streak";
+    achievementBadges[i] = "✨";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 10;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "3-Day Streak";
+    achievementBadges[i] = "🔥";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 20;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "7-Day Streak";
+    achievementBadges[i] = "🏅";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 40;
+
+
+
+    // ============================================================
+    // CLASS UNLOCK ACHIEVEMENTS
+    // ============================================================
+
+    // Unlock ANY class
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock First Class";
+    achievementBadges[i] = "🎉";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 20;
+
+
+    // -------- Individual Class Unlocks --------
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Hero Class";
+    achievementBadges[i] = "🦸";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Gambler Class";
+    achievementBadges[i] = "🎲";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Assassin Class";
+    achievementBadges[i] = "🗡️";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Wizard Class";
+    achievementBadges[i] = "🔮";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 30;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Archer Class";
+    achievementBadges[i] = "🏹";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 30;
+
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock Tank Class";
+    achievementBadges[i] = "🛡️";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 25;
+
+
+    // -------- Unlock ALL Classes --------
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
+
+    achievementNames[i] = "Unlock All Classes";
+    achievementBadges[i] = "👑";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 100;
 }
+
 
 // ----------------------------------
 // Achievement Evaluation & Unlock
@@ -845,6 +1096,14 @@ void checkAchievements(
     int i, j, totalItems, totalCompleted, totalLists, currentDay;
     totalLists = name_of_list.size();
     totalItems = 0; totalCompleted = 0;
+    int totalClassesOwned =
+    (ownsHero ? 1 : 0) +
+    (ownsGambler ? 1 : 0) +
+    (ownsAssassin ? 1 : 0) +
+    (ownsWizard ? 1 : 0) +
+    (ownsArcher ? 1 : 0) +
+    (ownsTank ? 1 : 0);
+
 
     for (i = 0; i < (int)list_of_lists.size(); i++) {
         totalItems += list_of_lists[i].size();
@@ -869,6 +1128,7 @@ void checkAchievements(
     }
 
 for (i = 0; i < (int)achNames.size(); i++) {
+    // Skip if already unlocked
     if (achUnlocked[i]) continue;
 
     if (achNames[i] == "Add First Item" && totalItems >= 1) {
@@ -995,6 +1255,115 @@ for (i = 0; i < (int)achNames.size(); i++) {
                    playerClass, assassinStreak, assassinStacks, wizardCounter, archerStreak, tankStacks);
         continue;
     }
+
+    if (achNames[i] == "Unlock First Class" && totalClassesOwned >= 1) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    // INDIVIDUAL CLASS UNLOCKS
+    // Trigger ONLY if the player actually purchased the class.
+    if (achNames[i] == "Unlock Hero Class" && ownsHero) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Gambler Class" && ownsGambler) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Assassin Class" && ownsAssassin) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Wizard Class" && ownsWizard) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Archer Class" && ownsArcher) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Tank Class" && ownsTank) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    // UNLOCK ALL CLASSES
+    // Only triggers if ALL SIX CLASSES are purchased
+    if (achNames[i] == "Unlock All Classes" && totalClassesOwned == 6) {
+        achUnlocked[i] = 1;
+
+        cout << "\n*** Achievement Unlocked: " << achBadges[i]
+             << " " << achNames[i]
+             << " (+" << achXP[i] << " XP) ***\n";
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
 }
 
 
@@ -4359,28 +4728,130 @@ int main() {
                 cout << "\n=====================================\n";
                 cout << "         ACHIEVEMENTS & BADGES       \n";
                 cout << "=====================================\n\n";
+
+                // Display all achievements
                 for (int i = 0; i < (int)achNames.size(); i++) {
-                    cout << " " << i + 1 << ". " << achBadges[i] << " " << achNames[i];
-                    if (achUnlocked[i]) cout << "  (Unlocked)";
-                    else cout << "  (Locked)";
+                    cout << " " << i + 1 << ". "
+                        << achBadges[i] << " "
+                        << achNames[i];
+
+                    if (achUnlocked[i])
+                        cout << "  (Unlocked)";
+                    else
+                        cout << "  (Locked)";
+
                     cout << "   +" << achXP[i] << " XP\n";
                 }
+
                 cout << "\n-------------------------------------\n";
+
+                // Extra gamification info
                 if (gamificationEnabled) {
-                    cout << "Player Level : " << playerLevel << "    Player XP : " << playerXP << "\n";
-                    cout << "Streak Days  : " << streakCount << "\n";
-                    cout << "XP Progress   : " << getXPBar(playerXP) << " " << (playerXP % 100) << "%\n";
+
+                    cout << " Player Level : " << playerLevel
+                        << "    Player XP : " << playerXP << "\n";
+
+                    cout << " XP Progress  : "
+                        << getXPBar(playerXP)
+                        << " " << (playerXP % 100) << "%\n";
+
+                    
+                    // Current Class Display
+                    cout << " Current Class: ";
+                    switch (playerClass) {
+                        case DEFAULT_CLASS:  cout << "Default"; break;
+                        case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
+                        case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
+                        case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
+                        case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
+                        case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
+                        case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;
+                    }
+                    cout << "\n";
+
+
+                    // Class-Specific Details
+                    // Assassin Progress
+                    if (playerClass == ASSASSIN_CLASS) {
+                        float percent = (assassinStacks / 10.0f) * 100.0f;
+
+                        cout << " Assassin Streak : " << assassinStreak
+                            << "   Stacks: " << assassinStacks << "/10\n"
+                            << " Progress: " << getProgressBar(percent)
+                            << " " << (int)percent << "%\n";
+                    }
+
+                    // Wizard Progress
+                    if (playerClass == WIZARD_CLASS) {
+                        float percent = (wizardCounter / 5.0f) * 100.0f;
+
+                        cout << " Wizard Counter : " << wizardCounter << "/5\n"
+                            << " Progress: " << getProgressBar(percent)
+                            << " " << (int)percent << "%\n";
+                    }
+
+                    // Archer Progress
+                    if (playerClass == ARCHER_CLASS) {
+                        float percent = (archerStreak / 10.0f) * 100.0f;
+                        if (percent > 100) percent = 100;
+
+                        cout << " Archer Streak : " << archerStreak
+                            << "   Bonus: " << (archerStreak * 5) << "%\n"
+                            << " Progress: " << getProgressBar(percent)
+                            << " " << (int)percent << "%\n";
+                    }
+
+                    // Tank Progress
+                    if (playerClass == TANK_CLASS) {
+                        int maxStacks = 20 - playerLevel;
+                        if (maxStacks < 3) maxStacks = 3;
+
+                        float percent = (tankStacks * 100.0f) / maxStacks;
+                        if (percent > 100) percent = 100;
+
+                        cout << " Tank Stacks : " << tankStacks << " / " << maxStacks
+                            << "  (Shield Momentum)\n"
+                            << " Durability: " << getProgressBar(percent)
+                            << " " << (int)percent << "%\n";
+                    }
+
+                    cout << "-------------------------------------\n";
                 }
+
                 cout << "Press Enter to continue...";
                 cin.ignore();
                 cin.get();
                 break;
+
             
             case 10:
                 classMenu(playerClass, playerXP);
                 break;
 
         }
+        if (achievementsNeedUpdate) {
+        checkAchievements(
+            name_of_list,
+            list_of_lists,
+            list_of_descriptions,
+            achNames,
+            achBadges,
+            achUnlocked,
+            achXP,
+            gamificationEnabled,
+            playerXP,
+            playerLevel,
+            streakCount,
+            lastActiveDay,
+            cmonth,
+            cdate,
+            cyear
+        );
+
+        achievementsNeedUpdate = false;
+    }
+
+    system("pause");
     }
 
     return 0;
