@@ -2,17 +2,24 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#define NOMINMAX
 #include <windows.h>
 
 #include <conio.h>
 #include <limits>
 using namespace std;
 
-
+void slowprint(const string& message, int delay_ms = 0.67) {
+    for (char c : message) {
+        cout << c << flush;
+        Sleep(delay_ms);
+    }
+    cout << "\033[0m"; // Reset color after printing
+}
 // Standard "invalid input" error popup + pause
 void showInvalidInputPause(const string& msg = "INVALID INPUT. PLEASE TRY AGAIN.") {
-    cout << "\n \033[1;37;41m ⚠️ " << msg << " ⚠️ \033[0m\n\n";
-    cout << " \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ENTER TO CONTINUE... \033[0m\n";
+    slowprint("\n \033[1;37;41m ⚠️ " + msg + " ⚠️ \033[0m\n\n");
+    slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ENTER TO CONTINUE... \033[0m\n");
     cin.get(); // wait for Enter
 }
 
@@ -62,29 +69,29 @@ void addXP(int amount, bool gamificationEnabled, int& playerXP, int& playerLevel
 
     int newLevel = (playerXP / 100) + 1;  // 100 XP per level
 
-    cout << "\n>>> +" << amount << " XP!\n";
+    slowprint( "\n>>> +" + to_string(amount) + " XP!\n");
 
     if (newLevel > playerLevel) {
         playerLevel = newLevel;
-        cout << ">>> LEVEL UP! You are now LEVEL " << playerLevel << "!\n";
+        slowprint(">>> LEVEL UP! You are now LEVEL " + to_string(playerLevel) + "!\n");
     }
 
-    cout << "-------------------------------------\n";
+    slowprint("-------------------------------------\n");
 }
 
 // Live summary box used everywhere
 void headerClassList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                      ██████╗██╗      █████╗ ███████╗███████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗     \n";
-        cout << "                                                     ██╔════╝██║     ██╔══██╗██╔════╝██╔════╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║     \n";
-        cout << "                                                     ██║     ██║     ███████║███████╗███████╗    ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║        \n";
-        cout << "                                                     ██║     ██║     ██╔══██║╚════██║╚════██║    ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║      \n";
-        cout << "                                                     ╚██████╗███████╗██║  ██║███████║███████║    ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║      \n";
-        cout << "                                                      ╚═════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝    ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝           \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint("                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint("                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint("                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint("                                                      ██████╗██╗      █████╗ ███████╗███████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗     \n");
+        slowprint("                                                     ██╔════╝██║     ██╔══██╗██╔════╝██╔════╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║     \n");
+        slowprint("                                                     ██║     ██║     ███████║███████╗███████╗    ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║        \n");
+        slowprint("                                                     ██║     ██║     ██╔══██║╚════██║╚════██║    ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║      \n");
+        slowprint("                                                     ╚██████╗███████╗██║  ██║███████║███████║    ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║      \n");
+        slowprint("                                                      ╚═════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝    ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝           \n");
+        slowprint("                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -93,81 +100,80 @@ void showClassInfo(int c) {
     system("cls");
     headerClassList();
 
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    cout << "                                                                                          CLASS INFORMATION\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-
+    slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    slowprint("                                                                                          CLASS INFORMATION\n");
+    slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
 
     switch (c) {
 
     case 1:
-        cout << "                                                                                         [DEFAULT CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • No XP bonus\n";
-        cout << "                                                                          • Balanced starter class\n";
-        cout << "                                                                          • Good for new players\n";
+        slowprint("                                                                                         [DEFAULT CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • No XP bonus\n");
+        slowprint("                                                                          • Balanced starter class\n");
+        slowprint("                                                                          • Good for new players\n");
         break;
 
     case 2:
-        cout << "                                                                                           [HERO CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • +25 XP on every action\n";
-        cout << "                                                                          • Best constant XP gain\n";
-        cout << "                                                                          • Reliable and simple\n";
+        slowprint("                                                                                           [HERO CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • +25 XP on every action\n");
+        slowprint("                                                                          • Best constant XP gain\n");
+        slowprint("                                                                          • Reliable and simple\n");
         break;
 
     case 3:
-        cout << "                                                                                            [GAMBLER CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • RNG-based XP system\n";
-        cout << "                                                                          • Can gain massive XP\n";
-        cout << "                                                                          • 20% chance to lose XP\n";
-        cout << "                                                                          • High-risk, high-reward\n";
+        slowprint("                                                                                            [GAMBLER CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • RNG-based XP system\n");
+        slowprint("                                                                          • Can gain massive XP\n");
+        slowprint("                                                                          • 20% chance to lose XP\n");
+        slowprint("                                                                          • High-risk, high-reward\n");
         break;
 
     case 4:
-        cout << "                                                                                            [ASSASSIN CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • XP streak mechanic starts after 3 actions\n";
-        cout << "                                                                          • +5% XP per stack (up to 10 stacks)\n";
-        cout << "                                                                          • Strong burst XP class\n";
+        slowprint("                                                                                            [ASSASSIN CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • XP streak mechanic starts after 3 actions\n");
+        slowprint("                                                                          • +5% XP per stack (up to 10 stacks)\n");
+        slowprint("                                                                          • Strong burst XP class\n");
         break;
 
     case 5:
-        cout << "                                                                                             [WIZARD CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • Spell Combo: bonus every 3rd XP gain\n";
-        cout << "                                                                          • Crit Combo: double bonus every 5th gain\n";
-        cout << "                                                                          • Wisdom Scaling: +5 XP per level\n";
-        cout << "                                                                          • Very strategic class\n";
+        slowprint("                                                                                             [WIZARD CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • Spell Combo: bonus every 3rd XP gain\n");
+        slowprint("                                                                          • Crit Combo: double bonus every 5th gain\n");
+        slowprint("                                                                          • Wisdom Scaling: +5 XP per level\n");
+        slowprint("                                                                          • Very strategic class\n");
         break;
 
     case 6:
-        cout << "                                                                                             [ARCHER CLASS]\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • Precision Shot streak system\n";
-        cout << "                                                                          • Big streak = big XP\n";
-        cout << "                                                                          • Headshots = crit XP\n";
-        cout << "                                                                          • Rare Perfect Shot = huge burst\n";
+        slowprint("                                                                                             [ARCHER CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • Precision Shot streak system\n");
+        slowprint("                                                                          • Big streak = big XP\n");
+        slowprint("                                                                          • Headshots = crit XP\n");
+        slowprint("                                                                          • Rare Perfect Shot = huge burst\n");
         break;
 
     case 7:
-        cout << "                                                                                               [TANK CLASS]\n";
-       cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                                                          • Shield Momentum stacking system\n";
-        cout << "                                                                          • Gains stacks every action\n";
-        cout << "                                                                          • Max stacks = 20 - level\n";
-        cout << "                                                                          • Strong early, weaker late\n";
-        cout << "                                                                          • Always gives a bonus\n";
+        slowprint("                                                                                               [TANK CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • Shield Momentum stacking system\n");
+        slowprint("                                                                          • Gains stacks every action\n");
+        slowprint("                                                                          • Max stacks = 20 - level\n");
+        slowprint("                                                                          • Strong early, weaker late\n");
+        slowprint("                                                                          • Always gives a bonus\n");
         break;
 
     default:
-        cout << "Invalid class selection.\n";
+        slowprint("Invalid class selection.\n");
         break;
     }
 
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 }
 
 
@@ -180,44 +186,42 @@ void ClassListCopy(PlayerClass& playerClass, int& playerXP) {
         headerClassList();
 
 
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                                     Current XP: " << playerXP << "\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint("                                                                                     Current XP: " + to_string(playerXP) + "\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-        cout << "                                                                          🏷️ Available Classes:\n\n";
+        slowprint("                                                                          🏷️ Available Classes:\n\n");
+        slowprint("                                                                          [1] Default            (Free)           "
+             + string(playerClass == DEFAULT_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [1] Default            (Free)           "
-             << (playerClass == DEFAULT_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [2] Hero               (Cost: 500 XP)   "
+             + string(ownsHero ? "[OWNED]" : "")
+             + string(playerClass == HERO_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [2] Hero               (Cost: 500 XP)   "
-             << (ownsHero ? "[OWNED]" : "")
-             << (playerClass == HERO_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [3] Gambler            (Cost: 300 XP)   "
+             + string(ownsGambler ? "[OWNED]" : "")
+             + string(playerClass == GAMBLER_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [3] Gambler            (Cost: 300 XP)   "
-             << (ownsGambler ? "[OWNED]" : "")
-             << (playerClass == GAMBLER_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [4] Assassin           (Cost: 400 XP)   "
+             + string(ownsAssassin ? "[OWNED]" : "")
+             + string(playerClass == ASSASSIN_CLASS ? " <== Equipped" : "") + "\n");
+        slowprint("                                                                          [5] Wizard             (Cost: 700 XP)   "
+             + string(ownsWizard ? "[OWNED]" : "")
+             + string(playerClass == WIZARD_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [4] Assassin           (Cost: 400 XP)   "
-             << (ownsAssassin ? "[OWNED]" : "")
-             << (playerClass == ASSASSIN_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [6] Archer             (Cost: 600 XP)   "
+             + string(ownsArcher ? "[OWNED]" : "")
+             + string(playerClass == ARCHER_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [5] Wizard             (Cost: 700 XP)   "
-             << (ownsWizard ? "[OWNED]" : "")
-             << (playerClass == WIZARD_CLASS ? " <== Equipped" : "") << "\n";
-
-        cout << "                                                                          [6] Archer             (Cost: 600 XP)   "
-             << (ownsArcher ? "[OWNED]" : "")
-             << (playerClass == ARCHER_CLASS ? " <== Equipped" : "") << "\n";
-
-        cout << "                                                                          [7] Tank               (Cost: 500 XP)   "
-             << (ownsTank ? "[OWNED]" : "")
-             << (playerClass == TANK_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [7] Tank               (Cost: 500 XP)   "
+             + string(ownsTank ? "[OWNED]" : "")
+             + string(playerClass == TANK_CLASS ? " <== Equipped" : "") + "\n");
 
      
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                          [8] View Class Details\n";
-        cout << "                                                                          [0] Back\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint("                                                                          [8] View Class Details\n");
+        slowprint("                                                                          [0] Back\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
  
 }
 
@@ -227,56 +231,53 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         headerClassList();
 
 
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                                     Current XP: " << playerXP << "\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint("                                                                                     Current XP: " + to_string(playerXP) + "\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-        cout << "                                                                          🏷️ Available Classes:\n\n";
+        slowprint("                                                                          🏷️ Available Classes:\n\n");
+        slowprint("                                                                          [1] ⚪ Default            (Free)           "
+             + string(playerClass == DEFAULT_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [1] ⚪ Default            (Free)           "
-             << (playerClass == DEFAULT_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [2] ⚔️ Hero               (Cost: 500 XP)   "
+             + string(ownsHero ? "[OWNED]" : "")
+             + string(playerClass == HERO_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [2] ⚔️ Hero               (Cost: 500 XP)   "
-             << (ownsHero ? "[OWNED]" : "")
-             << (playerClass == HERO_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [3] 🎭 Gambler            (Cost: 300 XP)   "
+             + string(ownsGambler ? "[OWNED]" : "")
+             + string(playerClass == GAMBLER_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [3] 🎭 Gambler            (Cost: 300 XP)   "
-             << (ownsGambler ? "[OWNED]" : "")
-             << (playerClass == GAMBLER_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [4] 🗡️ Assassin           (Cost: 400 XP)   "
+             + string(ownsAssassin ? "[OWNED]" : "")
+             + string(playerClass == ASSASSIN_CLASS ? " <== Equipped" : "") + "\n");
+        slowprint("                                                                          [5] 🔮 Wizard             (Cost: 700 XP)   "
+             + string(ownsWizard ? "[OWNED]" : "")
+             + string(playerClass == WIZARD_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [4] 🗡️ Assassin           (Cost: 400 XP)   "
-             << (ownsAssassin ? "[OWNED]" : "")
-             << (playerClass == ASSASSIN_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [6] 🏹 Archer             (Cost: 600 XP)   "
+             + string(ownsArcher ? "[OWNED]" : "")
+             + string(playerClass == ARCHER_CLASS ? " <== Equipped" : "") + "\n");
 
-        cout << "                                                                          [5] 🔮 Wizard             (Cost: 700 XP)   "
-             << (ownsWizard ? "[OWNED]" : "")
-             << (playerClass == WIZARD_CLASS ? " <== Equipped" : "") << "\n";
-
-        cout << "                                                                          [6] 🏹 Archer             (Cost: 600 XP)   "
-             << (ownsArcher ? "[OWNED]" : "")
-             << (playerClass == ARCHER_CLASS ? " <== Equipped" : "") << "\n";
-
-        cout << "                                                                          [7] 🛡️ Tank               (Cost: 500 XP)   "
-             << (ownsTank ? "[OWNED]" : "")
-             << (playerClass == TANK_CLASS ? " <== Equipped" : "") << "\n";
+        slowprint("                                                                          [7] 🛡️ Tank               (Cost: 500 XP)   "
+             + string(ownsTank ? "[OWNED]" : "")
+             + string(playerClass == TANK_CLASS ? " <== Equipped" : "") + "\n");
 
 
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                          [8] View Class Details\n";
-        cout << "                                                                          [0] Back\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint("                                                                          [8] View Class Details\n");
+        slowprint("                                                                          [0] Back\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
+        slowprint("                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╸            \n");
+        slowprint("                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n");
+        slowprint("                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸      \n\n");
+        slowprint("                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+        slowprint("                                                                                                ╔════╗                              \n");
+        slowprint("                                                                                               ╔║    ║╗                             \n");
+        slowprint("                                                                                          ═════╝╚════╝╚═════                        \n" );
 
-        cout << "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╸            \n";
-        cout << "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n";
-        cout << "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸      \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ;
-
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint("\033[2A"); // move UP 2 lines
+        slowprint("\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
 
         int c;
@@ -288,9 +289,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             cin.clear();
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            cout << "\n";
-            cout << " \033[1;37;41m ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️ \033[0m\n\n";
-            cout << " \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n";
+            slowprint("\n");
+            slowprint(" \033[1;37;41m ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️ \033[0m\n\n");
+            slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
             cin.get(); // consume leftover '\n'
             cin.get(); // wait for key press
@@ -301,9 +302,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (c < 0 || c > 8) {
-            cout << "\n";
-            cout << " \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 0-8. ⚠️ \033[0m\n\n";
-            cout << " \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n";
+            slowprint("\n");
+            slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 0-8. ⚠️ \033[0m\n\n");
+            slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
             cin.get();
             continue; // redraw menu
@@ -319,17 +320,16 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             headerClassList();
             ClassListCopy(playerClass, playerXP);
 
-            cout << "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸╻  ┏━┓┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
-            cout << "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃  ┣━┫┗━┓┗━┓   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n";
-            cout << "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸┗━╸╹ ╹┗━┛┗━┛   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸      \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ;
+            slowprint("                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸╻  ┏━┓┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n");
+            slowprint("                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃  ┣━┫┗━┓┗━┓   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n");
+            slowprint("                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸┗━╸╹ ╹┗━┛┗━┛   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸      \n\n");
+            slowprint("                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint("                                                                                                ╔════╗                              \n");
+            slowprint("                                                                                               ╔║    ║╗                             \n");
+            slowprint("                                                                                          ═════╝╚════╝╚═════                        \n" );
 
-            cout << "\033[2A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
-
+            slowprint("\033[2A"); // move UP 2 lines
+            slowprint("\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
             // ================================
             // ERROR-HANDLED INPUT FOR CLASS INFO CHOICE (1–7)
@@ -338,9 +338,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
                 cin.clear();
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-                cout << "\n";
-                cout << " \033[1;37;41m ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️ \033[0m\n\n";
-                cout << " \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n";
+                slowprint("\n");
+                slowprint(" \033[1;37;41m ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️ \033[0m\n\n");
+                slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
                 cin.get();
                 cin.get();
@@ -350,17 +350,17 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
             if (infoChoice < 1 || infoChoice > 7) {
-                cout << "\n";
-                cout << " \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 1-7. ⚠️ \033[0m\n\n";
-                cout << " \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n";
+                slowprint("\n");
+                slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 1-7. ⚠️ \033[0m\n\n");
+                slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
                 cin.get();
                 continue;
             }
 
             showClassInfo(infoChoice);
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
-            cout << endl;
+            slowprint("                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
+            slowprint("\n");
             system("pause");
 
             continue;
@@ -369,7 +369,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         // Select default (free)
         if (c == 1) {
             playerClass = DEFAULT_CLASS;
-            cout << "Switched to Default Class.\n";
+            slowprint("Switched to Default Class.\n");
             system("pause");
             continue;
         }
@@ -394,7 +394,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             (chosen == TANK_CLASS && ownsTank))
         {
             playerClass = chosen;
-            cout << "Class equipped!\n";
+            slowprint("Class equipped!\n");
 
             system("pause");
             continue;
@@ -403,9 +403,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         // Not owned → check XP
         if (playerXP < cost) {
 
-            cout << "\033[5A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-            cout << "\033[1;37;41m  ⚠️ NOT ENOUGH XP TO BUY THIS CLASS. ⚠️  \033[0m\n";
+            slowprint("\033[5A"); // move UP 2 lines
+            slowprint("\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+            slowprint("\033[1;37;41m  ⚠️ NOT ENOUGH XP TO BUY THIS CLASS. ⚠️  \033[0m\n");
 
             system("pause");
             continue;
@@ -423,7 +423,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
 
         playerClass = chosen;
 
-        cout << "Class purchased and equipped!\n";
+        slowprint("Class purchased and equipped!\n");
         system("pause");
         achievementsNeedUpdate = true;
 
@@ -938,16 +938,14 @@ void initAchievements(
 
 void headerAchievementList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "              █████╗  ██████╗██╗  ██╗██╗███████╗██╗   ██╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗         █████╗ ███╗   ██╗██████╗     ██████╗  █████╗ ██████╗  ██████╗ ███████╗███████╗   \n";
-        cout << "             ██╔══██╗██╔════╝██║  ██║██║██╔════╝██║   ██║██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝        ██╔══██╗████╗  ██║██╔══██╗    ██╔══██╗██╔══██╗██╔══██╗██╔════╝ ██╔════╝██╔════╝    \n";
-        cout << "             ███████║██║     ███████║██║█████╗  ██║   ██║█████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   ███████╗        ███████║██╔██╗ ██║██║  ██║    ██████╔╝███████║██║  ██║██║  ███╗█████╗  ███████╗        \n";
-        cout << "             ██╔══██║██║     ██╔══██║██║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║        ██╔══██║██║╚██╗██║██║  ██║    ██╔══██╗██╔══██║██║  ██║██║   ██║██╔══╝  ╚════██║       \n";
-        cout << "             ██║  ██║╚██████╗██║  ██║██║███████╗ ╚████╔╝ ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║        ██║  ██║██║ ╚████║██████╔╝    ██████╔╝██║  ██║██████╔╝╚██████╔╝███████╗███████║      \n";
-        cout << "             ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚══════╝  ╚═══╝  ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝        ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝╚══════╝          \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint("                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint("                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint("                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint("              █████╗  ██████╗██╗  ██╗██╗███████╗██╗   ██╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗         █████╗ ███╗   ██╗██████╗     ██████╗  █████╗ ██████╗  ██████╗ ███████╗███████╗   \n");
+        slowprint("             ██╔══██║██║     ██╔══██║██║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║        ██╔══██║██║╚██╗██║██║  ██║    ██╔══██╗██╔══██║██║  ██║██║   ██║██╔══╝  ╚════██║       \n");
+        slowprint("             ██║  ██║╚██████╗██║  ██║██║███████╗ ╚████╔╝ ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║        ██║  ██║██║ ╚████║██████╔╝    ██████╔╝██║  ██║██████╔╝╚██████╔╝███████╗███████║      \n");
+        slowprint("             ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚══════╝  ╚═══╝  ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝        ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝╚══════╝          \n");
+        slowprint("                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -1018,15 +1016,15 @@ for (i = 0; i < (int)achNames.size(); i++) {
     // -----------------------------
     if (achNames[i] == "Add First Item" && totalItems >= 1) {
         achUnlocked[i] = 1;
-
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
+        slowprint("\n");
+        slowprint("\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint("\n");
+        slowprint("\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+              " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1042,14 +1040,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Add 10 Items" && totalItems >= 10) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint("\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1062,14 +1060,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Add 50 Items" && totalItems >= 50) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1085,14 +1083,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Complete First Item" && totalCompleted >= 1) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1105,14 +1103,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Complete 10 Items" && totalCompleted >= 10) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1125,14 +1123,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Complete 50 Items" && totalCompleted >= 50) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1148,14 +1146,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Create First List" && totalLists >= 1) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1168,14 +1166,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Create 5 Lists" && totalLists >= 5) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1188,14 +1186,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Create 10 Lists" && totalLists >= 10) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1211,14 +1209,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Reach Level 3" && playerLevel >= 3) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1231,14 +1229,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Reach Level 5" && playerLevel >= 5) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1251,14 +1249,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Reach Level 10" && playerLevel >= 10) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1274,14 +1272,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "1-Day Streak" && streakCount >= 1) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1294,14 +1292,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "3-Day Streak" && streakCount >= 3) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1314,14 +1312,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "7-Day Streak" && streakCount >= 7) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1337,14 +1335,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock First Class" && totalClassesOwned >= 1) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1358,14 +1356,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Hero Class" && ownsHero) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1378,14 +1376,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Gambler Class" && ownsGambler) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1398,14 +1396,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Assassin Class" && ownsAssassin) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1418,14 +1416,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Wizard Class" && ownsWizard) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1438,14 +1436,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Archer Class" && ownsArcher) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1458,14 +1456,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock Tank Class" && ownsTank) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1481,14 +1479,14 @@ for (i = 0; i < (int)achNames.size(); i++) {
     if (achNames[i] == "Unlock All Classes" && totalClassesOwned == 6) {
         achUnlocked[i] = 1;
 
-        cout << "\n";
-        cout << "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n";
-        cout << endl;
-        cout << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
-             << achBadges[i] << " " << achNames[i]
-             << " (+" << achXP[i] << " XP)  "
-             << " \033[0m\n\n";
-        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         cin.get();
 
@@ -1501,7 +1499,7 @@ for (i = 0; i < (int)achNames.size(); i++) {
 }
 
 
-   // cout << "-------------------------------------";
+   // slowprint( "-------------------------------------");
 }
 
 
@@ -1512,48 +1510,48 @@ void searchItems(const vector<string>& items) {
     cin.ignore();   // clear leftover newline
     string key;     // keyword user wants to search for
 
-    cout << "\n=====================================\n";
-    cout << "            SEARCH ITEMS             \n";
-    cout << "=====================================\n";
+    slowprint( "\n=====================================\n");
+    slowprint( "            SEARCH ITEMS             \n");
+    slowprint( "=====================================\n");
 
-    cout << "Enter keyword to search: ";
+    slowprint( "Enter keyword to search: ");
     getline(cin, key);
 
-    cout << "\n-------------- RESULTS --------------\n";
+    slowprint( "\n-------------- RESULTS --------------\n");
 
     bool found = false;   // tracks if any item matches
 
     // Search through all items in the list
     for (int i = 0; i < (int)items.size(); i++) {
         if (items[i].find(key) != string::npos) {   // substring match
-            cout << " " << i + 1 << ". " << items[i] << "\n";
+            slowprint( " " + to_string(i + 1) + ". " + items[i] + "\n");
             found = true;
         }
     }
 
     // No results
     if (!found) {
-        cout << "( No matching items found )\n";
+        slowprint( "( No matching items found )\n");
     }
 
-    cout << "-------------------------------------\n";
-    cout << "Press Enter to continue...";
+    slowprint( "-------------------------------------\n");
+    slowprint( "Press Enter to continue...");
     cin.get();
 }
 
 // Live summary box used everywhere
 void headerNewList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n";
-        cout << "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n";
-        cout << "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n";
-        cout << "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n";
-        cout << "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n";
-        cout << "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n");
+        slowprint( "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n");
+        slowprint( "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n");
+        slowprint( "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n");
+        slowprint( "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n");
+        slowprint( "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -1568,27 +1566,27 @@ void printLiveSummary(
     const string& notes
 ) {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n";
-        cout << "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n";
-        cout << "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n";
-        cout << "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n";
-        cout << "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n";
-        cout << "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n");
+        slowprint( "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n");
+        slowprint( "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n");
+        slowprint( "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n");
+        slowprint( "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n");
+        slowprint( "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                                              𝗧𝗔𝗟𝗟𝗬++ 𝗟𝗜𝗦𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬\n";
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                             [1] 📄 TITLE      : " << (title.empty() ? "<not set>" : title) << '\n';
-        cout << "                                                                             [2] 🗂️ CATEGORY   : " << (category.empty() ? "<not set>" : category) << '\n';
-        cout << "                                                                             [3] 🗓️ DEADLINE   : " << (deadline.empty() ? "<none>" : deadline) << '\n';
-        cout << "                                                                             [4] ❗ PRIORITY   : " << (deadlinePriority.empty() ? "<none>" : deadlinePriority) << '\n';
-        cout << "                                                                             [5] 📝 NOTES      : " << (notes.empty() ? "<none>" : notes) << '\n';
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << "                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  \n\n";
+        slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint( "                                                                                              𝗧𝗔𝗟𝗟𝗬++ 𝗟𝗜𝗦𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬\n");
+        slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint( "                                                                             [1] 📄 TITLE      : " + (title.empty() ? "<not set>" : title) + "\n");
+        slowprint( "                                                                             [2] 🗂️ CATEGORY   : " + (category.empty() ? "<not set>" : category) + "\n");
+        slowprint( "                                                                             [3] 🗓️ DEADLINE   : " + (deadline.empty() ? "<none>" : deadline) + "\n");
+        slowprint( "                                                                             [4] ❗ PRIORITY   : " + (deadlinePriority.empty() ? "<none>" : deadlinePriority) + "\n");
+        slowprint( "                                                                             [5] 📝 NOTES      : " + (notes.empty() ? "<none>" : notes) + "\n");
+        slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint( "                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  \n\n");
 }
 
 // Live summary box used everywhere
@@ -1604,20 +1602,20 @@ void printListLive(
 ) {
 
 
-    cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-    cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-    cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-    cout << "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n";
-    cout << "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n";
-    cout << "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n";
-    cout << "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n";
-    cout << "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n";
-    cout << "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
-    cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+    slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+    slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+    slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+    slowprint( "                                                ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗    ███╗   ██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n");
+    slowprint( "                                               ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝    ████╗  ██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══╝      \n");
+    slowprint( "                                               ██║     ██████╔╝█████╗  ███████║   ██║   █████╗      ██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║           \n");
+    slowprint( "                                               ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝      ██║╚██╗██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n");
+    slowprint( "                                               ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗    ██║ ╚████║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║        \n");
+    slowprint( "                                                ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝            \n");
+    slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
       
-    cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    cout << "                                                                                𝐋𝐈𝐒𝐓:: " << (title.empty() ? "<no title yet>" : title) << "\n";
-    cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n";
+    slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    slowprint( "                                                                                𝐋𝐈𝐒𝐓:: " + (title.empty() ? "<no title yet>" : title) + "\n");
+    slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n\n");
 
     // If no items yet, show a hint
     if (items.empty()) {
@@ -1630,16 +1628,16 @@ for (size_t i = 0; i < items.size(); ++i) {
     bool highlightThisItem = (static_cast<int>(i) == highlightedItem);
 
     // Keep original spacing EXACT
-    cout << "                                                                             〇 ";
+    slowprint( "                                                                             〇 ");
 
     // Highlight item (inverse white bg + black text)
     if (highlightThisItem) {
-        cout << "\033[7m";   // inverse only
+        slowprint( "\033[7m");   // inverse only
     } else {
-        cout << "\033[1m";   // bold only
+        slowprint( "\033[1m");   // bold only
     }
 
-    cout << items[i] << "\033[0m\n";  // reset
+    slowprint( items[i] + "\033[0m\n");  // reset
 
 
     // Print descriptions (italic, highlight with inverse)
@@ -1649,26 +1647,26 @@ for (size_t i = 0; i < items.size(); ++i) {
                 highlightThisItem && (static_cast<int>(d) == highlightedDesc);
 
             // Keep original spacing EXACT
-            cout << "                                                                                • ";
+            slowprint( "                                                                                • ");
 
             if (highlightThisDesc) {
-                cout << "\033[7;3m";  // inverse + italic
+                slowprint( "\033[7;3m");  // inverse + italic
             } else {
-                cout << "\033[3m";    // italic only
+                slowprint( "\033[3m");    // italic only
             }
 
-            cout << descriptions[i][d] << "\033[0m\n"; // reset
+            slowprint( descriptions[i][d] + "\033[0m\n"); // reset
         }
     }
 
-    cout << "\n"; // space between items
+    slowprint( "\n"); // space between items
 }
 
 
 
 
-    cout << "\n                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-    cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+    slowprint( "\n                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+    slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
 
 }
 
@@ -1746,18 +1744,18 @@ void createNewList(
     cin.ignore();
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-    cout << "                                                                                ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n";
-    cout << "                                                                                ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n";
-    cout << "                                                                                ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸             \n\n";
+    slowprint( "                                                                                ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n");
+    slowprint( "                                                                                ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n");
+    slowprint( "                                                                                ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸             \n\n");
 
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
 
-    cout << "                                                                                      ╔════════════════════════╗                              \n";
-    cout << "                                                                                     ╔║                        ║╗                             \n";
-    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+    slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+    slowprint( "                                                                                     ╔║                        ║╗                             \n");
+    slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
         
-    cout << "\033[2A"; // move UP 2 lines
-    cout << "\033[87C"; // move RIGHT 17 columns (adjust until perfect)
+    slowprint( "\033[2A"); // move UP 2 lines
+    slowprint( "\033[87C"); // move RIGHT 17 columns (adjust until perfect)
 
     getline(cin, title);
 
@@ -1768,23 +1766,23 @@ void createNewList(
     system("cls");
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
    
-    cout << "                                                           ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ┏━┓   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓             \n";
-    cout << "                                                           ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸    ┣━┫   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃             \n";
-    cout << "                                                           ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╹ ╹   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹             \n\n";
+    slowprint( "                                                           ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ┏━┓   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓             \n");
+    slowprint( "                                                           ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸    ┣━┫   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃             \n");
+    slowprint( "                                                           ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╹ ╹   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹             \n\n");
 
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    cout << "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n";
-    cout << "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n";
-    cout << "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n";
-    cout << "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n";
-    cout << "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n";
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-    cout << "                                                                                                ╔════╗                              \n";
-    cout << "                                                                                               ╔║    ║╗                             \n";
-    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    slowprint( "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n");
+    slowprint( "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n");
+    slowprint( "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n");
+    slowprint( "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n");
+    slowprint( "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n");
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+    slowprint( "                                                                                                ╔════╗                              \n");
+    slowprint( "                                                                                               ╔║    ║╗                             \n");
+    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
         
-    cout << "\033[2A"; // move UP 2 lines
-    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+    slowprint( "\033[2A"); // move UP 2 lines
+    slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
     while (true)
     {
@@ -1792,7 +1790,7 @@ void createNewList(
         if (!cin.fail()) break;
         cin.clear();
         cin.ignore(1000 , '\n');
-        cout << "Invalid input. Please try again.\n";
+        slowprint( "Invalid input. Please try again.\n");
     }
 
     while(categoryInput < 1 || categoryInput >10){
@@ -1800,24 +1798,24 @@ void createNewList(
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
     
-            cout << "                                                           ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ┏━┓   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓             \n";
-            cout << "                                                           ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸    ┣━┫   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃             \n";
-            cout << "                                                           ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╹ ╹   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹             \n\n";
+            slowprint( "                                                           ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ┏━┓   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓             \n");
+            slowprint( "                                                           ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸    ┣━┫   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃             \n");
+            slowprint( "                                                           ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╹ ╹   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹             \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            cout << "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n";
-            cout << "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n";
-            cout << "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n";
-            cout << "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n";
-            cout << "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            slowprint( "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n");
+            slowprint( "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n");
+            slowprint( "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n");
+            slowprint( "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n");
+            slowprint( "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[12A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                        cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+            slowprint( "\033[12A"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                        slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
 
             cin >> categoryInput;
     }
@@ -1860,46 +1858,46 @@ void createNewList(
     system("cls");
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-    cout << "                                                                                   ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸┏━┓            \n";
-    cout << "                                                                                   ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸  ╺┛            \n";
-    cout << "                                                                                   ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸ ╹             \n\n";
+    slowprint( "                                                                                   ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸┏━┓            \n");
+    slowprint( "                                                                                   ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸  ╺┛            \n");
+    slowprint( "                                                                                   ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸ ╹             \n\n");
 
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-    cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-    cout << "                                                                                                ╔════╗                              \n";
-    cout << "                                                                                               ╔║    ║╗                             \n";
-    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+    slowprint( "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n");
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+    slowprint( "                                                                                                ╔════╗                              \n");
+    slowprint( "                                                                                               ╔║    ║╗                             \n");
+    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
         
-    cout << "\033[2A"; // move UP 2 lines
-    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+    slowprint( "\033[2A"); // move UP 2 lines
+    slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
     while (true)
     {
         cin >> deadlineStatus;
         if (!cin.fail()) break;
         cin.clear();
         cin.ignore(1000 , '\n');
-        cout << "Invalid input. Please try again.\n";
+        slowprint( "Invalid input. Please try again.\n");
     }
     while(deadlineStatus < 1 || deadlineStatus > 2){
 
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                                   ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸┏━┓            \n";
-        cout << "                                                                                   ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸  ╺┛            \n";
-        cout << "                                                                                   ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸ ╹             \n\n";
+        slowprint( "                                                                                   ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸┏━┓            \n");
+        slowprint( "                                                                                   ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸  ╺┛            \n");
+        slowprint( "                                                                                   ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸ ╹             \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-        cout << "\033[8A"; // move UP 2 lines
-        cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+        slowprint( "\033[8A"); // move UP 2 lines
+        slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
         cin >> deadlineStatus;
     }
 
@@ -1907,22 +1905,22 @@ void createNewList(
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                              ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n";
-        cout << "                                                                              ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n";
-        cout << "                                                                              ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n";
+        slowprint( "                                                                              ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n");
+        slowprint( "                                                                              ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n");
+        slowprint( "                                                                              ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n";
-        cout << "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n";
-        cout << "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n";
-        cout << "                                                                                            [𝟕] ⚙️ CUSTOM    \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n");
+        slowprint( "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n");
+        slowprint( "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n");
+        slowprint( "                                                                                            [𝟕] ⚙️ CUSTOM    \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
             
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
         cin.ignore();
         while (true)
@@ -1931,7 +1929,7 @@ void createNewList(
             if (!cin.fail()) break;
             cin.clear();
             cin.ignore(1000 , '\n');
-            cout << "Invalid input. Please try again.\n";
+            slowprint( "Invalid input. Please try again.\n");
         }
 
         while(deadlineChoice < 1 || deadlineChoice > 7){
@@ -1939,23 +1937,23 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                              ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n";
-            cout << "                                                                              ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n";
-            cout << "                                                                              ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n";
+            slowprint( "                                                                              ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n");
+            slowprint( "                                                                              ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n");
+            slowprint( "                                                                              ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n";
-            cout << "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n";
-            cout << "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n";
-            cout << "                                                                                            [𝟕] ⚙️ CUSTOM    \n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n");
+            slowprint( "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n");
+            slowprint( "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n");
+            slowprint( "                                                                                            [𝟕] ⚙️ CUSTOM    \n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[11A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+            slowprint( "\033[11A"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
             cin >> deadlineChoice;
         }
 
@@ -1981,16 +1979,16 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n";
-            cout << "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n";
-            cout << "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n");
+            slowprint( "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n");
+            slowprint( "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[2A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[2A"); // move UP 2 lines
+            slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
         
                 do
@@ -2001,11 +1999,11 @@ void createNewList(
                         if (!cin.fail()) break;
                         cin.clear();
                         cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
+                        slowprint( "Invalid input. Please try again.\n");
                     }
                     if (month < 1 || month > 12)
                     {
-                        cout << "Try again\n";
+                        slowprint( "Try again\n");
                     }
                 } while (month < 1 || month > 12);
                 Mindex = months.size();
@@ -2015,16 +2013,16 @@ void createNewList(
                     system("cls");
                     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-                    cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
-                    cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
-                    cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-                    cout << "                                                                                                ╔════╗                              \n";
-                    cout << "                                                                                               ╔║    ║╗                             \n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+                    slowprint( "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n");
+                    slowprint( "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n");
+                    slowprint( "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+                    slowprint( "                                                                                                ╔════╗                              \n");
+                    slowprint( "                                                                                               ╔║    ║╗                             \n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-                    cout << "\033[2A"; // move UP 2 lines
-                    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[2A"); // move UP 2 lines
+                    slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
                 do
                 {
                     while (true)
@@ -2033,11 +2031,11 @@ void createNewList(
                         if (!cin.fail()) break;
                         cin.clear();
                         cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
+                        slowprint( "Invalid input. Please try again.\n");
                     }
                     if (year < 2000 || year > 2100)
                     {
-                        cout << "Try again\n";
+                        slowprint( "Try again\n");
                     }
                 } while (year < 2000 || year > 2100);
                 Yindex = years.size();
@@ -2047,16 +2045,16 @@ void createNewList(
                     system("cls");
                     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-                    cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━┓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
-                    cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
-                    cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-                    cout << "                                                                                                ╔════╗                              \n";
-                    cout << "                                                                                               ╔║    ║╗                             \n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+                    slowprint( "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━┓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n");
+                    slowprint( "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n");
+                    slowprint( "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+                    slowprint( "                                                                                                ╔════╗                              \n");
+                    slowprint( "                                                                                               ╔║    ║╗                             \n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-                    cout << "\033[2A"; // move UP 2 lines
-                    cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[2A"); // move UP 2 lines
+                    slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
                 switch (month)
                 {
@@ -2075,11 +2073,11 @@ void createNewList(
                             if (!cin.fail()) break;
                             cin.clear();
                             cin.ignore(1000 , '\n');
-                            cout << "Invalid input. Please try again.\n";
+                            slowprint( "Invalid input. Please try again.\n");
                         }
                         if (date < 1 || date > 31)
                         {
-                            cout << "Try again\n";
+                            slowprint( "Try again\n");
                         }
                         
                     } while (date < 1 || date > 31);
@@ -2097,11 +2095,11 @@ void createNewList(
                             if (!cin.fail()) break;
                             cin.clear();
                             cin.ignore(1000 , '\n');
-                            cout << "Invalid input. Please try again.\n";
+                            slowprint( "Invalid input. Please try again.\n");
                         }
                         if (date < 1 || date > 30)
                         {
-                            cout << "Try again\n";
+                            slowprint( "Try again\n");
                         }
                         
                     } while (date < 1 || date > 30);    
@@ -2118,11 +2116,11 @@ void createNewList(
                                 if (!cin.fail()) break;
                                 cin.clear();
                                 cin.ignore(1000 , '\n');
-                                cout << "Invalid input. Please try again.\n";
+                                slowprint( "Invalid input. Please try again.\n");
                             }
                             if (date < 1 || date > 29)
                             {
-                                cout << "Try again\n";
+                                slowprint( "Try again\n");
                             }
                             
                         } while (date < 1 || date > 29); 
@@ -2137,11 +2135,11 @@ void createNewList(
                                 if (!cin.fail()) break;
                                 cin.clear();
                                 cin.ignore(1000 , '\n');
-                                cout << "Invalid input. Please try again.\n";
+                                slowprint( "Invalid input. Please try again.\n");
                             }
                             if (date < 1 || date > 28)
                             {
-                                cout << "Try again\n";
+                                slowprint( "Try again\n");
                             }
                             
                         } while (date < 1 || date > 28);
@@ -2164,28 +2162,28 @@ void createNewList(
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                 ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n";
-        cout << "                                                                 ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n";
-        cout << "                                                                 ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹           \n\n";
+        slowprint( "                                                                 ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n");
+        slowprint( "                                                                 ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n");
+        slowprint( "                                                                 ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹           \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n";
-        cout << "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n";
-        cout << "                                                                                            [𝟓] ⛔ NONE    \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n");
+        slowprint( "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n");
+        slowprint( "                                                                                            [𝟓] ⛔ NONE    \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
             
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
         while (true)
         {
             cin >> deadlinePrioChoice;
             if (!cin.fail()) break;
             cin.clear();
             cin.ignore(1000 , '\n');
-            cout << "Invalid input. Please try again.\n";
+            slowprint( "Invalid input. Please try again.\n");
         }
 
         while(deadlinePrioChoice < 1 || deadlinePrioChoice > 5){
@@ -2193,22 +2191,22 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                 ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n";
-            cout << "                                                                 ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n";
-            cout << "                                                                 ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹           \n\n";
+            slowprint( "                                                                 ┏━╸╻ ╻┏━┓┏━┓┏━┓┏━╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n");
+            slowprint( "                                                                 ┃  ┣━┫┃ ┃┃ ┃┗━┓┣╸     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n");
+            slowprint( "                                                                 ┗━╸╹ ╹┗━┛┗━┛┗━┛┗━╸   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹           \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n";
-            cout << "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n";
-            cout << "                                                                                            [𝟓] ⛔ NONE    \n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n");
+            slowprint( "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n");
+            slowprint( "                                                                                            [𝟓] ⛔ NONE    \n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[10A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+            slowprint( "\033[10A"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
             cin >> deadlinePrioChoice;
         }
 
@@ -2237,19 +2235,19 @@ void createNewList(
     system("cls");
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                                     ┏━┓╺┳┓╺┳┓   ┏┓╻┏━┓╺┳╸┏━╸┏━┓┏━┓            \n";
-        cout << "                                                                                     ┣━┫ ┃┃ ┃┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓ ╺┛           \n";
-        cout << "                                                                                     ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛ ╹          \n\n";
+        slowprint( "                                                                                     ┏━┓╺┳┓╺┳┓   ┏┓╻┏━┓╺┳╸┏━╸┏━┓┏━┓            \n");
+        slowprint( "                                                                                     ┣━┫ ┃┃ ┃┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓ ╺┛           \n");
+        slowprint( "                                                                                     ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛ ╹          \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
             
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
     while (true)
     {
@@ -2257,7 +2255,7 @@ void createNewList(
         if (!cin.fail()) break;
         cin.clear();
         cin.ignore(1000 , '\n');
-        cout << "Invalid input. Please try again.\n";
+        slowprint( "Invalid input. Please try again.\n");
     }
 
     while(noteChoice < 1 || noteChoice > 2){
@@ -2265,20 +2263,20 @@ void createNewList(
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                                     ┏━┓╺┳┓╺┳┓   ┏┓╻┏━┓╺┳╸┏━╸┏━┓┏━┓            \n";
-            cout << "                                                                                     ┣━┫ ┃┃ ┃┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓ ╺┛           \n";
-            cout << "                                                                                     ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛ ╹          \n\n";
+            slowprint( "                                                                                     ┏━┓╺┳┓╺┳┓   ┏┓╻┏━┓╺┳╸┏━╸┏━┓┏━┓            \n");
+            slowprint( "                                                                                     ┣━┫ ┃┃ ┃┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓ ╺┛           \n");
+            slowprint( "                                                                                     ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛ ╹          \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                 [𝟏] ✅ YES         [2] ❌ NO \n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[8A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+            slowprint( "\033[8A"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
         cin >> noteChoice;
     }
 
@@ -2286,17 +2284,17 @@ void createNewList(
     system("cls");
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                                     ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━┓╺┳╸┏━╸            \n";
-        cout << "                                                                                     ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┃ ┃ ┃ ┣╸          \n";
-        cout << "                                                                                     ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛ ╹ ┗━╸          \n\n";
+        slowprint( "                                                                                     ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━┓╺┳╸┏━╸            \n");
+        slowprint( "                                                                                     ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┃ ┃ ┃ ┣╸          \n");
+        slowprint( "                                                                                     ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛ ╹ ┗━╸          \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                      ╔════════════════════════╗                              \n";
-        cout << "                                                                                     ╔║                        ║╗                             \n";
-        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+        slowprint( "                                                                                     ╔║                        ║╗                             \n");
+        slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
             
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
         cin.ignore();
         getline(cin, notes); 
@@ -2310,20 +2308,20 @@ void createNewList(
     system("cls");
     printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                                   ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓   ╻  ╻┏━┓╺┳╸┏━┓             \n";
-        cout << "                                                                                   ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃   ┃  ┃┗━┓ ┃  ╺┛           \n";
-        cout << "                                                                                   ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹   ┗━╸╹┗━┛ ╹  ╹           \n\n";
+        slowprint( "                                                                                   ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓   ╻  ╻┏━┓╺┳╸┏━┓             \n");
+        slowprint( "                                                                                   ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃   ┃  ┃┗━┓ ┃  ╺┛           \n");
+        slowprint( "                                                                                   ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹   ┗━╸╹┗━┛ ╹  ╹           \n\n");
 
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                         [𝟏-𝟓] ⚠️ EDIT A FIELD      [𝟔] 🟠 CONFIRM AND CREATE           \n";
-        cout << "                                                                                            [𝟕] ⛔ CANCEL                              \n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                         [𝟏-𝟓] ⚠️ EDIT A FIELD      [𝟔] 🟠 CONFIRM AND CREATE           \n");
+        slowprint( "                                                                                            [𝟕] ⛔ CANCEL                              \n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
             
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
     
     while (true)
     {
@@ -2331,7 +2329,7 @@ void createNewList(
         if (!cin.fail()) break;
         cin.clear();
         cin.ignore(1000 , '\n');
-        cout << "Invalid input. Please try again.\n";
+        slowprint( "Invalid input. Please try again.\n");
     }
 
     // Make sure leftover newline won't affect getline()
@@ -2343,12 +2341,12 @@ void createNewList(
         system("cls");
         printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-        cout << "                                                                   ╻  ╻┏━┓╺┳╸   ┏━╸┏━┓┏━╸┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓             \n";
-        cout << "                                                                   ┃  ┃┗━┓ ┃    ┃  ┣┳┛┣╸ ┣━┫ ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃           \n";
-        cout << "                                                                   ┗━╸╹┗━┛ ╹    ┗━╸╹┗╸┗━╸╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛          \n\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                       PRESS ENTER TO CONTINUE..                              \n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        slowprint( "                                                                   ╻  ╻┏━┓╺┳╸   ┏━╸┏━┓┏━╸┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓             \n");
+        slowprint( "                                                                   ┃  ┃┗━┓ ┃    ┃  ┣┳┛┣╸ ┣━┫ ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃           \n");
+        slowprint( "                                                                   ┗━╸╹┗━┛ ╹    ┗━╸╹┗╸┗━╸╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛          \n\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                       PRESS ENTER TO CONTINUE..                              \n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
         cin.get();
         return;
     } 
@@ -2359,18 +2357,18 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
                
-            cout << "                                                                                ┏━╸╺┳┓╻╺┳╸   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n";
-            cout << "                                                                                ┣╸  ┃┃┃ ┃    ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸             \n";
-            cout << "                                                                                ┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸             \n\n";
+            slowprint( "                                                                                ┏━╸╺┳┓╻╺┳╸   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n");
+            slowprint( "                                                                                ┣╸  ┃┃┃ ┃    ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸             \n");
+            slowprint( "                                                                                ┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸             \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
 
-            cout << "                                                                                      ╔════════════════════════╗                              \n";
-            cout << "                                                                                     ╔║                        ║╗                             \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
                 
-            cout << "\033[2A"; // move UP 2 lines
-            cout << "\033[87C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[2A"); // move UP 2 lines
+            slowprint( "\033[87C"); // move RIGHT 17 columns (adjust until perfect)
 
             getline(cin, title);
 
@@ -2381,23 +2379,23 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                                   ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻             \n";
-            cout << "                                                                                   ┣╸  ┃┃┃ ┃    ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛             \n";
-            cout << "                                                                                   ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹              \n\n";
+            slowprint( "                                                                                   ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻             \n");
+            slowprint( "                                                                                   ┣╸  ┃┃┃ ┃    ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛             \n");
+            slowprint( "                                                                                   ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹              \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            cout << "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n";
-            cout << "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n";
-            cout << "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n";
-            cout << "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n";
-            cout << "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            slowprint( "                                                                                 [𝟏] 💼 WORK         [𝟔] ❤️‍🩹 HEALTH \n");
+            slowprint( "                                                                                 [𝟐] 🏫 SCHOOL       [𝟕] 📅 APPOINTMENT \n");
+            slowprint( "                                                                                 [𝟑] 👤 PERSONAL     [𝟖] 🛒 SHOPPING \n");
+            slowprint( "                                                                                 [𝟒] 🧹 ERRANDS      [𝟗] ➕ OTHERS \n");
+            slowprint( "                                                                                 [𝟓] 💰 FINANCE      [𝟏𝟎]⛔ NONE\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
                 
-            cout << "\033[4A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[4A"); // move UP 2 lines
+            slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
             int cat;
 
             while (true)
@@ -2406,9 +2404,9 @@ void createNewList(
                 if (!cin.fail()) break;
                 cin.clear();
                 cin.ignore(1000 , '\n');
-                 cout << "\033[5A"; // move UP 2 lines
-                 cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+                 slowprint( "\033[5A"); // move UP 2 lines
+                 slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
             }
             cin.ignore();
 
@@ -2425,22 +2423,22 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                                   ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n";
-            cout << "                                                                                   ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n";
-            cout << "                                                                                   ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n";
+            slowprint( "                                                                                   ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸            \n");
+            slowprint( "                                                                                   ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸           \n");
+            slowprint( "                                                                                   ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸           \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n";
-            cout << "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n";
-            cout << "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n";
-            cout << "                                                                                            [𝟕] ⚙️ CUSTOM    \n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                 [𝟏] 🗓️ TODAY         [𝟐] 🗓️ TOMMOROW \n");
+            slowprint( "                                                                                 [𝟑] 🗓️ THIS WEEK     [𝟒] 🗓️ NEXT WEEK \n");
+            slowprint( "                                                                                 [𝟓] 🗓️ THIS MONTH    [𝟔] 🗓️ NEXT MNTH \n");
+            slowprint( "                                                                                            [𝟕] ⚙️ CUSTOM    \n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-            cout << "\033[4A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[4A"); // move UP 2 lines
+            slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
             int d;
 
@@ -2450,7 +2448,7 @@ void createNewList(
                 if (!cin.fail()) break;
                 cin.clear();
                 cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
+                slowprint( "Invalid input. Please try again.\n");
             }
             cin.ignore();
 
@@ -2470,16 +2468,16 @@ void createNewList(
                 system("cls");
                 printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-                cout << "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n";
-                cout << "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n";
-                cout << "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+                slowprint( "                                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻            \n");
+                slowprint( "                                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫           \n");
+                slowprint( "                                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹           \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-                cout << "\033[2A"; // move UP 2 lines
-                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+                slowprint( "\033[2A"); // move UP 2 lines
+                slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
                 // 🔹 MONTH
                 do
@@ -2490,11 +2488,11 @@ void createNewList(
                         if (!cin.fail()) break;
                         cin.clear();
                         cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
+                        slowprint( "Invalid input. Please try again.\n");
                     }
                     if (month < 1 || month > 12)
                     {
-                        cout << "Try again\n";
+                        slowprint( "Try again\n");
                     }
                 } while (month < 1 || month > 12);
                 Mindex = months.size();
@@ -2505,16 +2503,16 @@ void createNewList(
                 system("cls");
                 printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-                cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n";
-                cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
-                cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+                slowprint( "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓            \n");
+                slowprint( "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n");
+                slowprint( "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-                cout << "\033[2A"; // move UP 2 lines
-                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+                slowprint( "\033[2A"); // move UP 2 lines
+                slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
                 do
                 {
@@ -2524,11 +2522,11 @@ void createNewList(
                         if (!cin.fail()) break;
                         cin.clear();
                         cin.ignore(1000 , '\n');
-                        cout << "Invalid input. Please try again.\n";
+                        slowprint( "Invalid input. Please try again.\n");
                     }
                     if (year < 2000 || year > 2100)
                     {
-                        cout << "Try again\n";
+                        slowprint( "Try again\n");
                     }
                 } while (year < 2000 || year > 2100);
                 Yindex = years.size();
@@ -2539,16 +2537,16 @@ void createNewList(
                 system("cls");
                 printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-                cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓            \n";
-                cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
-                cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+                slowprint( "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓            \n");
+                slowprint( "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n");
+                slowprint( "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
 
-                cout << "\033[2A"; // move UP 2 lines
-                cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+                slowprint( "\033[2A"); // move UP 2 lines
+                slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
                 switch (month)
                 {
@@ -2562,11 +2560,11 @@ void createNewList(
                                 if (!cin.fail()) break;
                                 cin.clear();
                                 cin.ignore(1000 , '\n');
-                                cout << "Invalid input. Please try again.\n";
+                                slowprint( "Invalid input. Please try again.\n");
                             }
                             if (date < 1 || date > 31)
                             {
-                                cout << "Try again\n";
+                                slowprint( "Try again\n");
                             }
                         } while (date < 1 || date > 31);
                         break;
@@ -2580,11 +2578,11 @@ void createNewList(
                                 if (!cin.fail()) break;
                                 cin.clear();
                                 cin.ignore(1000 , '\n');
-                                cout << "Invalid input. Please try again.\n";
+                                slowprint( "Invalid input. Please try again.\n");
                             }
                             if (date < 1 || date > 30)
                             {
-                                cout << "Try again\n";
+                                slowprint( "Try again\n");
                             }
                         } while (date < 1 || date > 30);
                         break;
@@ -2600,11 +2598,11 @@ void createNewList(
                                     if (!cin.fail()) break;
                                     cin.clear();
                                     cin.ignore(1000 , '\n');
-                                    cout << "Invalid input. Please try again.\n";
+                                    slowprint( "Invalid input. Please try again.\n");
                                 }
                                 if (date < 1 || date > 29)
                                 {
-                                    cout << "Try again\n";
+                                    slowprint( "Try again\n");
                                 }
                             } while (date < 1 || date > 29);
                         }
@@ -2618,11 +2616,11 @@ void createNewList(
                                     if (!cin.fail()) break;
                                     cin.clear();
                                     cin.ignore(1000 , '\n');
-                                    cout << "Invalid input. Please try again.\n";
+                                    slowprint( "Invalid input. Please try again.\n");
                                 }
                                 if (date < 1 || date > 28)
                                 {
-                                    cout << "Try again\n";
+                                    slowprint( "Try again\n");
                                 }
                             } while (date < 1 || date > 28);
                         }
@@ -2646,13 +2644,13 @@ void createNewList(
         // 🔒 Block priority edit if deadline is not set
         if (deadline.empty() || deadline == "None") {
 
-            cout << "\033[5A"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                cout << "\033[1;37;41m  ⚠️ PLEASE SELECT DEADLINE FIRST! ⚠️  \033[0m\n";
+            slowprint( "\033[5A"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                slowprint( "\033[1;37;41m  ⚠️ PLEASE SELECT DEADLINE FIRST! ⚠️  \033[0m\n");
 
-            cout << "\033[8B"; // move UP 2 lines
-            cout << "\033[82C"; // move RIGHT 17 columns (adjust until perfect)
-                cout << "   PRESS ANY KEY TO CONTINUE...";
+            slowprint( "\033[8B"); // move UP 2 lines
+            slowprint( "\033[82C"); // move RIGHT 17 columns (adjust until perfect)
+                slowprint( "   PRESS ANY KEY TO CONTINUE...");
 
             cin.get();               // waits for user to press Enter
             break;                   // go back to the summary menu
@@ -2662,21 +2660,21 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                       ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n";
-            cout << "                                                                       ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n";
-            cout << "                                                                       ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹            \n\n";
+            slowprint( "                                                                       ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻             \n");
+            slowprint( "                                                                       ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛           \n");
+            slowprint( "                                                                       ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹            \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n";
-            cout << "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n";
-            cout << "                                                                                            [𝟓] ⛔ NONE    \n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                 [𝟏] ⚠️ CRITICAL         [𝟐] 🟠 MEDIUM \n");
+            slowprint( "                                                                                 [𝟑] 🔴 HIGH             [𝟒] 🟢 LOW \n");
+            slowprint( "                                                                                            [𝟓] ⛔ NONE    \n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
                 
-            cout << "\033[4A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[4A"); // move UP 2 lines
+            slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
             int p;
 
@@ -2689,7 +2687,7 @@ void createNewList(
                 if (!cin.fail()) break;
                 cin.clear();
                 cin.ignore(1000 , '\n');
-                cout << "Invalid input. Please try again.\n";
+                slowprint( "Invalid input. Please try again.\n");
             }
             cin.ignore();
 
@@ -2704,24 +2702,24 @@ void createNewList(
             system("cls");
             printLiveSummary(title, category, deadline, deadlinePriority, notes);
 
-            cout << "                                                                                       ┏━╸╺┳┓╻╺┳╸   ┏┓╻┏━┓╺┳╸┏━╸            \n";
-            cout << "                                                                                       ┣╸  ┃┃┃ ┃    ┃┗┫┃ ┃ ┃ ┣╸           \n";
-            cout << "                                                                                       ┗━╸╺┻┛╹ ╹    ╹ ╹┗━┛ ╹ ┗━╸          \n\n";
+            slowprint( "                                                                                       ┏━╸╺┳┓╻╺┳╸   ┏┓╻┏━┓╺┳╸┏━╸            \n");
+            slowprint( "                                                                                       ┣╸  ┃┃┃ ┃    ┃┗┫┃ ┃ ┃ ┣╸           \n");
+            slowprint( "                                                                                       ┗━╸╺┻┛╹ ╹    ╹ ╹┗━┛ ╹ ┗━╸          \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                      ╔════════════════════════╗                              \n";
-            cout << "                                                                                     ╔║                        ║╗                             \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
                 
-            cout << "\033[4A"; // move UP 2 lines
-            cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+            slowprint( "\033[4A"); // move UP 2 lines
+            slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
             getline(cin, notes);
             break;
         }
 
         default:
-            cout << "Invalid choice.\n";
+            slowprint( "Invalid choice.\n");
     }
 
 }
@@ -2742,22 +2740,22 @@ do {
     // 🔹 Show live list (title + ⃝ items + sub-bullets)
     printListLive(title, items, descriptions);
 
-        cout << "                                                        ┏━┓╺┳╸┏━┓┏━┓╺┳╸   ┏━┓╺┳┓╺┳┓╻┏┓╻┏━╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ╺┳╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ╻  ╻┏━┓╺┳╸╻            \n";
-        cout << "                                                        ┗━┓ ┃ ┣━┫┣┳┛ ┃    ┣━┫ ┃┃ ┃┃┃┃┗┫┃╺┓   ┃ ┃ ┣╸ ┃┃┃┗━┓    ┃ ┃ ┃   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┃┗━┓ ┃ ╹  \n";
-        cout << "                                                        ┗━┛ ╹ ╹ ╹╹┗╸ ╹    ╹ ╹╺┻┛╺┻┛╹╹ ╹┗━┛   ╹ ╹ ┗━╸╹ ╹┗━┛    ╹ ┗━┛    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹┗━┛ ╹ ╹          \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        slowprint( "                                                        ┏━┓╺┳╸┏━┓┏━┓╺┳╸   ┏━┓╺┳┓╺┳┓╻┏┓╻┏━╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ╺┳╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ╻  ╻┏━┓╺┳╸╻            \n");
+        slowprint( "                                                        ┗━┓ ┃ ┣━┫┣┳┛ ┃    ┣━┫ ┃┃ ┃┃┃┃┗┫┃╺┓   ┃ ┃ ┣╸ ┃┃┃┗━┓    ┃ ┃ ┃   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┃┗━┓ ┃ ╹  \n");
+        slowprint( "                                                        ┗━┛ ╹ ╹ ╹╹┗╸ ╹    ╹ ╹╺┻┛╺┻┛╹╹ ╹┗━┛   ╹ ╹ ┗━╸╹ ╹┗━┛    ╹ ┗━┛    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹┗━┛ ╹ ╹          \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
 
-        cout << "                                                                                    🟢 TYPE AN ITEM AND PRESS ENTER!\n";
-        cout << "                                                                       Type 💾[1] POST / SAVE LIST | 🗑️[2] CANCEL / DISCARD LIST \n\n";
+        slowprint( "                                                                                    🟢 TYPE AN ITEM AND PRESS ENTER!\n");
+        slowprint( "                                                                       Type 💾[1] POST / SAVE LIST | 🗑️[2] CANCEL / DISCARD LIST \n\n");
 
-        cout << "                                                                                      ╔════════════════════════╗                              \n";
-        cout << "                                                                                     ╔║                        ║╗                             \n";
-        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+        slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+        slowprint( "                                                                                     ╔║                        ║╗                             \n");
+        slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
         
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[87C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[87C"); // move RIGHT 17 columns (adjust until perfect)
 
-    cout << "Add item: ";
+    slowprint( "Add item: ");
     
     getline(cin, item);
 
@@ -2767,8 +2765,8 @@ do {
 
     // --- User cancels entire creation process ---
     if (item == "2") {
-        cout << "\nList creation cancelled.\n";
-        cout << "Press Enter to continue...";
+        slowprint( "\nList creation cancelled.\n");
+        slowprint( "Press Enter to continue...");
         cin.get();
         return;
     }
@@ -2792,23 +2790,23 @@ do {
     // ENTER DESCRIPTIONS FOR THIS ITEM
     // ===================================================
 
-        cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
-        cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
-        cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           \n";
+        slowprint( "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n");
+        slowprint( "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n");
+        slowprint( "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           \n");
 
-        cout << "                                                                                🟢 TYPE A DESCRIPTION AND PRESS ENTER!\n";
-        cout << "                                                                                          Type [1] 🗑️ SKIP \n\n";
+        slowprint( "                                                                                🟢 TYPE A DESCRIPTION AND PRESS ENTER!\n");
+        slowprint( "                                                                                          Type [1] 🗑️ SKIP \n\n");
 
-        cout << "                                                                                      ╔════════════════════════╗                              \n";
-        cout << "                                                                                     ╔║                        ║╗                             \n";
-        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+        slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+        slowprint( "                                                                                     ╔║                        ║╗                             \n");
+        slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
 
     tempDescriptions.clear();
 
     while (true) {
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[90C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[90C"); // move RIGHT 17 columns (adjust until perfect)
             getline(cin, descLine);
 
             if (descLine == "1")
@@ -2840,15 +2838,15 @@ do {
 
             printListLive(title, items, previewDescriptions);
 
-            cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
-            cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
-            cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                             \n";
-            cout << "                                                                                     Type [1] 💾 FINISH DESCRIPTION \n\n";
+            slowprint( "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n");
+            slowprint( "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n");
+            slowprint( "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                             \n");
+            slowprint( "                                                                                     Type [1] 💾 FINISH DESCRIPTION \n\n");
 
-            cout << "                                                                                      ╔════════════════════════╗                              \n";
-            cout << "                                                                                     ╔║                        ║╗                             \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n" ; 
+            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n"); 
 
  
     }
@@ -2862,7 +2860,7 @@ do {
     system("cls");
     printListLive(title, items, descriptions);
 
-    cout << "\nItem + descriptions saved!\n\n";
+    slowprint( "\nItem + descriptions saved!\n\n");
 
 } while (true);
 
@@ -2876,20 +2874,20 @@ while (true) {
     printListLive(title, items, descriptions);
 
     
-    cout << "                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓   ╻╺┳╸┏━╸┏┳┓┏━┓   ┏━┓┏┓╻╺┳┓  ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻┏━┓┏━┓            \n";
-    cout << "                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃   ┃ ┃ ┣╸ ┃┃┃┗━┓   ┣━┫┃┗┫ ┃┃   ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫┗━┓ ╺┛            \n";
-    cout << "                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹   ╹ ╹ ┗━╸╹ ╹┗━┛   ╹ ╹╹ ╹╺┻┛  ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹┗━┛ ╹          \n\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    cout << "                                                                                   [1] ✅ CONFIRM AND CREATE LIST\n";
-    cout << "                                                                                   [2] ✏️ EDIT ITEMS / DESCRIPTIONS\n";
-    cout << "                                                                                   [3] ❌ CANCEL / DISCARD LIST\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-    cout << "                                                                                                ╔════╗                              \n";
-    cout << "                                                                                               ╔║    ║╗                             \n";
-    cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+    slowprint( "                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓   ╻╺┳╸┏━╸┏┳┓┏━┓   ┏━┓┏┓╻╺┳┓  ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻┏━┓┏━┓            \n");
+    slowprint( "                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃   ┃ ┃ ┣╸ ┃┃┃┗━┓   ┣━┫┃┗┫ ┃┃   ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫┗━┓ ╺┛            \n");
+    slowprint( "                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹   ╹ ╹ ┗━╸╹ ╹┗━┛   ╹ ╹╹ ╹╺┻┛  ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹┗━┛ ╹          \n\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    slowprint( "                                                                                   [1] ✅ CONFIRM AND CREATE LIST\n");
+    slowprint( "                                                                                   [2] ✏️ EDIT ITEMS / DESCRIPTIONS\n");
+    slowprint( "                                                                                   [3] ❌ CANCEL / DISCARD LIST\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+    slowprint( "                                                                                                ╔════╗                              \n");
+    slowprint( "                                                                                               ╔║    ║╗                             \n");
+    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-    cout << "\033[2A";
-    cout << "\033[98C";
+    slowprint( "\033[2A");
+    slowprint( "\033[98C");
 
     int finalChoice;
     while (true) {
@@ -2897,7 +2895,7 @@ while (true) {
         if (!cin.fail()) break;
         cin.clear();
         cin.ignore(1000, '\n');
-        cout << "Invalid input. Please try again.\n";
+        slowprint( "Invalid input. Please try again.\n");
     }
     cin.ignore(); // clear newline for getline later
 
@@ -2910,8 +2908,8 @@ while (true) {
     if (finalChoice == 3) {
         system("cls");
         printListLive(title, items, descriptions);
-        cout << "\nList creation cancelled.\n";
-        cout << "Press Enter to continue...";
+        slowprint( "\nList creation cancelled.\n");
+        slowprint( "Press Enter to continue...");
         cin.get();
         return;
     }
@@ -2923,28 +2921,28 @@ while (true) {
             printListLive(title, items, descriptions);
 
             if (items.empty()) {
-                cout << "No items to edit. Press Enter to go back...";
+                slowprint( "No items to edit. Press Enter to go back...");
                 cin.get();
                 break;
             }
 
-            cout << "                                                             ┏━╸╺┳┓╻╺┳╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ┏━┓┏┓╻╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻┏━┓┏━┓            \n";
-            cout << "                                                             ┣╸  ┃┃┃ ┃    ┃ ┃ ┣╸ ┃┃┃┗━┓   ┣━┫┃┗┫ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫┗━┓ ╺┛            \n";
-            cout << "                                                             ┗━╸╺┻┛╹ ╹    ╹ ╹ ┗━╸╹ ╹┗━┛   ╹ ╹╹ ╹╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹┗━┛ ╹           \n\n";
-            cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            slowprint( "                                                             ┏━╸╺┳┓╻╺┳╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ┏━┓┏┓╻╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻┏━┓┏━┓            \n");
+            slowprint( "                                                             ┣╸  ┃┃┃ ┃    ┃ ┃ ┣╸ ┃┃┃┗━┓   ┣━┫┃┗┫ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫┗━┓ ╺┛            \n");
+            slowprint( "                                                             ┗━╸╺┻┛╹ ╹    ╹ ╹ ┗━╸╹ ╹┗━┛   ╹ ╹╹ ╹╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹┗━┛ ╹           \n\n");
+            slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
 
             for (size_t i = 0; i < items.size(); ++i) {
-                cout << "                                                                         [" << (i + 1) << "] " << items[i] << "\n";
+                slowprint( "                                                                         [" + to_string(i + 1) + "] " + items[i] + "\n");
             }
-            cout << "                                                                         [0] 🔙 DONE EDITING\n\n";
-            cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+            slowprint( "                                                                         [0] 🔙 DONE EDITING\n\n");
+            slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-            cout << "\033[4A";
-            cout << "\033[98C";
+            slowprint( "\033[4A");
+            slowprint( "\033[98C");
 
             int itemChoice;
             while (true) {
@@ -2952,7 +2950,7 @@ while (true) {
                 if (!cin.fail()) break;
                 cin.clear();
                 cin.ignore(1000, '\n');
-                cout << "Invalid input. Please try again.\n";
+                slowprint( "Invalid input. Please try again.\n");
             }
             cin.ignore();
 
@@ -2971,23 +2969,23 @@ while (true) {
                  printListLive(title, items, descriptions,
                   static_cast<int>(itemIndex), -1);
 
-                cout << "                                                                                        ┏━╸╺┳┓╻╺┳╸   ╻╺┳╸┏━╸┏┳┓           \n";
-                cout << "                                                                                        ┣╸  ┃┃┃ ┃    ┃ ┃ ┣╸ ┃┃┃           \n";
-                cout << "                                                                                        ┗━╸╺┻┛╹ ╹    ╹ ╹ ┗━╸╹ ╹        \n\n";
-                cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n";
-                cout << "                                                                         EDITING ITEM #" << itemChoice << ": " << items[itemIndex] << "    \n";
-                cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n";
-                cout << "                                                                                     [1] ✏️ EDIT ITEM NAME                           \n";
-                cout << "                                                                                     [2] ✏️ EDIT / DELETE DESCRIPTIONS               \n";
-                cout << "                                                                                     [3] 🗑️ DELETE THIS ITEM                         \n";
-                cout << "                                                                                     [4] 🔙 BACK                                     \n";
-                cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                        ┏━╸╺┳┓╻╺┳╸   ╻╺┳╸┏━╸┏┳┓           \n");
+                slowprint( "                                                                                        ┣╸  ┃┃┃ ┃    ┃ ┃ ┣╸ ┃┃┃           \n");
+                slowprint( "                                                                                        ┗━╸╺┻┛╹ ╹    ╹ ╹ ┗━╸╹ ╹        \n\n");
+                slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n");
+                slowprint( "                                                                         EDITING ITEM #" + to_string(itemChoice) + ": " + items[itemIndex] + "    \n");
+                slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n");
+                slowprint( "                                                                                     [1] ✏️ EDIT ITEM NAME                           \n");
+                slowprint( "                                                                                     [2] ✏️ EDIT / DELETE DESCRIPTIONS               \n");
+                slowprint( "                                                                                     [3] 🗑️ DELETE THIS ITEM                         \n");
+                slowprint( "                                                                                     [4] 🔙 BACK                                     \n");
+                slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━             \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[4A";
-                cout << "\033[98C";
+                slowprint( "\033[4A");
+                slowprint( "\033[98C");
 
                 int itemEditChoice;
                 while (true) {
@@ -2995,7 +2993,7 @@ while (true) {
                     if (!cin.fail()) break;
                     cin.clear();
                     cin.ignore(1000, '\n');
-                    cout << "Invalid input. Please try again.\n";
+                    slowprint( "Invalid input. Please try again.\n");
                 }
                 cin.ignore();
 
@@ -3010,18 +3008,18 @@ while (true) {
                     printListLive(title, items, descriptions,
                     static_cast<int>(itemIndex), -1);
 
-                        cout << "                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━┓┏┳┓┏━╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓              \n";
-                        cout << "                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┣━┫┃┃┃┣╸    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃            \n";
-                        cout << "                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹╹ ╹╹ ╹┗━╸   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹          \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                        slowprint( "                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━┓┏┳┓┏━╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓              \n");
+                        slowprint( "                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┣━┫┃┃┃┣╸    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃            \n");
+                        slowprint( "                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹╹ ╹╹ ╹┗━╸   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹          \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
 
-                        cout << "                                                                                      ╔════════════════════════╗                                                   \n";
-                        cout << "                                                                                     ╔║                        ║╗                                                  \n";
-                        cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n" ; 
+                        slowprint( "                                                                                      ╔════════════════════════╗                                                   \n");
+                        slowprint( "                                                                                     ╔║                        ║╗                                                  \n");
+                        slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n"); 
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
 
 
@@ -3048,33 +3046,33 @@ while (true) {
                         printListLive(title, items, descriptions,
                         static_cast<int>(itemIndex));
 
-                        cout << "                                                    ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ╺┳┓┏━╸┏━┓┏━╸┏━┓┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ╺┳╸┏━┓   ┏━╸╺┳┓╻╺┳╸    ╻   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸       \n";
-                        cout << "                                                    ┗━┓┣╸ ┃  ┣╸ ┃   ┃     ┃┃┣╸ ┗━┓┃  ┗━┓┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫    ┃ ┃ ┃   ┣╸  ┃┃┃ ┃    ┏┛    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸        \n";
-                        cout << "                                                    ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╺┻┛┗━╸┗━┛┗━╸┗━┛╹┗╸╹╹   ╹ ╹┗━┛╹ ╹    ╹ ┗━┛   ┗━╸╺┻┛╹ ╹    ╹    ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸        \n\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                         DESCRIPTIONS FOR: " << items[itemIndex] << "\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                        slowprint( "                                                    ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ╺┳┓┏━╸┏━┓┏━╸┏━┓┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ╺┳╸┏━┓   ┏━╸╺┳┓╻╺┳╸    ╻   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸       \n");
+                        slowprint( "                                                    ┗━┓┣╸ ┃  ┣╸ ┃   ┃     ┃┃┣╸ ┗━┓┃  ┗━┓┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫    ┃ ┃ ┃   ┣╸  ┃┃┃ ┃    ┏┛    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸        \n");
+                        slowprint( "                                                    ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╺┻┛┗━╸┗━┛┗━╸┗━┛╹┗╸╹╹   ╹ ╹┗━┛╹ ╹    ╹ ┗━┛   ┗━╸╺┻┛╹ ╹    ╹    ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸        \n\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                         DESCRIPTIONS FOR: " + items[itemIndex] + "\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
 
                         if (itemIndex >= descriptions.size() || descriptions[itemIndex].empty()) {
-                            cout << "                                                                         (No descriptions yet.)\n";
+                            slowprint( "                                                                         (No descriptions yet.)\n");
                         } else {
                             for (size_t d = 0; d < descriptions[itemIndex].size(); ++d) {
-                                cout << "                                                                         (" << (d + 1) << ") " 
-                                     << descriptions[itemIndex][d] << "\n";
+                                slowprint( "                                                                         (" + to_string(d + 1) + ") " 
+                                     + descriptions[itemIndex][d] + "\n");
                             }
                         }
 
-                        cout << "\n";
-                        cout << "                                                                         [0] 🔙 BACK\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                         [0] 🔙 BACK\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-                        cout << "                                                                                                ╔════╗                              \n";
-                        cout << "                                                                                               ╔║    ║╗                             \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                        slowprint( "                                                                                                ╔════╗                              \n");
+                        slowprint( "                                                                                               ╔║    ║╗                             \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                        cout << "\033[4A";
-                        cout << "\033[98C";
+                        slowprint( "\033[4A");
+                        slowprint( "\033[98C");
 
                         int descChoice;
                         while (true) {
@@ -3082,7 +3080,7 @@ while (true) {
                             if (!cin.fail()) break;
                             cin.clear();
                             cin.ignore(1000, '\n');
-                            cout << "Invalid input. Please try again.\n";
+                            slowprint( "Invalid input. Please try again.\n");
                         }
                         cin.ignore();
 
@@ -3103,25 +3101,25 @@ while (true) {
                         static_cast<int>(itemIndex),
                         static_cast<int>(descIndex));
                         // ── New header for the selected description ─────────────────────────────
-                        cout << "                                                                              ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻      \n";
-                        cout << "                                                                              ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫        \n";
-                        cout << "                                                                              ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹        \n\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                         EDITING DESCRIPTION #" << descChoice
-                            << " OF ITEM #" << (itemIndex + 1) << ": " << items[itemIndex] << "\n";
-                        cout << "                                                                         → \"" << descriptions[itemIndex][descIndex] << "\"\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                        slowprint( "                                                                              ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻      \n");
+                        slowprint( "                                                                              ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫        \n");
+                        slowprint( "                                                                              ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹        \n\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                         EDITING DESCRIPTION #" + to_string(descChoice)
+                            + " OF ITEM #" + to_string(itemIndex + 1) + ": " + items[itemIndex] + "\n");
+                        slowprint( "                                                                         → \"" + descriptions[itemIndex][descIndex] + "\"\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-                        cout << "                                                                         [1] ✏️ EDIT THIS LINE\n";
-                        cout << "                                                                         [2] 🗑️ DELETE THIS LINE\n";
-                        cout << "                                                                         [3] 🔙 CANCEL\n";
-                        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗                              \n";
-                        cout << "                                                                                               ╔║    ║╗                             \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                        slowprint( "                                                                         [1] ✏️ EDIT THIS LINE\n");
+                        slowprint( "                                                                         [2] 🗑️ DELETE THIS LINE\n");
+                        slowprint( "                                                                         [3] 🔙 CANCEL\n");
+                        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗                              \n");
+                        slowprint( "                                                                                               ╔║    ║╗                             \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
 
 
@@ -3131,7 +3129,7 @@ while (true) {
                             if (!cin.fail()) break;
                             cin.clear();
                             cin.ignore(1000, '\n');
-                            cout << "Invalid input. Please try again.\n";
+                            slowprint( "Invalid input. Please try again.\n");
                         }
                         cin.ignore();
 
@@ -3141,18 +3139,18 @@ while (true) {
                         static_cast<int>(itemIndex),
                         static_cast<int>(descIndex));
 
-                            cout << "                                                       ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ╺┳╸┏━╸╻ ╻╺┳╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻              \n";
-                            cout << "                                                       ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃    ┃ ┣╸ ┏╋┛ ┃    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫            \n";
-                            cout << "                                                       ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛    ╹ ┗━╸╹ ╹ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹          \n\n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                            slowprint( "                                                       ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ╺┳╸┏━╸╻ ╻╺┳╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻              \n");
+                            slowprint( "                                                       ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃    ┃ ┣╸ ┏╋┛ ┃    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫            \n");
+                            slowprint( "                                                       ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛    ╹ ┗━╸╹ ╹ ╹    ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹          \n\n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
 
-                            cout << "                                                                                      ╔════════════════════════╗                                                   \n";
-                            cout << "                                                                                     ╔║                        ║╗                                                  \n";
-                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n" ; 
+                            slowprint( "                                                                                      ╔════════════════════════╗                                                   \n");
+                            slowprint( "                                                                                     ╔║                        ║╗                                                  \n");
+                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n"); 
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             string newDesc;
                             getline(cin, newDesc);
@@ -3240,12 +3238,12 @@ credate = cdate;
     system("cls");
     headerNewList();
 
-    cout << "                                                                 ╻  ╻┏━┓╺┳╸   ┏━┓┏━┓╻ ╻┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻╻          \n";
-    cout << "                                                                 ┃  ┃┗━┓ ┃    ┗━┓┣━┫┃┏┛┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛╹          \n";
-    cout << "                                                                 ┗━╸╹┗━┛ ╹    ┗━┛╹ ╹┗┛ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹ ╹           \n\n";
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+    slowprint( "                                                                 ╻  ╻┏━┓╺┳╸   ┏━┓┏━┓╻ ╻┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻╻          \n");
+    slowprint( "                                                                 ┃  ┃┗━┓ ┃    ┗━┓┣━┫┃┏┛┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛╹          \n");
+    slowprint( "                                                                 ┗━╸╹┗━┛ ╹    ┗━┛╹ ╹┗┛ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹ ╹           \n\n");
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
    
-    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
 
     cin.get();
 }
@@ -3253,16 +3251,16 @@ credate = cdate;
 
 void headerVoidList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                                      ██╗   ██╗██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n";
-        cout << "                                                                      ██║   ██║██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══     \n";
-        cout << "                                                                      ██║   ██║██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║          \n";
-        cout << "                                                                      ╚██╗ ██╔╝██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n";
-        cout << "                                                                       ╚████╔╝ ██║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║          \n";
-        cout << "                                                                        ╚═══╝  ╚═╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝              \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                                      ██╗   ██╗██╗███████╗██╗    ██╗    ██╗     ██╗███████╗████████╗     \n");
+        slowprint( "                                                                      ██║   ██║██║██╔════╝██║    ██║    ██║     ██║██╔════╝╚══██╔══     \n");
+        slowprint( "                                                                      ██║   ██║██║█████╗  ██║ █╗ ██║    ██║     ██║███████╗   ██║          \n");
+        slowprint( "                                                                      ╚██╗ ██╔╝██║██╔══╝  ██║███╗██║    ██║     ██║╚════██║   ██║        \n");
+        slowprint( "                                                                       ╚████╔╝ ██║███████╗╚███╔███╔╝    ███████╗██║███████║   ██║          \n");
+        slowprint( "                                                                        ╚═══╝  ╚═╝╚══════╝ ╚══╝╚══╝     ╚══════╝╚═╝╚══════╝   ╚═╝              \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -3426,7 +3424,7 @@ void showSingleList(
         else if (cyear == yearcreated[index] && cmonth > monthcreated[index])
             missing = to_string(cmonth - monthcreated[index]) + " month(s)";
         else if (cyear == yearcreated[index] && cmonth == monthcreated[index] && cdate > datecreated[index])
-            missing = to_string(cdate - datecreated[index]) + " day(s)";
+            missing = to_string(cdate - datecreated[index]) + " day(s)" ;
     }
 
     vector<string>& items = list_of_lists[index];
@@ -3441,36 +3439,36 @@ void showSingleList(
     system("cls");
     headerVoidList();
 
-    cout << "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+    slowprint( "                                                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
-    cout << "                                                                         " "𝐋𝐈𝐒𝐓 𝐍𝐀𝐌𝐄: " << name_of_list[index] << "\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n\n";
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n");
+    slowprint( "                                                                         " "𝐋𝐈𝐒𝐓 𝐍𝐀𝐌𝐄: " + name_of_list[index] + "\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n\n");
 
-    cout << "                                                                           📂 CREATED ON : " << monthcreated[index] << "/" << datecreated[index] << "/" << yearcreated[index] << "\n";
-    cout << "                                                                           📅 TARGET DATE : ";
+    slowprint( "                                                                           📂 CREATED ON : " + to_string(monthcreated[index]) + "/" + to_string(datecreated[index]) + "/" + to_string(yearcreated[index]) + "\n");
+    slowprint( "                                                                           📅 TARGET DATE : ");
     if (!months.empty() && !dates.empty() && !years.empty()) {
-        cout << months[0] << "/" << dates[0] << "/" << years[0] << "\n\n";
+        slowprint( to_string(months[0]) + "/" + to_string(dates[0]) + "/" + to_string(years[0]) + "\n\n");
     } else {
         if (missing != "False") {
-            cout << "Already Late for " << missing << "\n\n";
+            slowprint( "Already Late for " + missing + "\n\n");
         } else {
-            cout << dmonth << '/' << dday << '/' << dyear << "\n\n";
+            slowprint( to_string(dmonth) + '/' + to_string(dday) + '/' + to_string(dyear) + "\n\n");
         }
     }
 
     if (items.empty()) {
-        cout << "                                                                               (No items)\n";
+        slowprint( "                                                                               (No items)\n");
     } else {
         int completedCount = 0;
-        cout << "                                                                               📦 ITEMS:\n ";
+        slowprint( "                                                                               📦 ITEMS:\n ");
 
         for (int i = 0; i < (int)items.size(); i++) {
-            cout << "                                                                                     " << i + 1 << ". " << items[i] << "\n";
-
+            slowprint( "                                                                                     " + to_string(i + 1) + ". " + items[i] + "\n");
+            
             if (i < (int)descs.size()) {
                 for (int d = 0; d < (int)descs[i].size(); d++) {
-                    cout << "                                                                                       • " << descs[i][d] << "\n";
+                    slowprint( "                                                                                       • " + descs[i][d] + "\n");
                 }
             }
 
@@ -3481,22 +3479,22 @@ void showSingleList(
         double percentDone = items.empty() ? 0 : (completedCount * 100.0) / items.size();
         double percentNot  = items.empty() ? 0 : (notDone * 100.0) / items.size();
 
-        cout << endl;
+        slowprint("\n");
         
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
-        cout << "                                                                                               𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 \n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
-        cout << "                                                                          Missing : "          << missing      << "\n";
-        cout << "                                                                          Total Items : "      << items.size() << "\n";
-        cout << "                                                                          Completed Items : "  << completedCount << "\n";
-        cout << "                                                                          Not Done : "         << notDone      << "\n";
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n");
+        slowprint( "                                                                                               𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 \n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n");
+        slowprint( "                                                                          Missing : "          + missing      + "\n");
+        slowprint( "                                                                          Total Items : "      + to_string(items.size()) + "\n");
+        slowprint( "                                                                          Completed Items : "  + to_string(completedCount) + "\n");
+        slowprint( "                                                                          Not Done : "         + to_string(notDone)      + "\n");
         cout <<                                                                            fixed << setprecision(2);
-        cout << "                                                                          % Completed : "      << percentDone << "%\n";
-        cout << "                                                                          % Not Completed : "  << percentNot  << "%\n\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n";
+        slowprint( "                                                                          % Completed : "      + to_string(percentDone) + "%\n");
+        slowprint( "                                                                          % Not Completed : "  + to_string(percentNot)  + "%\n\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n");
     }
 
-    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
     cin.get();
 }
 
@@ -3524,12 +3522,12 @@ void viewLists(
 ) {
     if (name_of_list.size() == 0) {
 
-        cout << endl;
-        cout << "\033[0B"; // move UP 2 lines
-        cout << "\033[84C"; // move RIGHT 17 columns (adjust until perfect)
-        cout << "\033[1;37;41m  ⚠️ NO LISTS TO EDIT⚠️  \033[0m\n";
-        cout << endl;
-        cout << "                                                                                  \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+        slowprint("\n");
+        slowprint( "\033[0B"); // move UP 2 lines
+        slowprint( "\033[84C"); // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[1;37;41m  ⚠️ NO LISTS TO EDIT⚠️  \033[0m\n");
+        slowprint( "\n");
+        slowprint( "                                                                                  \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
 
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -3546,33 +3544,33 @@ void viewLists(
         system("cls");
         headerVoidList();
 
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
+        slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n");
 
         for (int i = 0; i < (int)name_of_list.size(); i++) {
-            cout << "                                                                                 " << i + 1 << ". " << name_of_list[i] << "\n";
-            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[i]  << "\n";
-            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[i]   << "\n";
-            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[i]  << "\n";
-            cout << "                                                                                      📋 NOTES   : " 
-                 << (list_notes[i].empty() ? "None" : list_notes[i]) << "\n";
-            cout << "\n";
+            slowprint( "                                                                                 " + to_string(i + 1) + ". " + name_of_list[i] + "\n");
+            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[i]  + "\n");
+            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[i]   + "\n");
+            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[i]  + "\n");
+            slowprint( "                                                                                      📋 NOTES   : " 
+                 + (list_notes[i].empty() ? "None" : list_notes[i]) + "\n");
+            slowprint( "\n");
         }
 
-        cout << "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+        slowprint( "                                                                             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n");
 
-        cout << "                                                                       ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓          \n";
-        cout << "                                                                       ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n";
-        cout << "                                                                       ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸          \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-        cout << "                                                                                      [S] 🔎 SEARCH LIST NAMES                             \n";
-        cout << "                                                                                      [0] 🔙 BACK TO MAIN MENU                            \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-        cout << "                                                                                                ╔════╗                                     \n";
-        cout << "                                                                                               ╔║    ║╗                                    \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+        slowprint( "                                                                       ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓          \n");
+        slowprint( "                                                                       ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n");
+        slowprint( "                                                                       ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸          \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+        slowprint( "                                                                                      [S] 🔎 SEARCH LIST NAMES                             \n");
+        slowprint( "                                                                                      [0] 🔙 BACK TO MAIN MENU                            \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+        slowprint( "                                                                                                ╔════╗                                     \n");
+        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         string choiceStr;
         cin >> choiceStr;
@@ -3594,26 +3592,26 @@ void viewLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                          ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻    \n";
-                cout << "                                                                                          ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫    \n";
-                cout << "                                                                                          ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹    \n\n";
+                slowprint( "                                                                                          ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻    \n");
+                slowprint( "                                                                                          ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫    \n");
+                slowprint( "                                                                                          ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹    \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                cout << "                                                                                       [1] 🔎 SEARCH BY NAME\n";
-                cout << "                                                                                       [2] 🔎 SORT BY NAME (A-Z)\n";
-                cout << "                                                                                       [3] 🔎 SORT BY NAME (Z-A)\n";
-                cout << "                                                                                       [4] 🗂️ FILTER BY CATEGORY\n";
-                cout << "                                                                                       [5] 📅 FILTER BY DEADLINE\n";
-                cout << "                                                                                       [6] ❗ FILTER BY PRIORITY\n";
-                cout << "                                                                                       [0] ↩ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                slowprint( "                                                                                       [1] 🔎 SEARCH BY NAME\n");
+                slowprint( "                                                                                       [2] 🔎 SORT BY NAME (A-Z)\n");
+                slowprint( "                                                                                       [3] 🔎 SORT BY NAME (Z-A)\n");
+                slowprint( "                                                                                       [4] 🗂️ FILTER BY CATEGORY\n");
+                slowprint( "                                                                                       [5] 📅 FILTER BY DEADLINE\n");
+                slowprint( "                                                                                       [6] ❗ FILTER BY PRIORITY\n");
+                slowprint( "                                                                                       [0] ↩ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                cout << "                                                                                                ╔════╗                                     \n";
-                cout << "                                                                                               ╔║    ║╗                                    \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                slowprint( "                                                                                                ╔════╗                                     \n");
+                slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 string sStr;
                 int s = 0;
@@ -3630,19 +3628,19 @@ void viewLists(
                     s = stoi(sStr);
                 }
                 catch (...) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue; // back to SEARCH menu
                 }
 
                 if (s < 1 || s > 6) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;
                 }
@@ -3655,17 +3653,17 @@ void viewLists(
                     system("cls");
                     headerVoidList();
 
-                    cout << "                                                                              ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n";
-                    cout << "                                                                              ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n";
-                    cout << "                                                                              ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸         \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                    slowprint( "                                                                              ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n");
+                    slowprint( "                                                                              ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n");
+                    slowprint( "                                                                              ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸         \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
-                    cout << "                                                                                      ╔════════════════════════╗                                                   \n";
-                    cout << "                                                                                     ╔║                        ║╗                                                  \n";
-                    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n";
+                    slowprint( "                                                                                      ╔════════════════════════╗                                                   \n");
+                    slowprint( "                                                                                     ╔║                        ║╗                                                  \n");
+                    slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n");
 
-                    cout << "\033[2A";
-                    cout << "\033[98C";
+                    slowprint( "\033[2A");
+                    slowprint( "\033[98C");
 
                     string key;
                     getline(cin, key);
@@ -3681,13 +3679,13 @@ void viewLists(
                         system("cls");
                         headerVoidList();
 
-                        cout << "                                                                                    ┏┓╻┏━┓   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸┏━┓            \n";
-                        cout << "                                                                                    ┃┗┫┃ ┃   ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃ ┗━┓          \n";
-                        cout << "                                                                                    ╹ ╹┗━┛   ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹ ┗━┛        \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                        slowprint( "                                                                                    ┏┓╻┏━┓   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸┏━┓            \n");
+                        slowprint( "                                                                                    ┃┗┫┃ ┃   ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃ ┗━┓          \n");
+                        slowprint( "                                                                                    ╹ ╹┗━┛   ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹ ┗━┛        \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
-                        cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                        slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                         cin.get();
                         continue;
                     }
@@ -3696,36 +3694,36 @@ void viewLists(
                         system("cls");
                         headerVoidList();
 
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << "                                                                                         🔎 Search Results 🔎\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint( "                                                                                         🔎 Search Results 🔎\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
                         for (int i = 0; i < (int)found.size(); i++) {
                             int idx = found[i];
 
-                            cout << "                                                                                  " << (i + 1) << ". " << name_of_list[idx] << "\n";
-                            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                            cout << "                                                                                      📋 NOTES   : "
-                                << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                            cout << "\n";
+                            slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                            slowprint( "                                                                                      📋 NOTES   : "
+                                + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                            slowprint( "\n");
                         }
 
 
-                        cout << endl;
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << "                                                                                ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸   \n";
-                        cout << "                                                                                ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃     \n";
-                        cout << "                                                                                ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹    \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint( "                                                                                ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸   \n");
+                        slowprint( "                                                                                ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃     \n");
+                        slowprint( "                                                                                ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹    \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                        cout << "                                                                                                ╔════╗                                     \n";
-                        cout << "                                                                                               ╔║    ║╗                                    \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                        slowprint( "                                                                                                ╔════╗                                     \n");
+                        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         string pickStr;
                         int pick = 0;
@@ -3736,19 +3734,19 @@ void viewLists(
                             pick = stoi(pickStr);
                         }
                         catch (...) {
-                            cout << "\n\n";
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "\n\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             cin.get();
                             continue;
                         }
 
                         if (pick < 1 || pick > (int)found.size()) {
-                            cout << "\n\n";
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "\n\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             cin.get();
                             continue;
                         }
@@ -3802,38 +3800,38 @@ void viewLists(
                         system("cls");
                         headerVoidList();
 
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << "                                                                                         🗂️ SORTED LIST 🗂️\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint( "                                                                                         🗂️ SORTED LIST 🗂️\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
                         for (int i = 0; i < (int)order.size(); i++) {
                             int idx = order[i];
 
-                            cout << "                                                                                  " << i + 1 << ". " << name_of_list[idx] << "\n";
-                            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                            cout << "                                                                                      📋 NOTES   : "
-                                << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                            cout << "\n";
+                            slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                            slowprint( "                                                                                      📋 NOTES   : "
+                                + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                            slowprint( "\n");
                         }
 
 
-                        cout << endl;
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << "                                                                    ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏━┓┏━┓┏━╸┏┓╻         \n";
-                        cout << "                                                                    ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃ ┃┣━┛┣╸ ┃┗┫             \n";
-                        cout << "                                                                    ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗━┛╹  ┗━╸╹ ╹          \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n";
-                        cout << "                                                                                             [0] ↩️ BACK\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint( "                                                                    ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏━┓┏━┓┏━╸┏┓╻         \n");
+                        slowprint( "                                                                    ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃ ┃┣━┛┣╸ ┃┗┫             \n");
+                        slowprint( "                                                                    ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗━┛╹  ┗━╸╹ ╹          \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n");
+                        slowprint( "                                                                                             [0] ↩️ BACK\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n");
 
-                        cout << "                                                                                                ╔════╗                                     \n";
-                        cout << "                                                                                               ╔║    ║╗                                    \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                        slowprint( "                                                                                                ╔════╗                                     \n");
+                        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         string pickStr;
                         int pick = 0;
@@ -3849,19 +3847,19 @@ void viewLists(
                             pick = stoi(pickStr);
                         }
                         catch (...) {
-                            cout << "\n\n";
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "\n\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             cin.get();
                             continue;
                         }
 
                         if (pick < 1 || pick > (int)order.size()) {
-                            cout << "\n\n";
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "\n\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             cin.get();
                             continue;
                         }
@@ -3960,25 +3958,25 @@ void viewLists(
                     system("cls");
                     headerVoidList();
 
-                    cout << "                                                                                  ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻   \n";
-                    cout << "                                                                                  ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫    \n";
-                    cout << "                                                                                  ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━┛╹   ╹ ╹┗━┛╹ ╹    \n\n";
+                    slowprint( "                                                                                  ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻   \n");
+                    slowprint( "                                                                                  ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫    \n");
+                    slowprint( "                                                                                  ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━┛╹   ╹ ╹┗━┛╹ ╹    \n\n");
 
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
                     for (int i = 0; i < (int)options.size(); i++) {
-                        cout << "                                                                                 " << (i + 1) << ". " << options[i] << "\n";
+                        slowprint( "                                                                                 " + to_string(i + 1) + ". " + options[i] + "\n");
                     }
 
-                    cout << "                                                                                 [0] ↩️ BACK\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                    slowprint( "                                                                                 [0] ↩️ BACK\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                    cout << "                                                                                                ╔════╗                                     \n";
-                    cout << "                                                                                               ╔║    ║╗                                    \n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                    slowprint( "                                                                                                ╔════╗                                     \n");
+                    slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                    cout << "\033[2A";
-                    cout << "\033[98C";
+                    slowprint( "\033[2A");
+                    slowprint( "\033[98C");
 
                     cin >> fcStr;
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -3992,19 +3990,19 @@ void viewLists(
                         fc = stoi(fcStr);
                     }
                     catch (...) {
-                        cout << "\n\n";
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                        slowprint( "\n\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                         cin.get();
                         continue;   // 🔁 redraw filter options
                     }
 
                     if (fc < 1 || fc > (int)options.size()) {
-                        cout << "\n\n";
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                        slowprint( "\n\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                         cin.get();
                         continue;   // 🔁 redraw filter options
                     }
@@ -4039,12 +4037,12 @@ void viewLists(
                     system("cls");
                     headerVoidList();
 
-                    cout << "                                                                                 ┏┓╻┏━┓   ╻  ╻┏━┓╺┳╸┏━┓   ┏━╸┏━┓╻ ╻┏┓╻╺┳┓       \n";
-                    cout << "                                                                                 ┃┗┫┃ ┃   ┃  ┃┗━┓ ┃ ┗━┓   ┣╸ ┃ ┃┃ ┃┃┗┫ ┃┃   \n";
-                    cout << "                                                                                 ╹ ╹┗━┛   ┗━╸╹┗━┛ ╹ ┗━┛   ╹  ┗━┛┗━┛╹ ╹╺┻┛    \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "                                                                                 ┏┓╻┏━┓   ╻  ╻┏━┓╺┳╸┏━┓   ┏━╸┏━┓╻ ╻┏┓╻╺┳┓       \n");
+                    slowprint( "                                                                                 ┃┗┫┃ ┃   ┃  ┃┗━┓ ┃ ┗━┓   ┣╸ ┃ ┃┃ ┃┃┗┫ ┃┃   \n");
+                    slowprint( "                                                                                 ╹ ╹┗━┛   ┗━╸╹┗━┛ ╹ ┗━┛   ╹  ┗━┛┗━┛╹ ╹╺┻┛    \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
 
                     cin.get();
                     continue;   // back to main viewLists loop
@@ -4056,39 +4054,39 @@ void viewLists(
                     headerVoidList();
 
 
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << "                                                                                         🔍 Filtered Results 🔍\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                        cout << endl;
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint( "                                                                                         🔍 Filtered Results 🔍\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                        slowprint("\n");
                   
 
                         for (int i = 0; i < (int)filtered.size(); i++) {
                             int idx = filtered[i];
 
-                            cout << "                                                                                  " << (i + 1) << ". " << name_of_list[idx] << "\n";
-                            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                            cout << "                                                                                      📋 NOTES   : "
-                                << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                            cout << "\n";
+                            slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                            slowprint( "                                                                                      📋 NOTES   : "
+                                + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                            slowprint( "\n");
                         }
 
 
-                        cout << endl;
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
                     
 
                     
-                        cout << "                                                                                 [0] ↩️ BACK\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                        slowprint( "                                                                                 [0] ↩️ BACK\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                        cout << "                                                                                                ╔════╗                                     \n";
-                        cout << "                                                                                               ╔║    ║╗                                    \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                        slowprint( "                                                                                                ╔════╗                                     \n");
+                        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                    cout << "\033[2A";
-                    cout << "\033[98C";
+                    slowprint( "\033[2A");
+                    slowprint( "\033[98C");
 
 
                     string pickStr;
@@ -4105,19 +4103,19 @@ void viewLists(
                         pick = stoi(pickStr);
                     }
                     catch (...) {
-                        cout << "\n\n";
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                        slowprint( "\n\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                         cin.get();
                         continue;   // 🔁 redraw filtered list
                     }
 
                     if (pick < 1 || pick > (int)filtered.size()) {
-                        cout << "\n\n";
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                 \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                        slowprint( "\n\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                         cin.get();
                         continue;   // 🔁 redraw filtered list
                     }
@@ -4159,19 +4157,19 @@ void viewLists(
             choice = stoi(choiceStr);
         }
         catch (...) {
-            cout << "\n\n";
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "\n\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             cin.get();
             continue;
         }
 
         if (choice < 1 || choice > (int)name_of_list.size()) {
-            cout << "\n\n";
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "\n\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             cin.get();
             continue;
         }
@@ -4200,16 +4198,16 @@ void viewLists(
 
 void headerEditList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                           ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗    ██╗     ██╗███████╗████████╗    \n";
-        cout << "                                                           ██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══      \n";
-        cout << "                                                           ██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗      ██║     ██║███████╗   ██║           \n";
-        cout << "                                                           ██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n";
-        cout << "                                                           ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗    ███████╗██║███████║   ██║         \n";
-        cout << "                                                            ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝            \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                           ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗    ██╗     ██╗███████╗████████╗    \n");
+        slowprint( "                                                           ██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══      \n");
+        slowprint( "                                                           ██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗      ██║     ██║███████╗   ██║           \n");
+        slowprint( "                                                           ██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n");
+        slowprint( "                                                           ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗    ███████╗██║███████║   ██║         \n");
+        slowprint( "                                                            ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝            \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -4234,12 +4232,12 @@ int searchLists(
 ) {
     // If no lists exist, nothing to search
     if (name_of_list.empty()) {
-        cout << endl;
-        cout << "\033[0B";  // move DOWN
-        cout << "\033[84C"; // move RIGHT
-        cout << "\033[1;37;41m  ⚠️ NO LISTS TO SEARCH ⚠️  \033[0m\n\n";
-        cout << "                                                                                  "
-             << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+        slowprint( "\n");
+        slowprint( "\033[0B");  // move DOWN
+        slowprint( "\033[84C"); // move RIGHT
+        slowprint( "\033[1;37;41m  ⚠️ NO LISTS TO SEARCH ⚠️  \033[0m\n\n");
+        slowprint( string("                                                                                  ")
+             + "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
 
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -4251,26 +4249,26 @@ int searchLists(
         system("cls");
         headerVoidList();
 
-        cout << "                                                                                          ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻    \n";
-        cout << "                                                                                          ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫    \n";
-        cout << "                                                                                          ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹    \n\n";
+        slowprint( "                                                                                          ┏━┓┏━╸┏━┓┏━┓┏━╸╻ ╻    \n");
+        slowprint( "                                                                                          ┗━┓┣╸ ┣━┫┣┳┛┃  ┣━┫    \n");
+        slowprint( "                                                                                          ┗━┛┗━╸╹ ╹╹┗╸┗━╸╹ ╹    \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                                       [1] 🔎 SEARCH BY NAME\n";
-        cout << "                                                                                       [2] 🔎 SORT BY NAME (A-Z)\n";
-        cout << "                                                                                       [3] 🔎 SORT BY NAME (Z-A)\n";
-        cout << "                                                                                       [4] 🗂️ FILTER BY CATEGORY\n";
-        cout << "                                                                                       [5] 📅 FILTER BY DEADLINE\n";
-        cout << "                                                                                       [6] ❗ FILTER BY PRIORITY\n";
-        cout << "                                                                                       [0] ↩ BACK\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint( "                                                                                       [1] 🔎 SEARCH BY NAME\n");
+        slowprint( "                                                                                       [2] 🔎 SORT BY NAME (A-Z)\n");
+        slowprint( "                                                                                       [3] 🔎 SORT BY NAME (Z-A)\n");
+        slowprint( "                                                                                       [4] 🗂️ FILTER BY CATEGORY\n");
+        slowprint( "                                                                                       [5] 📅 FILTER BY DEADLINE\n");
+        slowprint( "                                                                                       [6] ❗ FILTER BY PRIORITY\n");
+        slowprint( "                                                                                       [0] ↩ BACK\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-        cout << "                                                                                                ╔════╗                                     \n";
-        cout << "                                                                                               ╔║    ║╗                                    \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+        slowprint( "                                                                                                ╔════╗                                     \n");
+        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         string sStr;
         int s = 0;
@@ -4287,19 +4285,19 @@ int searchLists(
             s = stoi(sStr);
         }
         catch (...) {
-            cout << "\n\n";
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "\n\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             cin.get();
             continue; // back to SEARCH menu
         }
 
         if (s < 1 || s > 6) {
-            cout << "\n\n";
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                 \033[1;48;2;255;255;255m"
-                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "\n\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                    "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             cin.get();
             continue;
         }
@@ -4312,17 +4310,17 @@ int searchLists(
             system("cls");
             headerVoidList();
 
-            cout << "                                                                              ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n";
-            cout << "                                                                              ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n";
-            cout << "                                                                              ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸         \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+            slowprint( "                                                                              ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻┏━┓┏┳┓┏━╸            \n");
+            slowprint( "                                                                              ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸            \n");
+            slowprint( "                                                                              ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸         \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
-            cout << "                                                                                      ╔════════════════════════╗                                                   \n";
-            cout << "                                                                                     ╔║                        ║╗                                                  \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n";
+            slowprint( "                                                                                      ╔════════════════════════╗                                                   \n");
+            slowprint( "                                                                                     ╔║                        ║╗                                                  \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                                             \n");
 
-            cout << "\033[2A";
-            cout << "\033[98C";
+            slowprint( "\033[2A");
+            slowprint( "\033[98C");
 
             string key;
             getline(cin, key);
@@ -4338,13 +4336,13 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                    ┏┓╻┏━┓   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸┏━┓            \n";
-                cout << "                                                                                    ┃┗┫┃ ┃   ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃ ┗━┓          \n";
-                cout << "                                                                                    ╹ ╹┗━┛   ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹ ┗━┛        \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                slowprint( "                                                                                    ┏┓╻┏━┓   ┏━┓┏━╸┏━┓╻ ╻╻  ╺┳╸┏━┓            \n");
+                slowprint( "                                                                                    ┃┗┫┃ ┃   ┣┳┛┣╸ ┗━┓┃ ┃┃   ┃ ┗━┓          \n");
+                slowprint( "                                                                                    ╹ ╹┗━┛   ╹┗╸┗━╸┗━┛┗━┛┗━╸ ╹ ┗━┛        \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
-                cout << "                                                                                 \033[1;48;2;255;255;255m"
-                        "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                        "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                 cin.get();
                 continue;
             }
@@ -4353,32 +4351,32 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                         🔎 Search Results 🔎\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                         🔎 Search Results 🔎\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
                 for (int i = 0; i < (int)found.size(); i++) {
                     int idx = found[i];
 
-                    cout << "                                                                                  " << (i + 1) << ". " << name_of_list[idx] << "\n";
-                    cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                    cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                    cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                    cout << "                                                                                      📋 NOTES   : "
-                        << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                    cout << "\n";
+                    slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                    slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                    slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                    slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                    slowprint( "                                                                                      📋 NOTES   : "
+                        + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                    slowprint( "\n");
                 }
 
-                cout << endl;
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                [0] ↩️ BACK\n\n";
+                slowprint("\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                [0] ↩️ BACK\n\n");
 
-                cout << "                                                                                                ╔════╗                                     \n";
-                cout << "                                                                                               ╔║    ║╗                                    \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                slowprint( "                                                                                                ╔════╗                                     \n");
+                slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 string pickStr;
                 int pick = 0;
@@ -4394,19 +4392,19 @@ int searchLists(
                     pick = stoi(pickStr);
                 }
                 catch (...) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;
                 }
 
                 if (pick < 1 || pick > (int)found.size()) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;
                 }
@@ -4447,33 +4445,33 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                         🗂️ SORTED LIST 🗂️\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                         🗂️ SORTED LIST 🗂️\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
 
                 for (int i = 0; i < (int)order.size(); i++) {
                     int idx = order[i];
 
-                    cout << "                                                                                  " << i + 1 << ". " << name_of_list[idx] << "\n";
-                    cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                    cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                    cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                    cout << "                                                                                      📋 NOTES   : "
-                        << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                    cout << "\n";
+                    slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                    slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                    slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                    slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                    slowprint( "                                                                                      📋 NOTES   : "
+                        + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                    slowprint( "\n");
                 }
 
-                cout << endl;
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                 [0] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n";
+                slowprint("\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                 [0] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                  \n\n");
 
-                cout << "                                                                                                ╔════╗                                     \n";
-                cout << "                                                                                               ╔║    ║╗                                    \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                slowprint( "                                                                                                ╔════╗                                     \n");
+                slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 string pickStr;
                 int pick = 0;
@@ -4489,19 +4487,19 @@ int searchLists(
                     pick = stoi(pickStr);
                 }
                 catch (...) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;
                 }
 
                 if (pick < 1 || pick > (int)order.size()) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;
                 }
@@ -4582,25 +4580,25 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                  ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻   \n";
-                cout << "                                                                                  ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫    \n";
-                cout << "                                                                                  ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━┛╹   ╹ ╹┗━┛╹ ╹    \n\n";
+                slowprint( "                                                                                  ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻   \n");
+                slowprint( "                                                                                  ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫    \n");
+                slowprint( "                                                                                  ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━┛╹   ╹ ╹┗━┛╹ ╹    \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
                 for (int i = 0; i < (int)options.size(); i++) {
-                    cout << "                                                                                 " << (i + 1) << ". " << options[i] << "\n";
+                    slowprint( "                                                                                  " + to_string(i + 1) + ". " + options[i] + "\n");
                 }
 
-                cout << "                                                                                 [0] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                slowprint( "                                                                                 [0] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                cout << "                                                                                                ╔════╗                                     \n";
-                cout << "                                                                                               ╔║    ║╗                                    \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                slowprint( "                                                                                                ╔════╗                                     \n");
+                slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 cin >> fcStr;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -4614,19 +4612,19 @@ int searchLists(
                     fc = stoi(fcStr);
                 }
                 catch (...) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;   // 🔁 redraw filter options
                 }
 
                 if (fc < 1 || fc > (int)options.size()) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;   // 🔁 redraw filter options
                 }
@@ -4658,12 +4656,12 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                 ┏┓╻┏━┓   ╻  ╻┏━┓╺┳╸┏━┓   ┏━╸┏━┓╻ ╻┏┓╻╺┳┓       \n";
-                cout << "                                                                                 ┃┗┫┃ ┃   ┃  ┃┗━┓ ┃ ┗━┓   ┣╸ ┃ ┃┃ ┃┃┗┫ ┃┃   \n";
-                cout << "                                                                                 ╹ ╹┗━┛   ┗━╸╹┗━┛ ╹ ┗━┛   ╹  ┗━┛┗━┛╹ ╹╺┻┛    \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                cout << "                                                                                 \033[1;48;2;255;255;255m"
-                        "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                                 ┏┓╻┏━┓   ╻  ╻┏━┓╺┳╸┏━┓   ┏━╸┏━┓╻ ╻┏┓╻╺┳┓       \n");
+                slowprint( "                                                                                 ┃┗┫┃ ┃   ┃  ┃┗━┓ ┃ ┗━┓   ┣╸ ┃ ┃┃ ┃┃┗┫ ┃┃   \n");
+                slowprint( "                                                                                 ╹ ╹┗━┛   ┗━╸╹┗━┛ ╹ ┗━┛   ╹  ┗━┛┗━┛╹ ╹╺┻┛    \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                        "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
 
                 cin.get();
                 continue;   // back to SEARCH menu
@@ -4674,34 +4672,34 @@ int searchLists(
                 system("cls");
                 headerVoidList();
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                         🔍 Filtered Results 🔍\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << endl;
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                         🔍 Filtered Results 🔍\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint("\n");
 
                 for (int i = 0; i < (int)filtered.size(); i++) {
                     int idx = filtered[i];
 
-                    cout << "                                                                                  " << (i + 1) << ". " << name_of_list[idx] << "\n";
-                    cout << "                                                                                      🗂️ CATEGORY: " << list_categories[idx]  << "\n";
-                    cout << "                                                                                      📅 DEADLINE: " << list_deadlines[idx]   << "\n";
-                    cout << "                                                                                      ❗ PRIORITY: " << list_priorities[idx]  << "\n";
-                    cout << "                                                                                      📋 NOTES   : "
-                        << (list_notes[idx].empty() ? "None" : list_notes[idx]) << "\n";
-                    cout << "\n";
+                    slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[idx] + "\n");
+                    slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[idx]  + "\n");
+                    slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[idx]   + "\n");
+                    slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[idx]  + "\n");
+                    slowprint( "                                                                                      📋 NOTES   : "
+                        + (list_notes[idx].empty() ? "None" : list_notes[idx]) + "\n");
+                    slowprint( "\n");
                 }
 
-                cout << endl;
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n";
-                cout << "                                                                                 [0] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                slowprint( "\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                           \n");
+                slowprint( "                                                                                 [0] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                cout << "                                                                                                ╔════╗                                     \n";
-                cout << "                                                                                               ╔║    ║╗                                    \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+                slowprint( "                                                                                                ╔════╗                                     \n");
+                slowprint( "                                                                                               ╔║    ║╗                                    \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 string pickStr;
                 int    pick = 0;
@@ -4717,19 +4715,19 @@ int searchLists(
                     pick = stoi(pickStr);
                 }
                 catch (...) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;   // 🔁 redraw filtered list
                 }
 
                 if (pick < 1 || pick > (int)filtered.size()) {
-                    cout << "\n\n";
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                 \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "\n\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                 \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     cin.get();
                     continue;   // 🔁 redraw filtered list
                 }
@@ -4761,38 +4759,38 @@ void printListPreviewForEdit(
     const string& priority,
     const string& notes
 ) {
-    cout << "\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    cout << "                                                                                         📝 LIST PREVIEW\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    slowprint( "\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    slowprint( "                                                                                         📝 LIST PREVIEW\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
     // 🔹 Print list header (same format as main view)
-    cout << "                                                                          📝 LISTNAME : " << listTitle << "\n";
-    cout << "                                                                          🗂️ CATEGORY : " << category << "\n";
-    cout << "                                                                          📅 DEADLINE : " << deadline << "\n";
-    cout << "                                                                          ❗ PRIORITY : " << priority << "\n";
-    cout << "                                                                          📋 NOTES    : "
-         << (notes.empty() ? "None" : notes) << "\n\n";
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    slowprint( "                                                                          📝 LISTNAME : " + listTitle + "\n");
+    slowprint( "                                                                          🗂️ CATEGORY : " + category + "\n");
+    slowprint( "                                                                          📅 DEADLINE : " + deadline + "\n");
+    slowprint( "                                                                          ❗ PRIORITY : " + priority + "\n");
+    slowprint( "                                                                          📋 NOTES    : "
+         + (notes.empty() ? "None" : notes) + "\n\n");
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
     // 🔹 No items?
     if (items.empty()) {
-        cout << "                                                                                 (No items in this list yet)\n\n";
+        slowprint( "                                                                                 (No items in this list yet)\n\n");
         return;
     }
 
     // 🔹 Print items + descriptions
     for (int i = 0; i < (int)items.size(); ++i) {
-        cout << "                                                                           "  << i + 1 << ". " << items[i] << "\n";
+        slowprint( "                                                                           " + to_string(i + 1) + ". " + items[i] + "\n");
 
         if (i < (int)descriptions.size()) {
             for (const string& desc : descriptions[i]) {
-        cout << "                                                                               • \033[3m" << desc << "\033[0m\n"; // italic description
+        slowprint( "                                                                               • \033[3m" + desc + "\033[0m\n"); // italic description
             }
         }
-        cout << "\n";
+        slowprint( "\n");
     }
 
-    cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 }
 
 
@@ -4802,8 +4800,8 @@ void printListPreviewForEdit(
 void printDescriptionsForItem(const vector<vector<string>>& descriptions,
                               int itemNum)
 {
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-    cout << "                                                                                  Current descriptions:\n";
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+    slowprint( "                                                                                  Current descriptions:\n");
 
     // safety + empty check
     if (itemNum - 1 < 0 ||
@@ -4811,16 +4809,16 @@ void printDescriptionsForItem(const vector<vector<string>>& descriptions,
         descriptions[itemNum - 1].empty())
     {
  
-        cout << "                                                                                               (no descriptions)\n";
+        slowprint( "                                                                                               (no descriptions)\n");
         return;
     }
 
     for (int d = 0; d < (int)descriptions[itemNum - 1].size(); ++d) {
-        cout << "                                                                                  " << d + 1 << ". " << descriptions[itemNum - 1][d] << "\n";
+        slowprint( "                                                                                  " + to_string(d + 1) + ". " + descriptions[itemNum - 1][d] + "\n");
     }
 
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-    cout << "\n";
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+    slowprint( "\n");
     
 }
 
@@ -4851,12 +4849,12 @@ void editList(
     // If no lists exist, there is nothing to edit
     if (name_of_list.size() == 0) {
 
-        cout << endl;
-        cout << "\033[0B";  // move DOWN 1 line
-        cout << "\033[84C"; // move RIGHT
-        cout << "\033[1;37;41m  ⚠️ NO LISTS TO EDIT ⚠️  \033[0m\n\n";
-        cout << "                                                                                  "
-             << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+        slowprint( "\n");
+        slowprint( "\033[0B");  // move DOWN 1 line
+        slowprint( "\033[84C"); // move RIGHT
+        slowprint( "\033[1;37;41m  ⚠️ NO LISTS TO EDIT ⚠️  \033[0m\n\n");
+        slowprint( string("                                                                                  ")
+             + "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
 
         getch();
         return;
@@ -4871,33 +4869,33 @@ void editList(
         system("cls");
         headerEditList();
 
-        cout << "                                                             ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏━╸╺┳┓╻╺┳╸          \n";
-        cout << "                                                             ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┣╸  ┃┃┃ ┃         \n";
-        cout << "                                                             ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗━╸╺┻┛╹ ╹           \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+        slowprint( "                                                             ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏━┓   ╻  ╻┏━┓╺┳╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓   ╺┳╸┏━┓   ┏━╸╺┳┓╻╺┳╸          \n");
+        slowprint( "                                                             ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┣━┫   ┃  ┃┗━┓ ┃    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┣╸  ┃┃┃ ┃         \n");
+        slowprint( "                                                             ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹   ┗━╸╹┗━┛ ╹    ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ┗━╸╺┻┛╹ ╹           \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n");
 
 
         for (int i = 0; i < (int)name_of_list.size(); i++) {
-            cout << "                                                                                  " << i + 1 << ". " << name_of_list[i] << "\n";
-            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[i]  << "\n";
-            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[i]   << "\n";
-            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[i]  << "\n";
-            cout << "                                                                                      📋 NOTES   : "
-                 << (list_notes[i].empty() ? "None" : list_notes[i]) << "\n";
-            cout << "\n";
+            slowprint( "                                                                                  " + to_string(i + 1) + ". " + name_of_list[i] + "\n");
+            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[i]  + "\n");
+            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[i]   + "\n");
+            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[i]  + "\n");
+            slowprint( "                                                                                      📋 NOTES   : "
+                 + (list_notes[i].empty() ? "None" : list_notes[i]) + "\n");
+            slowprint( "\n");
         }
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
 
 
-        cout << endl;
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-        cout << "                                                                                      [S] 🔎 SEARCH LIST NAMES                             \n";
-        cout << "                                                                                      [0] 🔙 BACK TO MAIN MENU                            \n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n";
-        cout << "                                                                                                ╔════╗                                     \n";
-        cout << "                                                                                               ╔║    ║╗                                    \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                               \n";
+        slowprint("\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+        slowprint( "                                                                                      [S] 🔎 SEARCH LIST NAMES                             \n");
+        slowprint( "                                                                                      [0] 🔙 BACK TO MAIN MENU                            \n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n");
+        slowprint( "                                                                                                ╔════╗                                     \n");
+        slowprint( "                                                                                               ╔║    ║╗                                    \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                               \n");
 
         string choiceStr;
         cin >> choiceStr;
@@ -4946,9 +4944,9 @@ void editList(
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint( "\n");
+            slowprint( "                                            \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
             getch();
             // 🔁 go back to top, redraw list selection screen
             continue;
@@ -4958,9 +4956,9 @@ void editList(
 
         // Validate list index
         if (choice < 1 || choice > (int)name_of_list.size()) {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint( "\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
             getch();
             // 🔁 invalid but we stay inside editList and re-show lists
             continue;
@@ -4984,19 +4982,19 @@ void editList(
         system("cls");
         headerEditList();
 
-        cout << "                                                                            ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻            \n";
-        cout << "                                                                            ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃   ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫         \n";
-        cout << "                                                                            ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛   ┗━┛╹   ╹ ╹┗━┛╹ ╹          \n\n";
+        slowprint( "                                                                            ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻   ┏━┓┏━┓╺┳╸╻┏━┓┏┓╻            \n");
+        slowprint( "                                                                            ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃   ┃ ┃┣━┛ ┃ ┃┃ ┃┃┗┫         \n");
+        slowprint( "                                                                            ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛   ┗━┛╹   ╹ ╹┗━┛╹ ╹          \n\n");
 
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        cout << "                                                                         📋 LIST NAME : " << name_of_list[index]      << "\n";
-        cout << "                                                                         🗂️ CATEGORY  : " << list_categories[index]   << "\n";
-        cout << "                                                                         📅 DEADLINE  : " << list_deadlines[index]    << "\n";
-        cout << "                                                                         ❗ PRIORITY  : " << list_priorities[index]   << "\n";
-        cout << "                                                                         📝 NOTES     : "
-             << (list_notes[index].empty() ? "None" : list_notes[index])       << "\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        cout << endl;
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        slowprint( "                                                                         📋 LIST NAME : " + name_of_list[index]      + "\n");
+        slowprint( "                                                                         🗂️ CATEGORY  : " + list_categories[index]   + "\n");
+        slowprint( "                                                                         📅 DEADLINE  : " + list_deadlines[index]    + "\n");
+        slowprint( "                                                                         ❗ PRIORITY  : " + list_priorities[index]   + "\n");
+        slowprint( "                                                                         📝 NOTES     : "
+             + (list_notes[index].empty() ? "None" : list_notes[index])       + "\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint( "\n");
 
         vector<string> &items = list_of_lists[index];
 
@@ -5013,14 +5011,14 @@ void editList(
         int completedCount = 0;
 
         if (items.empty()) {
-            cout << "(No items yet)\n";
+            slowprint( "(No items yet)\n");
         } else {
             for (int i = 0; i < (int)items.size(); i++) {
-                cout << "                                                                            " << i + 1 << ". " << items[i] << "\n";
+                slowprint( "                                                                            " + to_string(i + 1) + ". " + items[i] + "\n");
 
                 if (i < (int)descriptions.size()) {
                     for (string &d : descriptions[i]) {
-                        cout << "                                                                               • " << d << "\n";
+                        slowprint( "                                                                               • " + d + "\n");
                     }
                 }
 
@@ -5032,30 +5030,29 @@ void editList(
         int notDone = items.size() - completedCount;
         double percentDone = items.size() > 0 ? (completedCount * 100.0) / items.size() : 0;
 
-        cout << endl;
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
-        cout << "                                                                                             𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
+        slowprint( "\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n");
+        slowprint( "                                                                                             𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒                                \n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n");
 
-        cout << "                                                                          Total Items       : " << items.size() << "\n";
-        cout << "                                                                          Completed Items   : " << completedCount << "\n";
-        cout << "                                                                          Not Done          : " << notDone << "\n";
+        slowprint( "                                                                          Total Items       : " + to_string(items.size()) + "\n");
+        slowprint( "                                                                          Completed Items   : " + to_string(completedCount) + "\n");
+        slowprint( "                                                                          Not Done          : " + to_string(notDone) + "\n");
         cout << fixed << setprecision(2);
-        cout << "                                                                          % Completed       : " << percentDone << "%\n";
+        slowprint( "                                                                          % Completed       : " + to_string(percentDone) + "%\n");
+        slowprint( "\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n");
+        slowprint( "                                                                         [1] ✚ ADD NEW ITEM            [2] ✏️ EDIT AN ITEM                \n");
+        slowprint( "                                                                         [3] 🗑️ DELETE AN ITEM         [4] ✅ MARK / UNMARK DONE       \n");
+        slowprint( "                                                                         [5] 🔁 REORDER ITEMS (SWAP)   [6] 📝 RENAME LIST               \n");
+        slowprint( "                                                                         [7] ✏️ EDIT LIST DETAILS      [8] 🔙 RETURN TO MAIN MENU        \n\n");
+        slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n";
-        cout << "                                                                         [1] ✚ ADD NEW ITEM            [2] ✏️ EDIT AN ITEM                \n";
-        cout << "                                                                         [3] 🗑️ DELETE AN ITEM         [4] ✅ MARK / UNMARK DONE       \n";
-        cout << "                                                                         [5] 🔁 REORDER ITEMS (SWAP)   [6] 📝 RENAME LIST               \n";
-        cout << "                                                                         [7] ✏️ EDIT LIST DETAILS      [8] 🔙 RETURN TO MAIN MENU        \n\n";
-        cout << "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
-
-        cout << "\033[2A";  
-        cout << "\033[98C";  
+        slowprint( "\033[2A");  
+        slowprint( "\033[98C");  
 
         string editChoiceStr;
         int editChoice = 0;
@@ -5066,17 +5063,17 @@ void editList(
             editChoice = stoi(editChoiceStr);
         } 
         catch (...) {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
             getch();
             continue;    // 🔥 RESTART WHOLE MENU
         }
 
         if (editChoice < 1 || editChoice > 8) {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint( "\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
             getch();
             continue;    // 🔥 RESTART WHOLE MENU
         }
@@ -5112,22 +5109,22 @@ void editList(
             );
    // current list state
 
-            cout << "                                                        ┏━┓╺┳╸┏━┓┏━┓╺┳╸   ┏━┓╺┳┓╺┳┓╻┏┓╻┏━╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ╺┳╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ╻  ╻┏━┓╺┳╸╻            \n";
-            cout << "                                                        ┗━┓ ┃ ┣━┫┣┳┛ ┃    ┣━┫ ┃┃ ┃┃┃┃┗┫┃╺┓   ┃ ┃ ┣╸ ┃┃┃┗━┓    ┃ ┃ ┃   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┃┗━┓ ┃ ╹  \n";
-            cout << "                                                        ┗━┛ ╹ ╹ ╹╹┗╸ ╹    ╹ ╹╺┻┛╺┻┛╹╹ ╹┗━┛   ╹ ╹ ┗━╸╹ ╹┗━┛    ╹ ┗━┛    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹┗━┛ ╹ ╹          \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            slowprint( "                                                        ┏━┓╺┳╸┏━┓┏━┓╺┳╸   ┏━┓╺┳┓╺┳┓╻┏┓╻┏━╸   ╻╺┳╸┏━╸┏┳┓┏━┓   ╺┳╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ╻  ╻┏━┓╺┳╸╻            \n");
+            slowprint( "                                                        ┗━┓ ┃ ┣━┫┣┳┛ ┃    ┣━┫ ┃┃ ┃┃┃┃┗┫┃╺┓   ┃ ┃ ┣╸ ┃┃┃┗━┓    ┃ ┃ ┃   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┃┗━┓ ┃ ╹  \n");
+            slowprint( "                                                        ┗━┛ ╹ ╹ ╹╹┗╸ ╹    ╹ ╹╺┻┛╺┻┛╹╹ ╹┗━┛   ╹ ╹ ┗━╸╹ ╹┗━┛    ╹ ┗━┛    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹┗━┛ ╹ ╹          \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
 
-            cout << "                                                                                    🟢 TYPE AN ITEM AND PRESS ENTER!\n";
-            cout << "                                                                       Type 💾[1] DONE ADDING ITEMS | 🗑️[2] CANCEL THIS NEW ITEM \n\n";
+            slowprint( "                                                                                    🟢 TYPE AN ITEM AND PRESS ENTER!\n");
+            slowprint( "                                                                       Type 💾[1] DONE ADDING ITEMS | 🗑️[2] CANCEL THIS NEW ITEM \n\n");
 
-            cout << "                                                                                      ╔════════════════════════╗                              \n";
-            cout << "                                                                                     ╔║                        ║╗                             \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-            cout << "\033[2A"; // move UP 2 lines
-            cout << "\033[87C"; // move RIGHT (adjust as needed)
+            slowprint( "\033[2A"); // move UP 2 lines
+            slowprint( "\033[87C"); // move RIGHT (adjust as needed)
 
-            cout << "Add item: ";
+            slowprint( "Add item: ");
             getline(cin, item);
 
             // --- EXIT OPTION 1 ---
@@ -5137,8 +5134,8 @@ void editList(
 
             // --- CANCEL this new item ---
             if (item == "2") {
-                cout << "\nNew item creation cancelled.\n";
-                cout << "Press Enter to continue...";
+                slowprint( "\nNew item creation cancelled.\n");
+                slowprint( "Press Enter to continue...");
                 cin.get();
                 break;
             }
@@ -5148,9 +5145,9 @@ void editList(
             // ======================================================
             if (item.empty() || item.find_first_not_of(" \t\r\n") == string::npos)
             {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
                 getch();   // wait for key
                 continue;  // 🔥 restart OPTION 1 (NOT whole menu)
@@ -5160,9 +5157,9 @@ void editList(
                 items.push_back(item);
                 descriptions.resize(items.size()); // ensure description array aligns
 
-                cout << endl;
-                cout << "                                                                                 \033[1;48;2;255;255;255m\033[38;2;0;128;0m  ✅ ITEM ADDED SUCCESSFULLY!  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;48;2;255;255;255m\033[38;2;0;128;0m  ✅ ITEM ADDED SUCCESSFULLY!  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
                 getch();   // same behavior as your other handlers
 
@@ -5193,23 +5190,23 @@ void editList(
                 // ===================================================
                 // ENTER DESCRIPTIONS FOR THIS NEW ITEM
                 // ===================================================
-                cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
-                cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
-                cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           \n";
+                slowprint( "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n");
+                slowprint( "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n");
+                slowprint( "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           \n");
 
-                cout << "                                                                                🟢 TYPE A DESCRIPTION AND PRESS ENTER!\n";
-                cout << "                                                                                   Type [1] 🗑️ FINISH / SKIP DESCRIPTIONS \n\n";
+                slowprint( "                                                                                🟢 TYPE A DESCRIPTION AND PRESS ENTER!\n");
+                slowprint( "                                                                                   Type [1] 🗑️ FINISH / SKIP DESCRIPTIONS \n\n");
 
-                cout << "                                                                                      ╔════════════════════════╗                              \n";
-                cout << "                                                                                     ╔║                        ║╗                             \n";
-                cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
                 tempDescriptions.clear();
 
                 while (true) {
-                    cout << "\033[2A"; // move UP 2 lines
-                    cout << "\033[90C"; // move RIGHT
+                    slowprint( "\033[2A"); // move UP 2 lines
+                    slowprint( "\033[90C"); // move RIGHT
                     getline(cin, descLine);
 
                     // Finish / skip descriptions for this item
@@ -5247,15 +5244,15 @@ void editList(
                 );
 
 
-                    cout << "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n";
-                    cout << "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n";
-                    cout << "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                             \n";
-                    cout << "                                                                                     Type [1] 💾 FINISH DESCRIPTION \n\n";
+                    slowprint( "                                                         ┏━┓╺┳┓╺┳┓   ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓╻            \n");
+                    slowprint( "                                                         ┣━┫ ┃┃ ┃┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃╹            \n");
+                    slowprint( "                                                         ╹ ╹╺┻┛╺┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹╹          \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                             \n");
+                    slowprint( "                                                                                     Type [1] 💾 FINISH DESCRIPTION \n\n");
 
-                    cout << "                                                                                      ╔════════════════════════╗                              \n";
-                    cout << "                                                                                     ╔║                        ║╗                             \n";
-                    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                    slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                    slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                    slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
                 }
 
                 // Save this item’s description list to the real descriptions vector
@@ -5277,14 +5274,14 @@ void editList(
                 );
 
 
-                cout << "\nItem + descriptions saved!\n\n";
+                slowprint( "\nItem + descriptions saved!\n\n");
 
-                cout << "                                                                        ╻╺┳╸┏━╸┏┳┓    ╻    ╺┳┓┏━╸┏━┓┏━╸┏━╓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━┓┏━┓╻ ╻┏━╸╺┳┓       \n";
-                cout << "                                                                        ┃ ┃ ┣╸ ┃┃┃   ╺╋╸    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┗━┓┣━┫┃┏┛┣╸  ┃┃    \n";
-                cout << "                                                                        ╹ ╹ ┗━╸╹ ╹    ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗ ╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹ ╹┗┛ ┗━╸╺┻┛     \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                slowprint( "                                                                        ╻╺┳╸┏━╸┏┳┓    ╻    ╺┳┓┏━╸┏━┓┏━╸┏━╓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━┓┏━┓╻ ╻┏━╸╺┳┓       \n");
+                slowprint( "                                                                        ┃ ┃ ┣╸ ┃┃┃   ╺╋╸    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┗━┓┣━┫┃┏┛┣╸  ┃┃    \n");
+                slowprint( "                                                                        ╹ ╹ ┗━╸╹ ╹    ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗ ╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹ ╹┗┛ ┗━╸╺┻┛     \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                 getch();
 
                 // After one item + description cycle, we return to the main edit menu
@@ -5301,9 +5298,9 @@ void editList(
 
         // no items yet
         if (items.empty()) {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO EDIT. PLEASE ADD ONE FIRST. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO EDIT. PLEASE ADD ONE FIRST. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
             getch();
             continue;   // restart edit menu
         }
@@ -5329,16 +5326,16 @@ void editList(
             );
 
 
-            cout << "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓\n";
-            cout << "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛ \n";
-            cout << "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸\n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+            slowprint( "                                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓\n");
+            slowprint( "                                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛ \n");
+            slowprint( "                                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸\n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-            cout << "\033[2A";
-            cout << "\033[98C";
+            slowprint( "\033[2A"); // move cursor up 2 lines
+            slowprint( "\033[98C");
 
             // ask user
             cin >> itemNumStr;
@@ -5348,18 +5345,18 @@ void editList(
                 itemNum = stoi(itemNumStr);
             }
             catch (...) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                 getch();
                 continue;   // restart entire item selection
             }
 
             // valid number format, now range check
             if (itemNum < 1 || itemNum > (int)items.size()) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                 getch();
                 continue;   // restart entire item selection
             }
@@ -5391,24 +5388,24 @@ void editList(
 );
 
 
-                cout << "                                                                                 ╻╺┳╸┏━╸┏┳┓   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n";
-                cout << "                                                                                 ┃ ┃ ┣╸ ┃┃┃   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                 \n";
-                cout << "                                                                                 ╹ ╹ ┗━╸╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛                \n\n";
+                slowprint( "                                                                                 ╻╺┳╸┏━╸┏┳┓   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n");
+                slowprint( "                                                                                 ┃ ┃ ┣╸ ┃┃┃   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                 \n");
+                slowprint( "                                                                                 ╹ ╹ ┗━╸╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛                \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                  Editing item: " << items[itemNum - 1] << "\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                  [1] ✏️ EDIT ITEM NAME\n";
-                cout << "                                                                                  [2] 📝 EDIT ITEM DESCRIPTIONS\n";
-                cout << "                                                                                  [3] 🗑️ DELETE ITEM\n";
-                cout << "                                                                                  [4] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                  Editing item: " + items[itemNum - 1] + "\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                  [1] ✏️ EDIT ITEM NAME\n");
+                slowprint( "                                                                                  [2] 📝 EDIT ITEM DESCRIPTIONS\n");
+                slowprint( "                                                                                  [3] 🗑️ DELETE ITEM\n");
+                slowprint( "                                                                                  [4] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2B";   // move cursor down into the small box
-                cout << "\033[98C";  // move cursor horizontally to center input
+                slowprint( "\033[2B");   // move cursor down into the small box
+                slowprint( "\033[98C");  // move cursor horizontally to center input
 
                 int subChoice;
                 cin >> subChoice;
@@ -5420,9 +5417,9 @@ void editList(
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw 2B menu
                 }
@@ -5431,9 +5428,9 @@ void editList(
                 // INVALID CHOICE (not 1–4)
                 // ==============================
                 if (subChoice < 1 || subChoice > 4) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw 2B menu
                 }
@@ -5463,18 +5460,18 @@ void editList(
 );
 
 
-                    cout << "                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━╓┏┳┓┏━╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓            \n";
-                    cout << "                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┣━┫┃┃┃┣╸    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃            \n";
-                    cout << "                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹╹ ╹╹ ╹┗━╸   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹            \n\n";
+                    slowprint( "                                                           ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━╓┏┳┓┏━╸   ┏━╸┏━┓┏━┓   ╺┳╸╻ ╻╻┏━┓   ╻╺┳╸┏━╸┏┳┓            \n");
+                    slowprint( "                                                           ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┣━┫┃┃┃┣╸    ┣╸ ┃ ┃┣┳┛    ┃ ┣━┫┃┗━┓   ┃ ┃ ┣╸ ┃┃┃            \n");
+                    slowprint( "                                                           ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹╹ ╹╹ ╹┗━╸   ╹  ┗━┛╹┗╸    ╹ ╹ ╹╹┗━┛   ╹ ╹ ┗━╸╹ ╹            \n\n");
 
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
 
-                    cout << "                                                                                      ╔════════════════════════╗                              \n";
-                    cout << "                                                                                     ╔║                        ║╗                             \n";
-                    cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                    slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                    slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                    slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-                    cout << "\033[2A";   // move cursor up into the small box
-                    cout << "\033[98C";  // move cursor horizontally to center input
+                    slowprint( "\033[2A");   // move cursor up into the small box
+                    slowprint( "\033[98C");  // move cursor horizontally to center input
 
                     getline(cin, newName);
 
@@ -5492,29 +5489,29 @@ void editList(
 );
 
 
-                    cout << "                                                                                           ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸                 \n";
-                    cout << "                                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸             \n";
-                    cout << "                                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸               \n\n";
+                    slowprint( "                                                                                           ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸                 \n");
+                    slowprint( "                                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸             \n");
+                    slowprint( "                                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸               \n\n");
 
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                  \"" << items[itemNum - 1] << "\"\n";
-                    cout << "                                                                                   to \"" << newName << "\" ?\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                                ╔════╗                              \n";
-                    cout << "                                                                                               ╔║    ║╗                             \n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                  \"" + items[itemNum - 1] + "\"\n");
+                    slowprint( "                                                                                   to \"" + newName + "\" ?\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                                ╔════╗                              \n");
+                    slowprint( "                                                                                               ╔║    ║╗                             \n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                    cout << "\033[2A";   // move cursor up into the small box
-                    cout << "\033[98C";  // move cursor horizontally to center input
+                    slowprint( "\033[2A");   // move cursor up into the small box
+                    slowprint( "\033[98C");  // move cursor horizontally to center input
 
                     int confirm;
 
                     while (true) {
                         // keep cursor inside the small box every retry
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         cin >> confirm;
 
@@ -5523,9 +5520,9 @@ void editList(
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // 🔁 re-ask for confirm
                         }
@@ -5538,9 +5535,9 @@ void editList(
                             break;
                         }
 
-                        cout << endl;
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                        slowprint("\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
                         // loop again, cursor is repositioned at top by the two ESC codes
                     }
@@ -5565,13 +5562,13 @@ void editList(
 );
 
 
-                        cout << "                                                                                  ╻╺┳╸┏━╸┏┳┓   ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸╺┳┓╻         \n";
-                        cout << "                                                                                  ┃ ┃ ┣╸ ┃┃┃   ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃╹      \n";
-                        cout << "                                                                                  ╹ ╹ ┗━╸╹ ╹   ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛╹          \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                        slowprint( "                                                                                  ╻╺┳╸┏━╸┏┳┓   ┏━┓┏━╸┏┓╻┏━┓┏┳┓┏━╸╺┳┓╻         \n");
+                        slowprint( "                                                                                  ┃ ┃ ┣╸ ┃┃┃   ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃╹      \n");
+                        slowprint( "                                                                                  ╹ ╹ ┗━╸╹ ╹   ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛╹          \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
                     } else {
-                        cout << "Rename cancelled.\n";
+                        slowprint( "Rename cancelled.\n");
 
                         system("cls");
                         headerEditList();
@@ -5586,13 +5583,13 @@ void editList(
 );
 
 
-                        cout << "                                                                           ┏━┓┏━╸┏┓╻┏━╸┏┳┓┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓         \n";
-                        cout << "                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n";
-                        cout << "                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛      \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                        slowprint( "                                                                           ┏━┓┏━╸┏┓╻┏━╸┏┳┓┏━╸   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓         \n");
+                        slowprint( "                                                                           ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n");
+                        slowprint( "                                                                           ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛      \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                     }
 
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                     getch();
                 }
 
@@ -5603,28 +5600,28 @@ void editList(
                         system("cls");
                         headerEditList();
 
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
-                        cout << "                                                                                 Descriptions for item: " << items[itemNum - 1] << "\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n");
+                        slowprint( "                                                                                 Descriptions for item: " + items[itemNum - 1] + "\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n");
 
                         // show current descriptions
                         printDescriptionsForItem(descriptions, itemNum);
 
-                        cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n";
-                        cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                \n";
-                        cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛          \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                        cout << "                                                                                  [1] ✏️ EDIT DESCRIPTION TEXT\n";
-                        cout << "                                                                                  [2] 📝 ADD NEW DESCRIPTION\n";
-                        cout << "                                                                                  [3] 🗑️ DELETE A DESCRIPTION\n";
-                        cout << "                                                                                  [4] ↩️ BACK\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                        cout << "                                                                                                ╔════╗                              \n";
-                        cout << "                                                                                               ╔║    ║╗                             \n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                        slowprint( "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n");
+                        slowprint( "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                \n");
+                        slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛          \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                        slowprint( "                                                                                  [1] ✏️ EDIT DESCRIPTION TEXT\n");
+                        slowprint( "                                                                                  [2] 📝 ADD NEW DESCRIPTION\n");
+                        slowprint( "                                                                                  [3] 🗑️ DELETE A DESCRIPTION\n");
+                        slowprint( "                                                                                  [4] ↩️ BACK\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                        slowprint( "                                                                                                ╔════╗                              \n");
+                        slowprint( "                                                                                               ╔║    ║╗                             \n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");   // move cursor down into the small box
+                        slowprint( "\033[98C");  // move cursor horizontally to center input
 
                         int descChoice;
                         cin >> descChoice;
@@ -5634,9 +5631,9 @@ void editList(
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // 🔁 restart description menu
                         }
@@ -5645,9 +5642,9 @@ void editList(
 
                         // =============== INVALID CHOICE (not 1–4) ===============
                         if (descChoice < 1 || descChoice > 4) {
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // 🔁 restart description menu
                         }
@@ -5664,9 +5661,9 @@ void editList(
                         if (descChoice == 1) {
 
                             if (descriptions[itemNum - 1].empty()) {
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO EDIT. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO EDIT. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                                 getch();
                                 continue;
                             }
@@ -5677,17 +5674,17 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                 ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ┏┓╻┏━╓┏┳┓┏┓ ┏━╸\n";
-                            cout << "                                                                 ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┃┗┫┣━┫┃┃┃┣┻┓┣╸ \n";
-                            cout << "                                                                 ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹ ╹ ╹ ╹┗━┛╹ ╹   ╹ ╹╹ ╹╹ ╹┗━┛┗━╸\n\n";
+                            slowprint( "                                                                 ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ┏┓╻┏━╓┏┳┓┏┓ ┏━╸\n");
+                            slowprint( "                                                                 ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┃┗┫┣━┫┃┃┃┣┻┓┣╸ \n");
+                            slowprint( "                                                                 ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹ ╹ ╹ ╹┗━┛╹ ╹   ╹ ╹╹ ╹╹ ╹┗━┛┗━╸\n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                            cout << "                                                                                                ╔════╗                              \n";
-                            cout << "                                                                                               ╔║    ║╗                             \n";
-                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                            slowprint( "                                                                                                ╔════╗                              \n");
+                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             cin >> dn;
 
@@ -5696,9 +5693,9 @@ void editList(
                                 cin.clear();
                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5707,9 +5704,9 @@ void editList(
 
                             // invalid description #
                             if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5720,17 +5717,17 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻             \n";
-                            cout << "                                                                               ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃ ┃┃ ┃┃┗┫             \n";
-                            cout << "                                                                               ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹             \n\n";
+                            slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻             \n");
+                            slowprint( "                                                                               ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃ ┃┃ ┃┃┗┫             \n");
+                            slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹             \n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                      ╔════════════════════════╗                              \n";
-                            cout << "                                                                                     ╔║                        ║╗                             \n";
-                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             getline(cin, newDesc);
 
@@ -5739,22 +5736,22 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
-                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+                            slowprint( "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n");
+                            slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+                            slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                  Change description to:\n";
-                            cout << "                                                                                    \"" << newDesc << "\" ?\n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                                ╔════╗                              \n";
-                            cout << "                                                                                               ╔║    ║╗                             \n";
-                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                  Change description to:\n");
+                            slowprint( "                                                                                    \"" + newDesc + "\" ?\n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                                ╔════╗                              \n");
+                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             int c;
                             cin >> c;
@@ -5762,9 +5759,9 @@ void editList(
                             if (cin.fail() || (c != 1 && c != 2)) {
                                 cin.clear();
                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5778,25 +5775,25 @@ void editList(
                                 headerEditList();
                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                cout << "                                                                        ╺┳┓┏━╸┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n";
-                                cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n";
-                                cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n";
-                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                slowprint( "                                                                        ╺┳┓┏━╸┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n");
+                                slowprint( "                                                                         ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n");
+                                slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n");
+                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
                             } else {
                                 // cancel edit
-                                cout << "Edit cancelled.\n";
+                                slowprint( "Edit cancelled.\n");
                                 system("cls");
                                 headerEditList();
                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                                cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
-                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                                slowprint( "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                                slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n");
+                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                             }
 
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             getch();
                         }
 
@@ -5811,17 +5808,17 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                       ┏━╸╺┳┓╺┳┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻           \n";
-                            cout << "                                                                       ┣━┫ ┃┃ ┃┃   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃┃            \n";
-                            cout << "                                                                       ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹           \n\n";
+                            slowprint( "                                                                       ┏━╸╺┳┓╺┳┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻           \n");
+                            slowprint( "                                                                       ┣━┫ ┃┃ ┃┃   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃┃            \n");
+                            slowprint( "                                                                       ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹           \n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                      ╔════════════════════════╗                              \n";
-                            cout << "                                                                                     ╔║                        ║╗                             \n";
-                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             getline(cin, nd);
 
@@ -5837,14 +5834,14 @@ void editList(
                                 headerEditList();
                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                cout << "                                                                            ╺┳┓┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╓╺┳┓╺┳┓┏━╓╺┳┓        \n";
-                                cout << "                                                                             ┃┃┣╸ ┗━┓┃  ┣╸ ┃ ┃┃ ┃┃┗┫   ┣━┫ ┃┃ ┃┃┣╸  ┃┃    \n";
-                                cout << "                                                                            ╺┻┛┗━╸┗━┛┗━╸╹   ╹ ╹┗━┛╹ ╹   ╹ ╹╺┻┛╺┻┛┗━╸╺┻┛    \n\n";
+                                slowprint( "                                                                            ╺┳┓┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╓╺┳┓╺┳┓┏━╓╺┳┓        \n");
+                                slowprint( "                                                                             ┃┃┣╸ ┗━┓┃  ┣╸ ┃ ┃┃ ┃┃┗┫   ┣━┫ ┃┃ ┃┃┣╸  ┃┃    \n");
+                                slowprint( "                                                                            ╺┻┛┗━╸┗━┛┗━╸╹   ╹ ╹┗━┛╹ ╹   ╹ ╹╺┻┛╺┻┛┗━╸╺┻┛    \n\n");
 
-                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                             }
 
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             getch();
                         }
 
@@ -5854,9 +5851,9 @@ void editList(
                         else if (descChoice == 3) {
 
                             if (descriptions[itemNum - 1].empty()) {
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO DELETE. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                                slowprint("\n");
+                                slowprint( "                                                                                  \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO DELETE. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m")   ;
                                 getch();
                                 continue;
                             }
@@ -5867,26 +5864,26 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n";
-                            cout << "                                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n";
-                            cout << "                                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n";
+                            slowprint( "                                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n");
+                            slowprint( "                                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n");
+                            slowprint( "                                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                            cout << "                                                                                                ╔════╗                              \n";
-                            cout << "                                                                                               ╔║    ║╗                             \n";
-                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                            slowprint( "                                                                                                ╔════╗                              \n");
+                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             cin >> dnDel;
 
                             if (cin.fail()) {
                                 cin.clear();
                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5894,9 +5891,9 @@ void editList(
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
                             if (dnDel < 1 || dnDel > (int)descriptions[itemNum - 1].size()) {
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5908,22 +5905,22 @@ void editList(
                             headerEditList();
                             printDescriptionsForItem(descriptions, itemNum);
 
-                            cout << "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
-                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+                            slowprint( "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n");
+                            slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+                            slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                  Delete description:\n";
-                            cout << "                                                                                    \"" << toDelete << "\" ?\n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                            cout << "                                                                                                ╔════╗                              \n";
-                            cout << "                                                                                               ╔║    ║╗                             \n";
-                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                  Delete description:\n");
+                            slowprint( "                                                                                    \"" + toDelete + "\" ?\n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                            slowprint( "                                                                                                ╔════╗                              \n");
+                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             int confirmDel;
                             cin >> confirmDel;
@@ -5931,9 +5928,9 @@ void editList(
                             if (cin.fail() || (confirmDel != 1 && confirmDel != 2)) {
                                 cin.clear();
                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;
                             }
@@ -5948,10 +5945,10 @@ void editList(
                                 headerEditList();
                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                cout << "                                                                        ╺┳┓┏━╸┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n";
-                                cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n";
-                                cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n";
-                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                slowprint( "                                                                        ╺┳┓┏━╸┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n");
+                                slowprint( "                                                                            ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n");
+                                slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n");
+                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
                             } else {
                                 // cancel delete
@@ -5959,13 +5956,13 @@ void editList(
                                 headerEditList();
                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                                cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
-                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                                slowprint( "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                                slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n");
+                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                             }
 
-                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                             getch();
                         }
                     }
@@ -5976,28 +5973,28 @@ void editList(
                                         system("cls");
                                         headerEditList();
 
-                                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
-                                        cout << "                                                                                 Descriptions for item: " << items[itemNum - 1] << "\n";
-                                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n";
+                                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n");
+                                        slowprint( "                                                                                 Descriptions for item: " + items[itemNum - 1] + "\n");
+                                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                   \n\n");
 
                                         // show current descriptions
                                         printDescriptionsForItem(descriptions, itemNum);
 
-                                        cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n";
-                                        cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                \n";
-                                        cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛          \n";
-                                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                        cout << "                                                                                  [1] ✏️ EDIT DESCRIPTION TEXT\n";
-                                        cout << "                                                                                  [2] 📝 ADD NEW DESCRIPTION\n";
-                                        cout << "                                                                                  [3] 🗑️ DELETE A DESCRIPTION\n";
-                                        cout << "                                                                                  [4] ↩️ BACK\n";
-                                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                        cout << "                                                                                                ╔════╗                              \n";
-                                        cout << "                                                                                               ╔║    ║╗                             \n";
-                                        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                                        slowprint( "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━┓╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸╺┳┓╻╺┳╸   ┏┳┓┏━╸┏┓╻╻ ╻                  \n");
+                                        slowprint( "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┣╸  ┃┃┃ ┃    ┃┃┃┣╸ ┃┗┫┃ ┃                \n");
+                                        slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━╸╹ ╹┗━┛          \n");
+                                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                        slowprint( "                                                                                  [1] ✏️ EDIT DESCRIPTION TEXT\n");
+                                        slowprint( "                                                                                  [2] 📝 ADD NEW DESCRIPTION\n");
+                                        slowprint( "                                                                                  [3] 🗑️ DELETE A DESCRIPTION\n");
+                                        slowprint( "                                                                                  [4] ↩️ BACK\n");
+                                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                        slowprint( "                                                                                                ╔════╗                              \n");
+                                        slowprint( "                                                                                               ╔║    ║╗                             \n");
+                                        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                                        cout << "\033[2A";
-                                        cout << "\033[98C";
+                                        slowprint( "\033[2A");
+                                        slowprint( "\033[98C");
 
                                         int descChoice;
                                         cin >> descChoice;
@@ -6007,9 +6004,9 @@ void editList(
                                             cin.clear();
                                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                                            cout << endl;
-                                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                            slowprint("\n");
+                                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                             getch();
                                             continue;   // 🔁 restart description menu
                                         }
@@ -6018,9 +6015,9 @@ void editList(
 
                                         // =============== INVALID CHOICE (not 1–4) ===============
                                         if (descChoice < 1 || descChoice > 4) {
-                                            cout << endl;
-                                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                            slowprint("\n");
+                                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                             getch();
                                             continue;   // 🔁 restart description menu
                                         }
@@ -6038,9 +6035,9 @@ void editList(
                                         if (descChoice == 1) {
 
                                             if (descriptions[itemNum - 1].empty()) {
-                                                cout << endl;
-                                                cout << "                                                                                 \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO EDIT. ⚠️  \033[0m\n\n";
-                                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                                                slowprint("\n");
+                                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO DESCRIPTIONS TO EDIT. ⚠️  \033[0m\n\n");
+                                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                                                 getch();
                                                 continue;
                                             }
@@ -6051,17 +6048,18 @@ void editList(
                                             headerEditList();
                                             printDescriptionsForItem(descriptions, itemNum);
 
-                                            cout << "                                                                 ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ┏┓╻┏━┓┏┳┓┏┓ ┏━╸\n";
-                                            cout << "                                                                 ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┃┗┫┣━┫┃┃┃┣┻┓┣╸ \n";
-                                            cout << "                                                                 ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹ ╹ ╹ ╹┗━┛╹ ╹   ╹ ╹╹ ╹╹ ╹┗━┛┗━╸\n\n";
+                                            slowprint( "                                                                 ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ┏┓╻┏━┓┏┳┓┏┓ ┏━╸\n");
+                                            slowprint( "                                                                 ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┃┗┫┣━┫┃┃┃┣┻┓┣╸ \n");
+                                            slowprint( "                                                                 ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹ ╹ ╹ ╹┗━┛╹ ╹   ╹ ╹╹ ╹╹ ╹┗━┛┗━╸\n\n");
 
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                                            cout << "                                                                                                ╔════╗                              \n";
-                                            cout << "                                                                                               ╔║    ║╗                             \n";
-                                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                                            slowprint( "                                                                                                ╔════╗                              \n");
+                                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                                            cout << "\033[2A";
-                                            cout << "\033[98C";
+                                            slowprint( "\033[2A");
+                                            slowprint( "\033[98C");
+
 
                                             cin >> dn;
 
@@ -6070,9 +6068,9 @@ void editList(
                                                 cin.clear();
                                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                                                cout << endl;
-                                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                                slowprint("\n");
+                                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                                 getch();
                                                 continue;
                                             }
@@ -6081,9 +6079,9 @@ void editList(
 
                                             // invalid description #
                                             if (dn < 1 || dn > (int)descriptions[itemNum - 1].size()) {
-                                                cout << endl;
-                                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                                slowprint("\n");
+                                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID DESCRIPTION NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                                 getch();
                                                 continue;
                                             }
@@ -6094,17 +6092,17 @@ void editList(
                                             headerEditList();
                                             printDescriptionsForItem(descriptions, itemNum);
 
-                                            cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻             \n";
-                                            cout << "                                                                               ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃ ┃┃ ┃┃┗┫             \n";
-                                            cout << "                                                                               ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹             \n\n";
+                                            slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ╺┳┓┏━╸┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻             \n");
+                                            slowprint( "                                                                               ┣╸  ┃┃┃ ┃     ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃ ┃┃ ┃┃┗┫             \n");
+                                            slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹             \n\n");
 
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                            cout << "                                                                                      ╔════════════════════════╗                              \n";
-                                            cout << "                                                                                     ╔║                        ║╗                             \n";
-                                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                                            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-                                            cout << "\033[2A";
-                                            cout << "\033[98C";
+                                            slowprint( "\033[2A");
+                                            slowprint( "\033[98C");
 
                                             getline(cin, newDesc);
 
@@ -6113,22 +6111,22 @@ void editList(
                                             headerEditList();
                                             printDescriptionsForItem(descriptions, itemNum);
 
-                                            cout << "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
-                                            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-                                            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+                                            slowprint( "                                                                                        ┏━╸┏━╸┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n");
+                                            slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+                                            slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                            cout << "                                                                                  Change description to:\n";
-                                            cout << "                                                                                    \"" << newDesc << "\" ?\n";
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                            cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                            cout << "                                                                                                ╔════╗                              \n";
-                                            cout << "                                                                                               ╔║    ║╗                             \n";
-                                            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                            slowprint( "                                                                                  Change description to:\n");
+                                            slowprint( "                                                                                    \"" + newDesc + "\" ?\n");
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                            slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                            slowprint( "                                                                                                ╔════╗                              \n");
+                                            slowprint( "                                                                                               ╔║    ║╗                             \n");
+                                            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                                            cout << "\033[2A";
-                                            cout << "\033[98C";
+                                            slowprint( "\033[2A");
+                                            slowprint( "\033[98C");
 
                                             int c;
                                             cin >> c;
@@ -6136,9 +6134,9 @@ void editList(
                                             if (cin.fail() || (c != 1 && c != 2)) {
                                                 cin.clear();
                                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                                                cout << endl;
-                                                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                                                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                                slowprint("\n");
+                                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                                                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                                 getch();
                                                 continue;
                                             }
@@ -6152,25 +6150,25 @@ void editList(
                                                 headerEditList();
                                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                                cout << "                                                                        ╺┳┓┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n";
-                                                cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n";
-                                                cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n";
-                                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                                slowprint( "                                                                        ╺┳┓┏━╸┏━╸┏━╓╻┏━╓╺┳╸╻┏━┓┏┓╻   ╻ ╻┏━╓╺┳┓┏━╓╺┳┓        \n");
+                                                slowprint( "                                                                         ┃┃┣╸ ┗━┓┃  ┣━┫┃┃┃ ┃ ┃┃ ┃┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫ ┃┃    \n");
+                                                slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹ ╹╹╹   ╹ ╹┗━┛╹ ╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   \n\n");
+                                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
                                             } else {
                                                 // cancel edit
-                                                cout << "Edit cancelled.\n";
+                                                slowprint( "Edit cancelled.\n");
                                                 system("cls");
                                                 headerEditList();
                                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                                                cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                                                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
-                                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                                slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                                                slowprint( "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                                                slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n");
+                                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                                             }
 
-                                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                                             getch();
                                         }
 
@@ -6185,17 +6183,17 @@ void editList(
                                             headerEditList();
                                             printDescriptionsForItem(descriptions, itemNum);
 
-                                            cout << "                                                                       ┏━╸╺┳┓╺┳┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻           \n";
-                                            cout << "                                                                       ┣━┫ ┃┃ ┃┃   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃┃            \n";
-                                            cout << "                                                                       ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹           \n\n";
+                                            slowprint( "                                                                       ┏━╸╺┳┓╺┳┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━╓┏━╓╺┳╸╻┏━╓┏┓╻           \n");
+                                            slowprint( "                                                                       ┣━┫ ┃┃ ┃┃   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━╓ ┃┃            \n");
+                                            slowprint( "                                                                       ╹ ╹╺┻┛╺┻┛   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹           \n\n");
 
-                                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                                            cout << "                                                                                      ╔════════════════════════╗                              \n";
-                                            cout << "                                                                                     ╔║                        ║╗                             \n";
-                                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+                                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                                            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+                                            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+                                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-                                            cout << "\033[2A";
-                                            cout << "\033[98C";
+                                            slowprint( "\033[2A");
+                                            slowprint( "\033[98C");
 
                                             getline(cin, nd);
 
@@ -6211,14 +6209,14 @@ void editList(
                                                 headerEditList();
                                                 printDescriptionsForItem(descriptions, itemNum);
 
-                                                cout << "                                                                            ╺┳┓┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╓╺┳┓╺┳┓┏━╓╺┳┓        \n";
-                                                cout << "                                                                             ┃┃┣╸ ┗━┓┃  ┣╸ ┃ ┃┃ ┃┃┗┫   ┣━┫ ┃┃ ┃┃┣╸  ┃┃    \n";
-                                                cout << "                                                                            ╺┻┛┗━╸┗━┛┗━╸╹   ╹ ╹┗━┛╹ ╹   ╹ ╹╺┻┛╺┻┛┗━╸╺┻┛    \n\n";
+                                                slowprint( "                                                                            ╺┳┓┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╓╺┳┓╺┳┓┏━╓╺┳┓        \n");
+                                                slowprint( "                                                                             ┃┃┣╸ ┗━┓┃  ┣╸ ┃ ┃┃ ┃┃┗┫   ┣━┫ ┃┃ ┃┃┣╸  ┃┃    \n");
+                                                slowprint( "                                                                            ╺┻┛┗━╸┗━┛┗━╸╹   ╹ ╹┗━┛╹ ╹   ╹ ╹╺┻┛╺┻┛┗━╸╺┻┛    \n\n");
 
-                                                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                                                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
                                             }
 
-                                            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                                            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                                             getch();
                                         }
                                     }
@@ -6240,29 +6238,29 @@ void editList(
 );
 
 
-                    cout << "                                                                                  ┏━╸┏━╸┏┓╻╻  ╻┏━╸╺┳┓╻╺┳╸   ┏━╸╻╻ ╻╺┳┓         \n";
-                    cout << "                                                                                  ┣╸ ┣╸ ┃┗┫┃  ┃┣╸  ┃┃┃ ┃    ┣╸ ┃┃ ┃ ┃┃     \n";
-                    cout << "                                                                                  ┗━╸┗━╸╹ ╹┗━╸┗┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛╺┻┛         \n\n";
+                    slowprint( "                                                                                  ┏━╸┏━╸┏┓╻╻  ╻┏━╸╺┳┓╻╺┳╸   ┏━╸╻╻ ╻╺┳┓         \n");
+                    slowprint( "                                                                                  ┣╸ ┣╸ ┃┗┫┃  ┃┣╸  ┃┃┃ ┃    ┣╸ ┃┃ ┃ ┃┃     \n");
+                    slowprint( "                                                                                  ┗━╸┗━╸╹ ╹┗━╸┗┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛╺┻┛         \n\n");
 
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                  Are you sure you want to delete:\n";
-                    cout << "                                                                                      \"" << items[itemNum - 1] << "\" ?\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                    cout << "                                                                                                ╔════╗                              \n";
-                    cout << "                                                                                               ╔║    ║╗                             \n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                  Are you sure you want to delete:\n");
+                    slowprint( "                                                                                      \"" + items[itemNum - 1] + "\" ?\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                    slowprint( "                                                                                                ╔════╗                              \n");
+                    slowprint( "                                                                                               ╔║    ║╗                             \n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                    cout << "\033[2A";   // move cursor up into the small box
-                    cout << "\033[98C";  // move cursor horizontally to center input
+                    slowprint( "\033[2A");   // move cursor up into the small box
+                    slowprint( "\033[98C");  // move cursor horizontally to center input
 
                     int confirm;
 
                     while (true) {
                         // keep cursor inside the small box every retry
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         cin >> confirm;
 
@@ -6270,10 +6268,10 @@ void editList(
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint( "\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // 🔁 re-ask for confirm
                         }
@@ -6285,10 +6283,10 @@ void editList(
                             break;
                         }
 
-                        cout << endl;
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
                         // loop; cursor gets repositioned again at top of box
                     }
@@ -6324,13 +6322,13 @@ void editList(
 );
 
 
-                        cout << "                                                                ╻  ╻┏━┓╺┳╸   ┏━╸┏━┓╻  ╻ ╻┏━╸┏━╓╻┏━╓┏━╸╻ ╻╻  ╻  ╻ ╻                 \n";
-                        cout << "                                                                ┃  ┃┗━┓ ┃    ┣╸ ┣━┫┃  ┃ ┃┣╸ ┃ ┃┃┃ ┃┣╸ ┃ ┃┃  ┃  ┗┳┛          \n";
-                        cout << "                                                                ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹┗━╸┗━┛┗━╸╹ ╹╹┗━┛┗━╸┗━╸┗━╸┗━╸ ╹        \n\n";
+                        slowprint( "                                                                ╻  ╻┏━┓╺┳╸   ┏━╸┏━┓╻  ╻ ╻┏━╸┏━╓╻┏━╓┏━╸╻ ╻╻  ╻  ╻ ╻                 \n");
+                        slowprint( "                                                                ┃  ┃┗━┓ ┃    ┣╸ ┣━┫┃  ┃ ┃┣╸ ┃ ┃┃┃ ┃┣╸ ┃ ┃┃  ┃  ┗┳┛          \n");
+                        slowprint( "                                                                ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹┗━╸┗━┛┗━╸╹ ╹╹┗━┛┗━╸┗━╸┗━╸┗━╸ ╹        \n\n");
 
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
 
                         // leave the item-edit submenu after deletion
@@ -6351,21 +6349,21 @@ void editList(
 );
 
 
-                        cout << "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━╸╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                        cout << "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                        cout << "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                        slowprint( "                                                                        ╺┳┓┏━╸┏━┓┏━╸┏━╸╻┏━┓╺┳╸╻┏━┓┏┓╻   ┏━╸┏━┓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                        slowprint( "                                                                         ┃┃┣╸ ┗━┓┃  ┣┳┛┃┣━┛ ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                        slowprint( "                                                                        ╺┻┛┗━╸┗━┛┗━╸╹┗╸╹╹   ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
                         // go back to the item edit submenu without deleting
                     }
                 }
 
                 else {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                 }
             } // end while item edit menu
@@ -6383,9 +6381,9 @@ void editList(
 
             // No items to delete
             if (items.empty()) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO DELETE. PLEASE ADD ONE FIRST. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO DELETE. PLEASE ADD ONE FIRST. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                 getch();
                 continue;   // back to main EDIT LIST menu
             }
@@ -6404,22 +6402,22 @@ void editList(
 );
 
 
-                cout << "                                                                        ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━╸┏┓╻╻ ╻   ┏━╸╺┳┓╻╺┳╸   ┏┓╻╻ ╻╺┳╸┏━╸              \n";
-                cout << "                                                                        ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┣╸ ┃┗┫┃ ┃   ┣╸  ┃┃┃ ┃    ┃┗┫┃ ┃ ┃ ┣╸               \n";
-                cout << "                                                                        ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸╹ ╹┗━┛   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━┛ ╹ ┗━╸              \n\n";
+                slowprint( "                                                                        ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━╸┏┓╻╻ ╻   ┏━╸╺┳┓╻╺┳╸   ┏┓╻╻ ╻╺┳╸┏━╸              \n");
+                slowprint( "                                                                        ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┣╸ ┃┗┫┃ ┃   ┣╸  ┃┃┃ ┃    ┃┗┫┃ ┃ ┃ ┣╸               \n");
+                slowprint( "                                                                        ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸╹ ╹┗━┛   ┗━╸╺┻┛╹ ╹    ╹ ╹┗━┛ ╹ ┗━╸              \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                  QUICK DELETE MODE\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                  Enter the ITEM NUMBER to delete.\n";
-                cout << "                                                                                  [0] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                  QUICK DELETE MODE\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                  Enter the ITEM NUMBER to delete.\n");
+                slowprint( "                                                                                  [0] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 int deleteNum;
                 cin >> deleteNum;
@@ -6429,9 +6427,9 @@ void editList(
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 stay in quick delete mode
                 }
@@ -6445,9 +6443,9 @@ void editList(
 
                 // Out-of-range item #
                 if (deleteNum < 1 || deleteNum > (int)items.size()) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 stay in quick delete mode
                 }
@@ -6469,22 +6467,22 @@ void editList(
 );
 
 
-                cout << "                                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n";
-                cout << "                                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n";
-                cout << "                                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n";
+                slowprint( "                                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n");
+                slowprint( "                                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n");
+                slowprint( "                                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                  Are you sure you want to delete:\n";
-                cout << "                                                                                       \"" << toDelete << "\" ?\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                  Are you sure you want to delete:\n");
+                slowprint( "                                                                                       \"" + toDelete + "\" ?\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                   [1] 🗑️ CONFIRM   [2] 🔙 CANCEL\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 int confirmDel;
                 cin >> confirmDel;
@@ -6493,9 +6491,9 @@ void editList(
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // back to confirm
                 }
@@ -6517,11 +6515,11 @@ void editList(
 );
 
 
-                    cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                    cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                    cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                    slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                    slowprint( "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                    slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛    \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                     getch();
                     continue;   // back to quick delete menu
                 }
@@ -6547,11 +6545,11 @@ void editList(
 );
 
 
-                    cout << "                                                                ╻  ╻┏━┓╺┳╸   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n";
-                    cout << "                                                                ┃  ┃┗━┓ ┃    ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n";
-                    cout << "                                                                ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                    slowprint( "                                                                ╻  ╻┏━┓╺┳╸   ┏━╸┏━╓╻┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓╻╻ ╻         \n");
+                    slowprint( "                                                                ┃  ┃┗━┓ ┃    ┣╸ ┣━┫┃┣━┫ ┃ ┃┃ ┃┃┗┫   ┣╸ ┃ ┃┃┗┳┛         \n");
+                    slowprint( "                                                                ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹╹╹ ╹ ╹ ╹┗━┛╹ ╹   ┗━╸┗━╓╹ ╹          \n\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                     getch();
 
                     // If list is now empty, leave quick delete mode
@@ -6578,26 +6576,26 @@ void editList(
 
 
             if (items.size() == 0) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO DELETE. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO DELETE. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                 getch();
                 continue;
             }
 
             int delNum;
 
-            cout << "                                                        ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓   ╺┳╸┏━╓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸               \n";
-            cout << "                                                        ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n";
-            cout << "                                                        ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸             \n\n";
+            slowprint( "                                                        ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓   ╺┳╸┏━╓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸               \n");
+            slowprint( "                                                        ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n");
+            slowprint( "                                                        ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸             \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-            cout << "\033[2A";   // move cursor up into the small box
-            cout << "\033[98C";  // move cursor horizontally to center input
+            slowprint( "\033[2A");   // move cursor up into the small box
+            slowprint( "\033[98C");  // move cursor horizontally to center input
 
             while (true)
             {
@@ -6606,9 +6604,9 @@ void editList(
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                 getch();
             }
 
@@ -6616,9 +6614,9 @@ void editList(
 
             // Validate
             if (delNum < 1 || delNum > (int)items.size()) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                 getch();
                 continue;
             }
@@ -6639,35 +6637,35 @@ void editList(
 );
 
 
-            cout << "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n";
-            cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-            cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+            slowprint( "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n");
+            slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+            slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                  You chose to DELETE item:\n";
-            cout << "                                                                                      -> " << items[delNum - 1] << "\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                      [1] 🗑️ CONFIRM DELETE\n";
-            cout << "                                                                                      [2] 🔙 CANCEL\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                  You chose to DELETE item:\n");
+            slowprint( "                                                                                      -> " + items[delNum - 1] + "\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                      [1] 🗑️ CONFIRM DELETE\n");
+            slowprint( "                                                                                      [2] 🔙 CANCEL\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-            cout << "\033[2A";   // move cursor up into the small box
-            cout << "\033[98C";  // move cursor horizontally to center input
+            slowprint( "\033[2A");   // move cursor up into the small box
+            slowprint( "\033[98C");  // move cursor horizontally to center input
 
             int confirmDel;
             while (true) {
-                cout << "\033[2A\033[98C";
+                slowprint( "\033[2A\033[98C");
                 cin >> confirmDel;
                 if (!cin.fail()) break;
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                 getch();
             }
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -6687,12 +6685,12 @@ void editList(
 );
 
 
-                cout << "                                                                            ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                cout << "                                                                             ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n";
-                cout << "                                                                            ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛   \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                slowprint( "                                                                            ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                slowprint( "                                                                             ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃    \n");
+                slowprint( "                                                                            ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛   \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                 getch();
                 continue;
             }
@@ -6720,12 +6718,12 @@ void editList(
 );
 
 
-            cout << "                                                                                    ╻╺┳╸┏━╸┏┳┓┏━╓   ┏━╓╻ ╻┏━╓┏━╓┏━╓┏━╸╺┳┓        \n";
-            cout << "                                                                                    ┃ ┃ ┣╸ ┃┃┃┗━┓   ┗━┓┃╻┃┣━┫┣━┛┣━┛┣╸  ┃┃   \n";
-            cout << "                                                                                    ╹ ╹ ┗━╸╹ ╹┗━┛   ┗━┛┗┻┛╹ ╹╹  ╹  ┗━╸╺┻┛  \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+            slowprint( "                                                                                    ╻╺┳╸┏━╸┏┳┓┏━╓   ┏━╓╻ ╻┏━╓┏━╓┏━╓┏━╸╺┳┓        \n");
+            slowprint( "                                                                                    ┃ ┃ ┣╸ ┃┃┃┗━┓   ┗━┓┃╻┃┣━┫┣━┛┣━┛┣╸  ┃┃   \n");
+            slowprint( "                                                                                    ╹ ╹ ┗━╸╹ ╹┗━┛   ┗━┛┗┻┛╹ ╹╹  ╹  ┗━╸╺┻┛  \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             getch();
             continue;
         }
@@ -6736,9 +6734,9 @@ void editList(
         else if (editChoice == 4) {
 
             if (items.empty()) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO MARK. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NO ITEMS TO MARK. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                 getch();
                 continue;
             }
@@ -6765,17 +6763,17 @@ void editList(
 );
 
 
-                cout << "                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓   ╺┳╸┏━╓   ┏┳┓┏━╓┏━╓╻┏     ╻   ╻ ╻┏┓╻┏┳┓┏━╓┏━╓╻┏                \n";
-                cout << "                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃┃┃┣━┫┣┳┛┣┻┓   ┏┛   ┃ ┃┃┗┫┃┃┃┣━┫┣┳┛┣┻┓           \n";
-                cout << "                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╹ ╹╹ ╹╹┗╸╹ ╹   ╹    ┗━┛╹ ╹╹ ╹╹ ╹╹┗╸╹ ╹           \n\n";
+                slowprint( "                                                    ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓   ╺┳╸┏━╓   ┏┳┓┏━╓┏━╓╻┏     ╻   ╻ ╻┏┓╻┏┳┓┏━╓┏━╓╻┏                \n");
+                slowprint( "                                                    ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛    ┃ ┃ ┃   ┃┃┃┣━┫┣┳┛┣┻┓   ┏┛   ┃ ┃┃┗┫┃┃┃┣━┫┣┳┛┣┻┓           \n");
+                slowprint( "                                                    ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸    ╹ ┗━┛   ╹ ╹╹ ╹╹┗╸╹ ╹   ╹    ┗━┛╹ ╹╹ ╹╹ ╹╹┗╸╹ ╹           \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");   // move cursor up into the small box
+                slowprint( "\033[98C");  // move cursor horizontally to center input
 
                 cin >> markNumStr;
 
@@ -6784,20 +6782,20 @@ void editList(
                     markNum = stoi(markNumStr);
                 }
                 catch (...) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw whole MARK screen
                 }
 
                 // range check
                 if (markNum < 1 || markNum > (int)items.size()) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw whole MARK screen
                 }
@@ -6828,23 +6826,23 @@ void editList(
 );
 
 
-                cout << "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n";
-                cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-                cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+                slowprint( "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n");
+                slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+                slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                  Toggle DONE status for:\n";
-                cout << "                                                                                      -> " << items[markNum - 1] << "\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                      [1] ✅ CONFIRM TOGGLE\n";
-                cout << "                                                                                      [2] 🔙 CANCEL\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                  Toggle DONE status for:\n");
+                slowprint( "                                                                                      -> " + items[markNum - 1] + "\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                      [1] ✅ CONFIRM TOGGLE\n");
+                slowprint( "                                                                                      [2] 🔙 CANCEL\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 cin >> confirmMarkStr;
 
@@ -6852,19 +6850,19 @@ void editList(
                     confirmMark = stoi(confirmMarkStr);
                 }
                 catch (...) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw confirm screen
                 }
 
                 if (confirmMark != 1 && confirmMark != 2) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw confirm screen
                 }
@@ -6891,11 +6889,11 @@ void editList(
 );
 
 
-                cout << "                                                                            ┏━╸┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                cout << "                                                                            ┣━╫┃   ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n";
-                cout << "                                                                            ╹ ╹┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛  \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                            ┏━╸┏━╓╺┳╸╻┏━╓┏┓╻   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                slowprint( "                                                                            ┣━╫┃   ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃   \n");
+                slowprint( "                                                                            ╹ ╹┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛  \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                slowprint( string("                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m"));
                 getch();
                 continue;
             }
@@ -6922,11 +6920,11 @@ void editList(
 );
 
 
-                cout << "                                                                    ╻  ╻┏━┓╺┳╸   ┏━╸┏━╓╺┳┓╻┏━╓┏┓╻   ┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻        \n";
-                cout << "                                                                    ┃  ┃┗━┓ ┃    ┣╸ ┣━┫ ┃┃┃┣━╫┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫┃┃┃ ┃┃┗┫   \n";
-                cout << "                                                                    ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹╺┻┛╹╹ ╹╹ ╹   ┗━┛╹  ╺┻┛╹ ╹╹ ╹╹╹ ╹╹ ╹   \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                    ╻  ╻┏━┓╺┳╸   ┏━╸┏━╓╺┳┓╻┏━╓┏┓╻   ┏━╓┏━╓┏━╓╺┳╸╻┏━╓┏┓╻        \n");
+                slowprint( "                                                                    ┃  ┃┗━┓ ┃    ┣╸ ┣━┫ ┃┃┃┣━╫┃┗┫   ┃ ┃┣━┓ ┃┃┣━┫┃┃┃ ┃┃┗┫   \n");
+                slowprint( "                                                                    ┗━╸╹┗━┛ ╹    ┗━╸╹ ╹╺┻┛╹╹ ╹╹ ╹   ┗━┛╹  ╺┻┛╹ ╹╹ ╹╹╹ ╹╹ ╹   \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             }
             else {
                 // Not yet marked: add the "✅ " prefix
@@ -6955,11 +6953,11 @@ void editList(
 );
 
 
-                cout << "                                                                            ╻╺┳╸┏━╸┏┳┓   ┏┳┓┏━╓┏━╓╻┏ ┏━╸╺┳┓   ┏━╓┏━╓   ╺┳┓┏━╓┏┓╻┏━╸        \n";
-                cout << "                                                                            ┃ ┃ ┣╸ ┃┃┃   ┃┃┃┣━╫┣┳┛┣┻┓┣╸  ┃┃   ┣━╫┗━┓    ┃┃┃ ┃┃┗┫┣╸    \n";
-                cout << "                                                                            ╹ ╹ ┗━╸╹ ╹   ╹ ╹╹ ╹╹┗╸╹ ╹┗━╸╺┻┛   ╹ ╹┗━┛   ╺┻┛┗━┛╹ ╹┗━╸  \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                            ╻╺┳╸┏━╸┏┳┓   ┏┳┓┏━╓┏━╓╻┏ ┏━╸╺┳┓   ┏━╓┏━╓   ╺┳┓┏━╓┏┓╻┏━╸        \n");
+                slowprint( "                                                                            ┃ ┃ ┣╸ ┃┃┃   ┃┃┃┣━╫┣┳┛┣┻┓┣╸  ┃┃   ┣━╫┗━┓    ┃┃┃ ┃┃┗┫┣╸    \n");
+                slowprint( "                                                                            ╹ ╹ ┗━╸╹ ╹   ╹ ╹╹ ╹╹┗╸╹ ╹┗━╸╺┻┛   ╹ ╹┗━┛   ╺┻┛┗━┛╹ ╹┗━╸  \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             }
         }
 
@@ -6972,9 +6970,9 @@ void editList(
         else if (editChoice == 5) {
 
             if (items.size() < 2) {
-                cout << endl;
-                cout << "                                                                                 \033[1;37;41m  ⚠️ NOT ENOUGH ITEMS TO REORDER. ⚠️  \033[0m\n\n";
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+                slowprint("\n");
+                slowprint( "                                                                                 \033[1;37;41m  ⚠️ NOT ENOUGH ITEMS TO REORDER. ⚠️  \033[0m\n\n");
+                slowprint( "                                                                                 \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
                 getch();
                 continue;
             }
@@ -7001,18 +6999,18 @@ void editList(
 );
 
 
-                cout << "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏━╸╻┏━╓┏━╓╺┳╸   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓                \n";
-                cout << "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┃┣┳┛┗━┓ ┃    ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n";
-                cout << "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹  ╹╹┗╸┗━┛ ╹    ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n";
+                slowprint( "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏━╸╻┏━╓┏━╓╺┳╸   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓                \n");
+                slowprint( "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┣╸ ┃┣┳┛┗━┓ ┃    ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛           \n");
+                slowprint( "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹  ╹╹┗╸┗━┛ ╹    ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸         \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
 
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";   // move cursor up into the small box
-                cout << "\033[98C";  // move cursor horizontally to center input
+                slowprint( "\033[2A");   // move cursor up into the small box
+                slowprint( "\033[98C");  // move cursor horizontally to center input
 
                 cin >> aStr;
 
@@ -7020,19 +7018,19 @@ void editList(
                     a = stoi(aStr);
                 }
                 catch (...) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw STEP 1 screen
                 }
 
                 if (a < 1 || a > (int)items.size()) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw STEP 1 screen
                 }
@@ -7060,18 +7058,18 @@ void editList(
 );
 
 
-                cout << "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏━╓┏━╸┏━╸┏━╓┏┓╻╺┳┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓                \n";
-                cout << "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗━┓┣╸ ┃  ┃ ┃┃┗┫ ┃┃   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n";
-                cout << "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━┛┗━╸┗━╸┗━┛╹ ╹╺┻┛   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸       \n\n";
+                slowprint( "                                                                   ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏━╓┏━╸┏━╸┏━╓┏┓╻╺┳┓   ╻╺┳╸┏━╸┏┳┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━╓                \n");
+                slowprint( "                                                                   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗━┓┣╸ ┃  ┃ ┃┃┗┫ ┃┃   ┃ ┃ ┣╸ ┃┃┃   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n");
+                slowprint( "                                                                   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ┗━┛┗━╸┗━╸┗━┛╹ ╹╺┻┛   ╹ ╹ ┗━╸╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸       \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
 
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";   // move cursor up into the small box
-                cout << "\033[98C";  // move cursor horizontally to center input
+                slowprint( "\033[2A");   // move cursor up into the small box
+                slowprint( "\033[98C");  // move cursor horizontally to center input
 
                 cin >> bStr;
 
@@ -7079,19 +7077,19 @@ void editList(
                     b = stoi(bStr);
                 }
                 catch (...) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw STEP 2 screen
                 }
 
                 if (b < 1 || b > (int)items.size()) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID ITEM NUMBER. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw STEP 2 screen
                 }
@@ -7112,24 +7110,24 @@ void editList(
                 system("cls");
                 headerEditList();
 
-                cout << "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n";
-                cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n";
-                cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+                slowprint( "                                                                                        ┏━╸┏━╓┏┓╻┏━╸╻┏━╓┏┳┓┏━╓                 \n");
+                slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛             \n");
+                slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                  You are about to SWAP:\n";
-                cout << "                                                                                      A) " << items[a - 1] << "\n";
-                cout << "                                                                                      B) " << items[b - 1] << "\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                      [1] 🔁 CONFIRM SWAP\n";
-                cout << "                                                                                      [2] 🔙 CANCEL\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << "                                                                                                ╔════╗                              \n";
-                cout << "                                                                                               ╔║    ║╗                             \n";
-                cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                  You are about to SWAP:\n");
+                slowprint( "                                                                                      A) " + items[a - 1] + "\n");
+                slowprint( "                                                                                      B) " + items[b - 1] + "\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                      [1] 🔁 CONFIRM SWAP\n");
+                slowprint( "                                                                                      [2] 🔙 CANCEL\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint( "                                                                                                ╔════╗                              \n");
+                slowprint( "                                                                                               ╔║    ║╗                             \n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-                cout << "\033[2A";   // move cursor up into the small box
-                cout << "\033[98C";  // move cursor horizontally to center input
+                slowprint( "\033[2A");   // move cursor up into the small box
+                slowprint( "\033[98C");  // move cursor horizontally to center input
 
                 cin >> confirmSwapStr;
 
@@ -7137,19 +7135,19 @@ void editList(
                     confirmSwap = stoi(confirmSwapStr);
                 }
                 catch (...) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw confirm screen
                 }
 
                 if (confirmSwap != 1 && confirmSwap != 2) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;   // 🔁 redraw confirm screen
                 }
@@ -7176,12 +7174,12 @@ void editList(
 );
 
 
-                cout << "                                                                               ┏━╓╻ ╻┏━╓┏━╓   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n";
-                cout << "                                                                               ┗━┓┃╻┃┣━┫┣━┛   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃  \n";
-                cout << "                                                                               ┗━┛┗┻┛╹ ╹╹     ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛ \n\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+                slowprint( "                                                                               ┏━╓╻ ╻┏━╓┏━╓   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓        \n");
+                slowprint( "                                                                               ┗━┓┃╻┃┣━┫┣━┛   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃  \n");
+                slowprint( "                                                                               ┗━┛┗┻┛╹ ╹╹     ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛ \n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                 getch();
                 continue;
             }
@@ -7227,12 +7225,12 @@ void editList(
 );
 
 
-            cout << "                                                                                  ╻╺┳╸┏━╸┏┳┓┏━╓   ┏━╓╻ ╻┏━╓┏━╓┏━╓┏━╸╺┳┓        \n";
-            cout << "                                                                                  ┃ ┃ ┣╸ ┃┃┃┗━┓   ┗━┓┃╻┃┣━┫┣━┛┣━┛┣╸  ┃┃   \n";
-            cout << "                                                                                  ╹ ╹ ┗━╸╹ ╹┗━┛   ┗━┛┗┻┛╹ ╹╹  ╹  ┗━╸╺┻┛  \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+            slowprint( "                                                                                  ╻╺┳╸┏━╸┏┳┓┏━╓   ┏━╓╻ ╻┏━╓┏━╓┏━╓┏━╸╺┳┓        \n");
+            slowprint( "                                                                                  ┃ ┃ ┣╸ ┃┃┃┗━┓   ┗━┓┃╻┃┣━┫┣━┛┣━┛┣╸  ┃┃   \n");
+            slowprint( "                                                                                  ╹ ╹ ┗━╸╹ ╹┗━┛   ┗━┛┗┻┛╹ ╹╹  ╹  ┗━╸╺┻┛  \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             getch();
             continue;
         }
@@ -7257,18 +7255,18 @@ void editList(
 );
 
 
-            cout << "                                                                      ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━╓╺┳╸   ┏┓╻┏━╓┏┳┓┏━╸           \n";
-            cout << "                                                                      ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸           \n";
-            cout << "                                                                      ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸       \n\n";
+            slowprint( "                                                                      ┏━╸┏┓╻╺┳╸┏━╸┏━╓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━╓╺┳╸   ┏┓╻┏━╓┏┳┓┏━╸           \n");
+            slowprint( "                                                                      ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃    ┃┗┫┣━┫┃┃┃┣╸           \n");
+            slowprint( "                                                                      ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹┗━╸       \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                       \n");
 
-            cout << "                                                                                      ╔════════════════════════╗                              \n";
-            cout << "                                                                                     ╔║                        ║╗                             \n";
-            cout << "                                                                                ═════╝╚════════════════════════╝╚═════                        \n";
+            slowprint( "                                                                                      ╔════════════════════════╗                              \n");
+            slowprint( "                                                                                     ╔║                        ║╗                             \n");
+            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════                        \n");
 
-            cout << "\033[2A";   // move cursor up into the small box
-            cout << "\033[98C";  // move cursor horizontally to center input
+            slowprint( "\033[2A");   // move cursor up into the small box
+            slowprint( "\033[98C");  // move cursor horizontally to center input
 
             getline(cin >> ws, newName);
 
@@ -7287,12 +7285,12 @@ void editList(
 );
 
 
-            cout << "                                                                                  ╻  ╻┏━╓╺┳╸   ┏━╓┏━╸┏┓╻┏━╓┏┳┓┏━╸╺┳┓        \n";
-            cout << "                                                                                  ┃  ┃┗━┓ ┃    ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃ \n";
-            cout << "                                                                                  ┗━╸╹┗━┛ ╹    ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛ \n\n";
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n";
+            slowprint( "                                                                                  ╻  ╻┏━╓╺┳╸   ┏━╓┏━╸┏┓╻┏━╓┏┳┓┏━╸╺┳┓        \n");
+            slowprint( "                                                                                  ┃  ┃┗━┓ ┃    ┣┳┛┣╸ ┃┗┫┣━┫┃┃┃┣╸  ┃┃ \n");
+            slowprint( "                                                                                  ┗━╸╹┗━┛ ╹    ╹┗╸┗━╸╹ ╹╹ ╹╹ ╹┗━╸╺┻┛ \n\n");
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                        \n");
 
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+            slowprint( "                                                                                      \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
             getch();
             continue;
         }
@@ -7308,31 +7306,30 @@ void editList(
 
         
 
-                cout << "                                                                               ┏━╸╺┳┓╻╺┳╸   ╻  ╻┏━┓╺┳╸   ╺┳┓┏━╸╺┳╸┏━┓╻╻  ┏━┓\n";
-                cout << "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┃┗━┓ ┃     ┃┃┣╸  ┃ ┣━┫┃┃  ┗━┓\n";
-                cout << "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛ ╹    ╺┻┛┗━╸ ╹ ╹ ╹╹┗━╸┗━┛\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                slowprint( "                                                                               ┏━╸╺┳┓╻╺┳╸   ╻  ╻┏━┓╺┳╸   ╺┳┓┏━╸╺┳╸┏━┓╻╻  ┏━┓\n");
+                slowprint( "                                                                               ┣╸  ┃┃┃ ┃    ┃  ┃┗━┓ ┃     ┃┃┣╸  ┃ ┣━┫┃┃  ┗━┓\n");
+                slowprint( "                                                                               ┗━╸╺┻┛╹ ╹    ┗━╸╹┗━┛ ╹    ╺┻┛┗━╸ ╹ ╹ ╹╹┗━╸┗━┛\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-                cout << "                                                                                  Current values:\n";
-                cout << "                                                                                      🗂️ CATEGORY: " << list_categories[index]  << "\n";
-                cout << "                                                                                      📅 DEADLINE: " << list_deadlines[index]   << "\n";
-                cout << "                                                                                      ❗ PRIORITY: " << list_priorities[index]  << "\n";
-                cout << "                                                                                      📋 NOTES   : "
-                     << (list_notes[index].empty() ? "None" : list_notes[index]) << "\n\n";
+                slowprint( "                                                                                  Current values:\n");
+                slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[index]  + "\n");
+                slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[index]   + "\n");
+                slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[index]  + "\n");
+                slowprint( "                                                                                      📋 NOTES   : "
+                     + (list_notes[index].empty() ? "None" : list_notes[index]) + "\n\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                slowprint( "                                                                                  [1] 🗂️ EDIT CATEGORY\n");
+                slowprint( "                                                                                  [2] 📅 EDIT DEADLINE\n");
+                slowprint( "                                                                                  [3] ✏️ EDIT PRIORITY\n");
+                slowprint( "                                                                                  [4] ❗ EDIT NOTES\n");
+                slowprint( "                                                                                  [5] ↩️ BACK\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                slowprint( "                                                                                                ╔════╗\n");
+                slowprint( "                                                                                               ╔║    ║╗\n");
+                slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                cout << "                                                                                  [1] 🗂️ EDIT CATEGORY\n";
-                cout << "                                                                                  [2] 📅 EDIT DEADLINE\n";
-                cout << "                                                                                  [3] ✏️ EDIT PRIORITY\n";
-                cout << "                                                                                  [4] ❗ EDIT NOTES\n";
-                cout << "                                                                                  [5] ↩️ BACK\n";
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                cout << "                                                                                                ╔════╗\n";
-                cout << "                                                                                               ╔║    ║╗\n";
-                cout << "                                                                                          ═════╝╚════╝╚═════\n";
-
-                cout << "\033[2A";
-                cout << "\033[98C";
+                slowprint( "\033[2A");
+                slowprint( "\033[98C");
 
                 int metaChoice;
                 cin >> metaChoice;
@@ -7340,10 +7337,10 @@ void editList(
                 if (cin.fail()) {
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;
                 }
@@ -7351,10 +7348,10 @@ void editList(
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
                 if (metaChoice < 1 || metaChoice > 5) {
-                    cout << endl;
-                    cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                    cout << "                                                                                     \033[1;48;2;255;255;255m"
-                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint("\n");
+                    slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                    slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                            "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                     getch();
                     continue;
                 }
@@ -7381,23 +7378,23 @@ void editList(
                        
 
                    
-                        cout << "                                                                       ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻\n";
-                        cout << "                                                                       ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛\n";
-                        cout << "                                                                       ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹ \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       \n\n";
+                        slowprint( "                                                                       ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻\n");
+                        slowprint( "                                                                       ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃   ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛\n");
+                        slowprint( "                                                                       ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹ \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       \n\n");
 
                         for (int i = 0; i < CAT_COUNT; ++i) {
-                            cout << "                                                                                      [" << i + 1 << "] " << categories[i] << "\n";
+                            slowprint( "                                                                                      [" + to_string(i + 1) + "] " + categories[i] + "\n");
                         }
-                        cout << "\n";
-                        cout << "                                                                                      [0] 🔙 CANCEL\n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                      [0] 🔙 CANCEL\n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int catChoice;
                         cin >> catChoice;
@@ -7405,10 +7402,10 @@ void editList(
                         if (cin.fail()) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7420,10 +7417,10 @@ void editList(
                         }
 
                         if (catChoice < 1 || catChoice > CAT_COUNT) {
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7436,23 +7433,23 @@ void editList(
                         headerEditList();
                      
 
-                        cout << "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n";
-                        cout << "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n";
-                        cout << "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                  Change CATEGORY from:\n";
-                        cout << "                                                                                      \"" << oldCat << "\"\n";
-                        cout << "                                                                                  to:\n";
-                        cout << "                                                                                      \"" << newCat << "\" ?\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n");
+                        slowprint( "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n");
+                        slowprint( "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                  Change CATEGORY from:\n");
+                        slowprint( "                                                                                      \"" + oldCat + "\"\n");
+                        slowprint( "                                                                                  to:\n");
+                        slowprint( "                                                                                      \"" + newCat + "\" ?\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int confirm;
                         cin >> confirm;
@@ -7460,10 +7457,10 @@ void editList(
                         if (cin.fail() || (confirm != 1 && confirm != 2)) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7477,12 +7474,12 @@ void editList(
                             headerEditList();
                          
 
-                            cout << "                                                          ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻    \n";
-                            cout << "                                                          ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛    \n";
-                            cout << "                                                          ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint( "                                                          ┏━╸┏━┓╺┳╸┏━╸┏━╸┏━┓┏━┓╻ ╻   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻    \n");
+                            slowprint( "                                                          ┃  ┣━┫ ┃ ┣╸ ┃╺┓┃ ┃┣┳┛┗┳┛   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛    \n");
+                            slowprint( "                                                          ┗━╸╹ ╹ ╹ ┗━╸┗━┛┗━┛╹┗╸ ╹    ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                         }
 
@@ -7514,23 +7511,23 @@ void editList(
                         headerEditList();
                      
 
-                        cout << "                                                                        ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   \n";
-                        cout << "                                                                        ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    \n";
-                        cout << "                                                                        ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸    \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                        slowprint( "                                                                        ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   \n");
+                        slowprint( "                                                                        ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    \n");
+                        slowprint( "                                                                        ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸    \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
                         for (int i = 0; i < DEADLINE_COUNT; ++i) {
-                            cout << "                                                                                      [" << i + 1 << "] " << deadlineOptions[i] << "\n";
+                            slowprint( "                                                                                      [" + to_string(i + 1) + "] " + deadlineOptions[i] + "\n");
                         }
-                        cout << "\n";
-                        cout << "                                                                                      [0] 🔙 CANCEL\n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                      [0] 🔙 CANCEL\n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int dChoice;
                         cin >> dChoice;
@@ -7538,10 +7535,10 @@ void editList(
                         if (cin.fail()) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // back to deadline menu
                         }
@@ -7554,10 +7551,10 @@ void editList(
                         }
 
                         if (dChoice < 1 || dChoice > DEADLINE_COUNT) {
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // back to deadline menu
                         }
@@ -7570,24 +7567,24 @@ void editList(
                             headerEditList();
                          
 
-                            cout << "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   \n";
-                            cout << "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    \n";
-                            cout << "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   \n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-                            cout << "                                                                                      ╔════════════════════════╗\n";
-                            cout << "                                                                                     ╔║                        ║╗\n";
-                            cout << "                                                                                ═════╝╚════════════════════════╝╚═════\n";
+                            slowprint( "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   \n");
+                            slowprint( "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃    ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    \n");
+                            slowprint( "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   \n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+                            slowprint( "                                                                                      ╔════════════════════════╗\n");
+                            slowprint( "                                                                                     ╔║                        ║╗\n");
+                            slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════\n");
 
-                            cout << "\033[2A";
-                            cout << "\033[98C";
+                            slowprint( "\033[2A");
+                            slowprint( "\033[98C");
 
                             getline(cin, newDeadline);
 
                             if (newDeadline.empty()) {
-                                cout << endl;
-                                cout << "                                                                                 \033[1;37;41m  ⚠️ DEADLINE CANNOT BE EMPTY. ⚠️  \033[0m\n\n";
-                                cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                        "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                                slowprint("\n");
+                                slowprint( "                                                                                 \033[1;37;41m  ⚠️ DEADLINE CANNOT BE EMPTY. ⚠️  \033[0m\n\n");
+                                slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                        "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                                 getch();
                                 continue;   // go back to deadline main menu
                             }
@@ -7603,23 +7600,23 @@ void editList(
                         headerEditList();
                      
 
-                        cout << "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n";
-                        cout << "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n";
-                        cout << "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                  Change DEADLINE from:\n";
-                        cout << "                                                                                      \"" << oldDeadline << "\"\n";
-                        cout << "                                                                                  to:\n";
-                        cout << "                                                                                      \"" << newDeadline << "\" ?\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n");
+                        slowprint( "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n");
+                        slowprint( "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                  Change DEADLINE from:\n");
+                        slowprint( "                                                                                      \"" + oldDeadline + "\"\n");;
+                        slowprint( "                                                                                  to:\n");
+                        slowprint( "                                                                                      \"" + newDeadline + "\" ?\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int confirm;
                         cin >> confirm;
@@ -7627,10 +7624,10 @@ void editList(
                         if (cin.fail() || (confirm != 1 && confirm != 2)) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;   // back to deadline menu
                         }
@@ -7644,12 +7641,12 @@ void editList(
                             headerEditList();
                       
 
-                            cout << "                                                        ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻   \n";
-                            cout << "                                                         ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛   \n";
-                            cout << "                                                        ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint( "                                                        ╺┳┓┏━╸┏━┓╺┳┓╻  ╻┏┓╻┏━╸   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻   \n");
+                            slowprint( "                                                         ┃┃┣╸ ┣━┫ ┃┃┃  ┃┃┗┫┣╸    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛   \n");
+                            slowprint( "                                                        ╺┻┛┗━╸╹ ╹╺┻┛┗━╸╹╹ ╹┗━╸   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                         }
 
@@ -7673,23 +7670,23 @@ void editList(
                         headerEditList();
                    
 
-                        cout << "                                                                         ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻      \n";
-                        cout << "                                                                         ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃   ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛     \n";
-                        cout << "                                                                         ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹       \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+                        slowprint( "                                                                         ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ┏┓╻┏━╸╻ ╻   ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻      \n");
+                        slowprint( "                                                                         ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃┗┫┣╸ ┃╻┃   ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛     \n");
+                        slowprint( "                                                                         ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ╹ ╹┗━╸┗┻┛   ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹       \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
                         for (int i = 0; i < PRI_COUNT; ++i) {
-                            cout << "                                                                                      [" << i + 1 << "] " << priorities[i] << "\n";
+                            slowprint( "                                                                                      [" + to_string(i + 1) + "] " + priorities[i] + "\n");
                         }
-                        cout << "\n";
-                        cout << "                                                                                      [0] 🔙 CANCEL\n\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "\n");
+                        slowprint( "                                                                                      [0] 🔙 CANCEL\n\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int priChoice;
                         cin >> priChoice;
@@ -7697,10 +7694,10 @@ void editList(
                         if (cin.fail()) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7712,10 +7709,10 @@ void editList(
                         }
 
                         if (priChoice < 1 || priChoice > PRI_COUNT) {
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7727,23 +7724,23 @@ void editList(
                         headerEditList();
                      
 
-                        cout << "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n";
-                        cout << "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n";
-                        cout << "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                  Change PRIORITY from:\n";
-                        cout << "                                                                                      \"" << oldPri << "\"\n";
-                        cout << "                                                                                  to:\n";
-                        cout << "                                                                                      \"" << newPri << "\" ?\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                                ╔════╗\n";
-                        cout << "                                                                                               ╔║    ║╗\n";
-                        cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                        slowprint( "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n");
+                        slowprint( "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n");
+                        slowprint( "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                  Change PRIORITY from:\n");
+                        slowprint( "                                                                                      \"" + oldPri + "\"\n");
+                        slowprint( "                                                                                  to:\n");
+                        slowprint( "                                                                                      \"" + newPri + "\" ?\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                                ╔════╗\n");
+                        slowprint( "                                                                                               ╔║    ║╗\n");
+                        slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                        cout << "\033[2A";
-                        cout << "\033[98C";
+                        slowprint( "\033[2A");
+                        slowprint( "\033[98C");
 
                         int confirm;
                         cin >> confirm;
@@ -7751,10 +7748,10 @@ void editList(
                         if (cin.fail() || (confirm != 1 && confirm != 2)) {
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << endl;
-                            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint("\n");
+                            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                             continue;
                         }
@@ -7768,12 +7765,12 @@ void editList(
                             headerEditList();
                          
 
-                            cout << "                                                          ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻   \n";
-                            cout << "                                                          ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛  \n";
-                            cout << "                                                          ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹    ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n";
-                            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                            cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                            slowprint( "                                                          ┏━┓┏━┓╻┏━┓┏━┓╻╺┳╸╻ ╻   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻   \n");
+                            slowprint( "                                                          ┣━┛┣┳┛┃┃ ┃┣┳┛┃ ┃ ┗┳┛   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛  \n");
+                            slowprint( "                                                          ╹  ╹┗╸╹┗━┛╹┗╸╹ ╹  ╹    ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹     \n");
+                            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                            slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                    "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                             getch();
                         }
 
@@ -7791,18 +7788,18 @@ void editList(
                     headerEditList();
                  
 
-                    cout << "                                                                             ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━┓╺┳╸┏━╸┏━┓      \n";
-                    cout << "                                                                             ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓   \n";
-                    cout << "                                                                             ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛     \n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                    cout << "                                                                                       (leave blank for None)\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                    cout << "                                                                                      ╔════════════════════════╗\n";
-                    cout << "                                                                                     ╔║                        ║╗\n";
-                    cout << "                                                                                ═════╝╚════════════════════════╝╚═════\n";
+                    slowprint( "                                                                             ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┓╻┏━╸╻ ╻   ┏┓╻┏━┓╺┳╸┏━╸┏━┓      \n");
+                    slowprint( "                                                                             ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┗┫┣╸ ┃╻┃   ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓   \n");
+                    slowprint( "                                                                             ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━╸┗┻┛   ╹ ╹┗━┛ ╹ ┗━╸┗━┛     \n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                    slowprint( "                                                                                       (leave blank for None)\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                    slowprint( "                                                                                      ╔════════════════════════╗\n");
+                    slowprint( "                                                                                     ╔║                        ║╗\n");
+                    slowprint( "                                                                                ═════╝╚════════════════════════╝╚═════\n");
 
-                    cout << "\033[2A";
-                    cout << "\033[98C";
+                    slowprint( "\033[2A");
+                    slowprint( "\033[98C");
 
                     getline(cin, newNote);
 
@@ -7814,23 +7811,23 @@ void editList(
                     headerEditList();
                  
 
-                    cout << "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n";
-                    cout << "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n";
-                    cout << "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                    cout << "                                                                                  Change NOTES from:\n";
-                    cout << "                                                                                      \"" << displayOld << "\"\n";
-                    cout << "                                                                                  to:\n";
-                    cout << "                                                                                      \"" << displayNew << "\" ?\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                    cout << "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                    cout << "                                                                                                ╔════╗\n";
-                    cout << "                                                                                               ╔║    ║╗\n";
-                    cout << "                                                                                          ═════╝╚════╝╚═════\n";
+                    slowprint( "                                                                                         ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓    \n");
+                    slowprint( "                                                                                         ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛    \n");
+                    slowprint( "                                                                                         ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹     \n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                    slowprint( "                                                                                  Change NOTES from:\n");
+                    slowprint( "                                                                                      \"" + displayOld + "\"\n");
+                    slowprint( "                                                                                  to:\n");
+                    slowprint( "                                                                                      \"" + displayNew + "\" ?\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                    slowprint( "                                                                                   [1] ✅ CONFIRM   [2] 🔙 CANCEL\n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                    slowprint( "                                                                                                ╔════╗\n");
+                    slowprint( "                                                                                               ╔║    ║╗\n");
+                    slowprint( "                                                                                          ═════╝╚════╝╚═════\n");
 
-                    cout << "\033[2A";
-                    cout << "\033[98C";
+                    slowprint( "\033[2A");
+                    slowprint( "\033[98C");
 
                     int confirm;
                     cin >> confirm;
@@ -7838,10 +7835,10 @@ void editList(
                     if (cin.fail() || (confirm != 1 && confirm != 2)) {
                         cin.clear();
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        cout << endl;
-                        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                        slowprint("\n");
+                        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
                         continue;
                     }
@@ -7855,12 +7852,12 @@ void editList(
                         headerEditList();
                      
 
-                    cout << "                                                             ┏┓╻┏━┓╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻  \n";
-                    cout << "                                                             ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛  \n";
-                    cout << "                                                             ╹ ╹┗━┛ ╹ ┗━╸┗━┛   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹    \n";
-                    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-                        cout << "                                                                                     \033[1;48;2;255;255;255m"
-                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+                    slowprint( "                                                             ┏┓╻┏━┓╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━┓┏━┓┏━╸╻ ╻╻  ╻  ╻ ╻  \n");
+                    slowprint( "                                                             ┃┗┫┃ ┃ ┃ ┣╸ ┗━┓   ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛  \n");
+                    slowprint( "                                                             ╹ ╹┗━┛ ╹ ┗━╸┗━┛   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹    \n");
+                    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                        slowprint( "                                                                                     \033[1;48;2;255;255;255m"
+                                "\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
                         getch();
                     }
                 }
@@ -7877,9 +7874,9 @@ void editList(
 
         // Invalid option
         else {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
             getch();
             continue;
         }
@@ -7890,16 +7887,16 @@ void editList(
 
 void headerDeleteList() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                             ██████╗ ███████╗██╗     ███████╗████████╗███████╗    ██╗     ██╗███████╗████████╗   \n";
-        cout << "                                                             ██╔══██╗██╔════╝██║     ██╔════╝╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══╝     \n";
-        cout << "                                                             ██║  ██║█████╗  ██║     █████╗     ██║   █████╗      ██║     ██║███████╗   ██          \n";
-        cout << "                                                             ██║  ██║██╔══╝  ██║     ██╔══╝     ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n";
-        cout << "                                                             ██████╔╝███████╗███████╗███████╗   ██║   ███████╗    ███████╗██║███████║   ██║         \n";
-        cout << "                                                             ╚═════╝ ╚══════╝╚══════╝╚══════╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝           \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                             ██████╗ ███████╗██╗     ███████╗████████╗███████╗    ██╗     ██╗███████╗████████╗   \n");
+        slowprint( "                                                             ██╔══██╗██╔════╝██║     ██╔════╝╚══██╔══╝██╔════╝    ██║     ██║██╔════╝╚══██╔══╝     \n");
+        slowprint( "                                                             ██║  ██║█████╗  ██║     █████╗     ██║   █████╗      ██║     ██║███████╗   ██          \n");
+        slowprint( "                                                             ██║  ██║██╔══╝  ██║     ██╔══╝     ██║   ██╔══╝      ██║     ██║╚════██║   ██║        \n");
+        slowprint( "                                                             ██████╔╝███████╗███████╗███████╗   ██║   ███████╗    ███████╗██║███████║   ██║         \n");
+        slowprint( "                                                             ╚═════╝ ╚══════╝╚══════╝╚══════╝   ╚═╝   ╚══════╝    ╚══════╝╚═╝╚══════╝   ╚═╝           \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -7929,12 +7926,12 @@ void deleteList(
     // If no lists exist, there's nothing to deletea
     if (name_of_list.empty()) {
 
-        cout << endl;
-        cout << "\033[0B";
-        cout << "\033[84C";
-        cout << "\033[1;37;41m  ⚠️ NO LISTS TO DELETE ⚠️  \033[0m\n\n";
-        cout << "                                                                                  "
-             << "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m";
+        slowprint("\n");
+        slowprint( "\033[0B");
+        slowprint( "\033[84C");
+        slowprint( "\033[1;37;41m  ⚠️ NO LISTS TO DELETE ⚠️  \033[0m\n\n");
+        slowprint( string("                                                                                  ")
+             + "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m");
 
         getch();
         return;
@@ -7950,35 +7947,35 @@ void deleteList(
         system("cls");
         headerDeleteList();
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
 
             // DISPLAY ALL LISTS (full header layout)
         for (int i = 0; i < (int)name_of_list.size(); i++) {
 
-            cout << "                                                                                 " << i + 1 << ". " << name_of_list[i] << "\n";
-            cout << "                                                                                      🗂️ CATEGORY: " << list_categories[i]  << "\n";
-            cout << "                                                                                      📅 DEADLINE: " << list_deadlines[i]   << "\n";
-            cout << "                                                                                      ❗ PRIORITY: " << list_priorities[i]  << "\n";
-            cout << "                                                                                      📋 NOTES   : " 
-                << "(None)"  // deleteList has no list_notes parameter here yet
-                << "\n\n";
+            slowprint( "                                                                                 " + to_string(i + 1) + ". " + name_of_list[i] + "\n");
+            slowprint( "                                                                                      🗂️ CATEGORY: " + list_categories[i]  + "\n");
+            slowprint( "                                                                                      📅 DEADLINE: " + list_deadlines[i]   + "\n");
+            slowprint( "                                                                                      ❗ PRIORITY: " + list_priorities[i]  + "\n");
+            slowprint( "                                                                                      📋 NOTES   : " 
+                + string("(None)")  // deleteList has no list_notes parameter here yet
+                + "\n\n");
         }
 
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                      ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ╻  ╻┏━┓╺┳╸   ╺┳╸┏━┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸                 \n";
-        cout << "                                                                      ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃  ┃┗━┓ ┃     ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n";
-        cout << "                                                                      ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━╸╹┗━┛ ╹     ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸       \n\n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                      ┏━┓┏━╸╻  ┏━╸┏━╸╺┳╸   ╻  ╻┏━┓╺┳╸   ╺┳╸┏━┓   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸                 \n");
+        slowprint( "                                                                      ┗━┓┣╸ ┃  ┣╸ ┃   ┃    ┃  ┃┗━┓ ┃     ┃ ┃ ┃    ┃┃┣╸ ┃  ┣╸  ┃ ┣╸           \n");
+        slowprint( "                                                                      ┗━┛┗━╸┗━╸┗━╸┗━╸ ╹    ┗━╸╹┗━┛ ╹     ╹ ┗━┛   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸       \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                        [0] ↩️ BACK TO MAIN MENU\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                        [0] ↩️ BACK TO MAIN MENU\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         cin >> choice;
 
@@ -7987,9 +7984,9 @@ void deleteList(
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw list selection
@@ -8002,9 +7999,9 @@ void deleteList(
 
         if (choice < 1 || choice > (int)name_of_list.size())
         {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw list selection
@@ -8026,22 +8023,22 @@ void deleteList(
         system("cls");
         headerDeleteList();
 
-        cout << "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n";
-        cout << "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛                \n";
-        cout << "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n";
+        slowprint( "                                                                                        ┏━╸┏━┓┏┓╻┏━╸╻┏━┓┏┳┓┏━┓                 \n");
+        slowprint( "                                                                                        ┃  ┃ ┃┃┗┫┣╸ ┃┣┳┛┃┃┃ ╺┛                \n");
+        slowprint( "                                                                                        ┗━╸┗━┛╹ ╹╹  ╹╹┗╸╹ ╹ ╹                \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                               Are you sure you want to delete \"" << name_of_list[index] << "\"?\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                           [1] 🗑️ CONFIRM\n";
-        cout << "                                                                                           [2] 🔙 CANCEL\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                               Are you sure you want to delete \"" + name_of_list[index] + "\"?\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                           [1] 🗑️ CONFIRM\n");
+        slowprint( "                                                                                           [2] 🔙 CANCEL\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         cin >> confirm;
 
@@ -8050,9 +8047,9 @@ void deleteList(
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw confirm screen
@@ -8063,12 +8060,12 @@ void deleteList(
             system("cls");
             headerDeleteList();
 
-            cout << "                                                                        ╺┳┓┏━╸╻  ┏━╸╺┳╸╻┏━┓┏┓╻   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓                \n";
-            cout << "                                                                         ┃┃┣╸ ┃  ┣╸  ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃          \n";
-            cout << "                                                                        ╺┻┛┗━╸┗━╸┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛       \n\n";
+            slowprint( "                                                                        ╺┳┓┏━╸╻  ┏━╸╺┳╸╻┏━┓┏┓╻   ┏━╸┏━╓┏┓╻┏━╸┏━╸╻  ╻  ┏━╸╺┳┓                \n");
+            slowprint( "                                                                         ┃┃┣╸ ┃  ┣╸  ┃ ┃┃ ┃┃┗┫   ┃  ┣━┫┃┗┫┃  ┣╸ ┃  ┃  ┣╸  ┃┃          \n");
+            slowprint( "                                                                        ╺┻┛┗━╸┗━╸┗━╸ ╹ ╹┗━┛╹ ╹   ┗━╸╹ ╹╹ ╹┗━╸┗━╸┗━╸┗━╸┗━╸╺┻┛       \n\n");
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             return;
@@ -8081,9 +8078,9 @@ void deleteList(
         }
 
         // any other key = invalid choice
-        cout << endl;
-        cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-        cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+        slowprint("\n");
+        slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID CHOICE. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+        slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
         getch();
     }
 
@@ -8183,28 +8180,28 @@ void deleteList(
     system("cls");
     headerDeleteList();
 
-    cout << "                                                                ╻  ╻┏━┓╺┳╸   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━╓┏━╓┏━╸╻ ╻╻  ╻  ╻ ╻                 \n";
-    cout << "                                                                ┃  ┃┗━┓ ┃     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛          \n";
-    cout << "                                                                ┗━╸╹┗━┛ ╹    ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹        \n\n";
+    slowprint( "                                                                ╻  ╻┏━┓╺┳╸   ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸╺┳┓   ┏━┓╻ ╻┏━╸┏━╸┏━╸┏━╓┏━╓┏━╸╻ ╻╻  ╻  ╻ ╻                 \n");
+    slowprint( "                                                                ┃  ┃┗━┓ ┃     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸  ┃┃   ┗━┓┃ ┃┃  ┃  ┣╸ ┗━┓┗━┓┣╸ ┃ ┃┃  ┃  ┗┳┛          \n");
+    slowprint( "                                                                ┗━╸╹┗━┛ ╹    ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸╺┻┛   ┗━┛┗━┛┗━╸┗━╸┗━╸┗━┛┗━┛╹  ┗━┛┗━╸┗━╸ ╹        \n\n");
 
-    cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-    cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+    slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+    slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
     getch();
 }
 
 void headerEditDate() {
 
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                                    ███████╗██████╗ ██╗████████╗    ██████╗  █████╗ ████████╗███████╗    \n";
-        cout << "                                                                    ██╔════╝██╔══██╗██║╚══██╔══╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝     \n";
-        cout << "                                                                    █████╗  ██║  ██║██║   ██║       ██║  ██║███████║   ██║   █████╗         \n";
-        cout << "                                                                    ██╔══╝  ██║  ██║██║   ██║       ██║  ██║██╔══██║   ██║   ██╔══╝           \n";
-        cout << "                                                                    ███████╗██████╔╝██║   ██║       ██████╔╝██║  ██║   ██║   ███████╗           \n";
-        cout << "                                                                    ╚══════╝╚═════╝ ╚═╝   ╚═╝       ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝              \n";
-        cout << "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                                    ███████╗██████╗ ██╗████████╗    ██████╗  █████╗ ████████╗███████╗    \n");
+        slowprint( "                                                                    ██╔════╝██╔══██╗██║╚══██╔══╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝     \n");
+        slowprint( "                                                                    █████╗  ██║  ██║██║   ██║       ██║  ██║███████║   ██║   █████╗         \n");
+        slowprint( "                                                                    ██╔══╝  ██║  ██║██║   ██║       ██║  ██║██╔══██║   ██║   ██╔══╝           \n");
+        slowprint( "                                                                    ███████╗██████╔╝██║   ██║       ██████╔╝██║  ██║   ██║   ███████╗           \n");
+        slowprint( "                                                                    ╚══════╝╚═════╝ ╚═╝   ╚═╝       ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝              \n");
+        slowprint( "                                               ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
     
  
 }
@@ -8222,20 +8219,20 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
         system("cls");
         headerEditDate();
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                 \n";
-        cout << "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n";
-        cout << "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸       \n\n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                         ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ┏┳┓┏━┓┏┓╻╺┳╸╻ ╻   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                 \n");
+        slowprint( "                                                                         ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┃┃┃┃ ┃┃┗┫ ┃ ┣━┫   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n");
+        slowprint( "                                                                         ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╹ ╹┗━┛╹ ╹ ╹ ╹ ╹   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸       \n\n");
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                       [0] ↩️ BACK TO MAIN MENU\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                       [0] ↩️ BACK TO MAIN MENU\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\033[2A";   // move cursor up into the small box
-        cout << "\033[98C";  // move cursor horizontally to center input
+        slowprint( "\033[2A");   // move cursor up into the small box
+        slowprint( "\033[98C");  // move cursor horizontally to center input
 
         // --- read month ---
         cin >> tempmonth;
@@ -8246,9 +8243,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
             cin.clear();
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER MONTH" screen
@@ -8263,9 +8260,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
         // out of range
         if (tempmonth < 1 || tempmonth > 12)
         {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ MONTH MUST BE BETWEEN 1 AND 12. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ MONTH MUST BE BETWEEN 1 AND 12. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER MONTH" screen
@@ -8283,17 +8280,17 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
         system("cls");
         headerEditDate();
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                          ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                 \n";
-        cout << "                                                                          ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n";
-        cout << "                                                                          ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸     \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                          ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━╸┏━┓┏━┓   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                 \n");
+        slowprint( "                                                                          ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┣╸ ┣━┫┣┳┛   ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛          \n");
+        slowprint( "                                                                          ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━╸╹ ╹╹┗╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸     \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         cin >> tempyear;
 
@@ -8302,9 +8299,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
             cin.clear();
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER YEAR" screen
@@ -8312,9 +8309,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
 
         if (tempyear < 2025 || tempyear > 2100)
         {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ YEAR MUST BE BETWEEN 2025 AND 2100. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ YEAR MUST BE BETWEEN 2025 AND 2100. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER YEAR" screen
@@ -8343,17 +8340,17 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
         system("cls");
         headerEditDate();
 
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                          ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━┓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                \n";
-        cout << "                                                                          ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n";
-        cout << "                                                                          ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸     \n\n";
-        cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n";
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                          ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╺┳┓┏━┓╺┳╸┏━╸   ┏┓╻╻ ╻┏┳┓┏┓ ┏━╸┏━┓                \n");
+        slowprint( "                                                                          ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛    ┃┃┣━┫ ┃ ┣╸    ┃┗┫┃ ┃┃┃┃┣┻┓┣╸ ┣┳┛         \n");
+        slowprint( "                                                                          ┗━╸╹ ╹ ╹ ┗━╸╹┗╸   ╺┻┛╹ ╹ ╹ ┗━╸   ╹ ╹┗━┛╹ ╹┗━┛┗━╸╹┗╸     \n\n");
+        slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n");
 
-        cout << "\033[2A";
-        cout << "\033[98C";
+        slowprint( "\033[2A");
+        slowprint( "\033[98C");
 
         cin >> tempdate;
 
@@ -8362,9 +8359,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
             cin.clear();
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER DATE" screen
@@ -8372,9 +8369,9 @@ void updatedate(int &cmonth, int &cdate, int &cyear)
 
         if (tempdate < 1 || tempdate > maxDay)
         {
-            cout << endl;
-            cout << "                                                                                 \033[1;37;41m  ⚠️ DATE MUST BE BETWEEN 1 AND " << maxDay << ". ⚠️  \033[0m\n\n";
-            cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n";
+            slowprint("\n");
+            slowprint( "                                                                                 \033[1;37;41m  ⚠️ DATE MUST BE BETWEEN 1 AND " + to_string(maxDay) + ". ⚠️  \033[0m\n\n");
+            slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ANY KEY TO CONTINUE...  \033[0m\n");
 
             getch();
             continue; // redraw "ENTER DATE" screen
@@ -8446,47 +8443,47 @@ int main() {
 
     system("cls");
 
-        cout << "                                                                  ████████╗ █████╗ ██╗     ██╗  ██╗   ██╗     ██╗          ██╗                        \n";             
-        cout << "                                                                  ╚══██╔══╝██╔══██╗██║     ██║  ╚██╗ ██╔╝     ██║          ██║                        \n";     
-        cout << "                                                                     ██║   ███████║██║     ██║   ╚████╔╝  ██████████╗  ██████████╗                    \n";                       
-        cout << "                                                                     ██║   ██╔══██║██║     ██║    ╚██╔╝   ╚═══██╔═══╝  ╚═══██╔═══╝                    \n";                      
-        cout << "                                                                     ██║   ██║  ██║███████╗███████╗██║        ██║          ██║                        \n";     
-        cout << "                                                                     ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝        ╚═╝          ╚═╝                        \n\n";
+        slowprint( "                                                                  ████████╗ █████╗ ██╗     ██╗  ██╗   ██╗     ██╗          ██╗                        \n");             
+        slowprint( "                                                                  ╚══██╔══╝██╔══██╗██║     ██║  ╚██╗ ██╔╝     ██║          ██║                        \n");     
+        slowprint( "                                                                     ██║   ███████║██║     ██║   ╚████╔╝  ██████████╗  ██████████╗                    \n");                       
+        slowprint( "                                                                     ██║   ██╔══██║██║     ██║    ╚██╔╝   ╚═══██╔═══╝  ╚═══██╔═══╝                    \n");                      
+        slowprint( "                                                                     ██║   ██║  ██║███████╗███████╗██║        ██║          ██║                        \n");     
+        slowprint( "                                                                     ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝        ╚═╝          ╚═╝                        \n\n");
                                                                 
-        cout << "                                                   ██╗     ██╗███████╗████████╗    ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗   \n";
-        cout << "                                                   ██║     ██║██╔════╝╚══██╔══╝    ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗  \n";
-        cout << "                                                   ██║     ██║███████╗   ██║       ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝  \n";
-        cout << "                                                   ██║     ██║╚════██║   ██║       ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██╔══██╗  \n";
-        cout << "                                                   ███████╗██║███████║   ██║       ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║  \n";
-        cout << "                                                   ╚══════╝╚═╝╚══════╝   ╚═╝       ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝  \n\n";
+        slowprint( "                                                   ██╗     ██╗███████╗████████╗    ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗   \n");
+        slowprint( "                                                   ██║     ██║██╔════╝╚══██╔══╝    ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗  \n");
+        slowprint( "                                                   ██║     ██║███████╗   ██║       ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝  \n");
+        slowprint( "                                                   ██║     ██║╚════██║   ██║       ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██╔══██╗  \n");
+        slowprint( "                                                   ███████╗██║███████║   ██║       ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║  \n");
+        slowprint( "                                                   ╚══════╝╚═╝╚══════╝   ╚═╝       ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝  \n\n");
 
-        cout << "                                                   ╻ ╻╻ ╻┏━╸┏━┓┏━╸   ╺┳╸┏━┓┏━┓╻┏ ┏━┓   ┏┓ ┏━╸┏━╸┏━┓┏┳┓┏━╸   ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓     \n";
-        cout << "                                                   ┃╻┃┣━┫┣╸ ┣┳┛┣╸     ┃ ┣━┫┗━┓┣┻┓┗━┓   ┣┻┓┣╸ ┃  ┃ ┃┃┃┃┣╸    ┣━┫┃  ┣━┫┃┣╸ ┃┏┛┣╸ ┃┃┃┣╸ ┃┗┫ ┃ ┗━┓     \n";
-        cout << "                                                   ┗┻┛╹ ╹┗━╸╹┗╸┗━╸    ╹ ╹ ╹┗━┛╹ ╹┗━┛   ┗━┛┗━╸┗━╸┗━┛╹ ╹┗━╸   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛╹    \n\n";
+        slowprint( "                                                   ╻ ╻╻ ╻┏━╸┏━┓┏━╸   ╺┳╸┏━┓┏━┓╻┏ ┏━┓   ┏┓ ┏━╸┏━╸┏━┓┏┳┓┏━╸   ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓     \n");
+        slowprint( "                                                   ┃╻┃┣━┫┣╸ ┣┳┛┣╸     ┃ ┣━┫┗━┓┣┻┓┗━┓   ┣┻┓┣╸ ┃  ┃ ┃┃┃┃┣╸    ┣━┫┃  ┣━┫┃┣╸ ┃┏┛┣╸ ┃┃┃┣╸ ┃┗┫ ┃ ┗━┓     \n");
+        slowprint( "                                                   ┗┻┛╹ ╹┗━╸╹┗╸┗━╸    ╹ ╹ ╹┗━┛╹ ╹┗━┛   ┗━┛┗━╸┗━╸┗━┛╹ ╹┗━╸   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛╹    \n\n");
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-        cout << "                                                    ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                    ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
 
-        cout << "                                                                                      𝐀𝐫𝐢𝐬𝐭𝐨𝐤𝐢, 𝐒𝐞𝐠𝐨𝐜𝐢𝐨, 𝐎𝐜𝐜𝐞ñ𝐚 | 𝐁𝐒𝐂𝐒 1-𝐀                                 \n\n" ; 
+        slowprint( "                                                                                      𝐀𝐫𝐢𝐬𝐭𝐨𝐤𝐢, 𝐒𝐞𝐠𝐨𝐜𝐢𝐨, 𝐎𝐜𝐜𝐞ñ𝐚 | 𝐁𝐒𝐂𝐒 1-𝐀                                 \n\n"); 
 
-        cout << "                                                                       ╔════════════════════════════════════════════════════╗  \n";    
-        cout << "                                                                       ║╻╻┏━┓┏━┓┏━╸┏━┓┏━┓   ┏━┓   ╺┳╸┏━┓   ┏━╸┏┓╻╺┳╸┏━╸┏━┓╻╻║  \n";
-        cout << "                                                                       ║  ┣━┛┣┳┛┣╸ ┗━┓┗━┓   ┃┃┃    ┃ ┃ ┃   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛  ║  \n";
-        cout << "                                                                       ║  ╹  ╹┗╸┗━╸┗━┛┗━┛   ┗━┛    ╹ ┗━┛   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸  ║  \n";
-        cout << "                                                                       ╚════════════════════════════════════════════════════╝  \n";
+        slowprint( "                                                                       ╔════════════════════════════════════════════════════╗  \n");    
+        slowprint( "                                                                       ║╻╻┏━┓┏━┓┏━╸┏━┓┏━┓   ┏━┓   ╺┳╸┏━┓   ┏━╸┏┓╻╺┳╸┏━╸┏━┓╻╻║  \n");
+        slowprint( "                                                                       ║  ┣━┛┣┳┛┣╸ ┗━┓┗━┓   ┃┃┃    ┃ ┃ ┃   ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛  ║  \n");
+        slowprint( "                                                                       ║  ╹  ╹┗╸┗━╸┗━┛┗━┛   ┗━┛    ╹ ┗━┛   ┗━╸╹ ╹ ╹ ┗━╸╹┗╸  ║  \n");
+        slowprint( "                                                                       ╚════════════════════════════════════════════════════╝  \n");
 
         while (true)
         {
             cin >> Menu;
             if (Menu != 0)
             {
-                cout << "Invalid input. Please try again.\n";
+                slowprint( "Invalid input. Please try again.\n");
                 continue;
             }
             
             if (!cin.fail()) break;
             cin.clear();
             cin.ignore(1000 , '\n');
-            cout << "Invalid input. Please try again.\n";
+            slowprint( "Invalid input. Please try again.\n");
         }
         
         
@@ -8499,16 +8496,16 @@ int main() {
 
         system("cls");
        
-        cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-        cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-        cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-        cout << "                                                               ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n";
-        cout << "                                                               ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n";
-        cout << "                                                               ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n";
-        cout << "                                                               ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n";
-        cout << "                                                               ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n";
-        cout << "                                                               ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n";
-        cout << "                                                              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+        slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+        slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+        slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+        slowprint( "                                                               ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n");
+        slowprint( "                                                               ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n");
+        slowprint( "                                                               ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n");
+        slowprint( "                                                               ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n");
+        slowprint( "                                                               ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n");
+        slowprint( "                                                               ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n");
+        slowprint( "                                                              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
 
 
                                                                           
@@ -8516,50 +8513,49 @@ int main() {
         // Show gamification header only when enabled
         if (gamificationEnabled) {
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
             
 
-            cout << "                                                                                 📊 Player Level : " << playerLevel
-                << "    ✨ Player XP : " << playerXP << "\n";
+            slowprint( "                                                                                 📊 Player Level : " + to_string(playerLevel)
+                + "    ✨ Player XP : " + to_string(playerXP) + "\n");
 
-            cout << "                                                                                 ✨ XP Progress   : " << getXPBar(playerXP)
-                << " " << (playerXP % 100) << "%\n";
-
+            slowprint( "                                                                                 ✨ XP Progress   : " + getXPBar(playerXP)
+                + " " + to_string(playerXP % 100) + "%\n");
             // Class display
-            cout << "                                                                                 📚 Current Class : ";
+            slowprint( "                                                                                 📚 Current Class : ");
             switch (playerClass) {
-                case DEFAULT_CLASS:  cout << "Default"; break;
+                case DEFAULT_CLASS:  slowprint( "Default"); break;
 
 
 
 
                 
-                case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
-                case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
-                case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
-                case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
-                case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
-                case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;   
+                case HERO_CLASS:     slowprint( "Hero (+25 XP)"); break;
+                case GAMBLER_CLASS:  slowprint( "Gambler (RNG XP)"); break;
+                case ASSASSIN_CLASS: slowprint( "Assassin (Streak XP)"); break;
+                case WIZARD_CLASS:   slowprint( "Wizard (Combo + Wisdom XP)"); break;
+                case ARCHER_CLASS:   slowprint( "Archer (Precision Shot XP)"); break;
+                case TANK_CLASS:     slowprint( "Tank (Shield Momentum XP)"); break;   
             }
-            cout << "\n";
+            slowprint( "\n");
 
             // Assassin display
             if (playerClass == ASSASSIN_CLASS) {
 
                 float percent = (assassinStacks / 10.0f) * 100.0f; 
-                cout << " Assassin Streak : " << assassinStreak
-                    << "   Stacks: " << assassinStacks << "/10\n"
-                    << " Progress: " << getProgressBar(percent)
-                    << " " << (int)percent << "%\n";
+                slowprint( " Assassin Streak : " + to_string(assassinStreak)
+                    + "   Stacks: " + to_string(assassinStacks) + "/10\n"
+                    + " Progress: " + getProgressBar(percent)
+                    + " " + to_string((int)percent) + "%\n");
             }
 
             // Wizard display
             if (playerClass == WIZARD_CLASS) {
 
                 float percent = (wizardCounter / 5.0f) * 100.0f;
-                cout << " Wizard Counter : " << wizardCounter << "/5\n"
-                    << " Progress: " << getProgressBar(percent)
-                    << " " << (int)percent << "%\n";
+                slowprint( " Wizard Counter : " + to_string(wizardCounter) + "/5\n"
+                    + " Progress: " + getProgressBar(percent)
+                    + " " + to_string((int)percent) + "%\n");
             }
 
             // Archer display
@@ -8568,10 +8564,10 @@ int main() {
                 float percent = (archerStreak / 10.0f) * 100.0f;
                 if (percent > 100) percent = 100;
 
-                cout << " Archer Streak : " << archerStreak 
-                    << "  Bonus: " << (archerStreak * 5) << "%\n"
-                    << " Progress: " << getProgressBar(percent)
-                    << " " << (int)percent << "%\n";
+                slowprint( " Archer Streak : " + to_string(archerStreak)
+                    + "  Bonus: " + to_string(archerStreak * 5) + "%\n"
+                    + " Progress: " + getProgressBar(percent)
+                    + " " + to_string((int)percent) + "%\n");
             }
 
             // Tank display
@@ -8585,53 +8581,53 @@ int main() {
                 // Level 20: 3/3 = 100% but lower cap → shows weakness differently
                 float percent = (maxStacks / 20.0f) * 100.0f;
 
-                cout << " Tank Stacks : " << tankStacks 
-                    << " / " << maxStacks
-                    << "  (Shield Momentum)\n"
-                    << " Durability: " << getProgressBar(percent)
-                    << " " << (int)percent << "%\n";
+                slowprint( " Tank Stacks : " + to_string(tankStacks)
+                    + " / " + to_string(maxStacks)
+                    + "  (Shield Momentum)\n"
+                    + " Durability: " + getProgressBar(percent)
+                    + " " + to_string((int)percent) + "%\n");
             }
 
 
-            cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
+            slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
         }
 
 
 
-        cout << "                                                                                       Current date: " << cmonth << '/' << cdate << '/' << cyear;
-        cout << endl;
-        cout << "\n";
+        slowprint( "                                                                                     Current streak count: " + to_string(streakCount) + " | Current date: " + to_string(cmonth) + '/' + to_string(cdate) + '/' + to_string(cyear));
+        slowprint("\n");
+        slowprint( "\n");
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
-        cout << "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓               ║\n";
-        cout << "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      ║  ┃    ┣━┫┃  ┣━┫┃┣╸ ┃┏┛┣╸ ┃┃┃┣╸ ┃┗┫ ┃ ┗━┓               ║\n";
-        cout << "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      ║  ╹╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛               ║\n";
-        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
+        slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");
+        slowprint( "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓               ║\n");
+        slowprint( "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      ║  ┃    ┣━┫┃  ┣━┫┃┣╸ ┃┏┛┣╸ ┃┃┃┣╸ ┃┗┫ ┃ ┗━┓               ║\n");
+        slowprint( "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      ║  ╹╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛               ║\n");
+        slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
-        cout << "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      ║┏━╸    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╺┳┓┏━┓╺┳╸┏━╸                ║      ║┏━┓    ┏━╸╻  ┏━┓┏━┓┏━┓┏━╸┏━┓                            ║\n";
-        cout << "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      ║┗━┓    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸     ┃┃┣━┫ ┃ ┣╸                 ║      ║┣━┫    ┃  ┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓                            ║\n";
-        cout << "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ╺┻┛╹ ╹ ╹ ┗━╸                ║      ║┗━┛╹   ┗━╸┗━╸╹ ╹┗━┛┗━┛┗━╸┗━┛                            ║\n";
-        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";                                
+        slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");
+        slowprint( "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      ║┏━╸    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╺┳┓┏━┓╺┳╸┏━╸                ║      ║┏━┓    ┏━╸╻  ┏━┓┏━┓┏━┓┏━╸┏━┓                            ║\n");
+        slowprint( "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      ║┗━┓    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸     ┃┃┣━┫ ┃ ┣╸                 ║      ║┣━┫    ┃  ┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓                            ║\n");
+        slowprint( "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ╺┻┛╹ ╹ ╹ ┗━╸                ║      ║┗━┛╹   ┗━╸┗━╸╹ ╹┗━┛┗━┛┗━╸┗━┛                            ║\n");
+        slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");                                
 
-        cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";                          
-        cout << "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║      ║┏━┓    ┏━╸╻ ╻╻╺┳╸                                       ║\n";
-        cout << "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      ║┣━┓     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║      ║┗━┫    ┣╸ ┏╋┛┃ ┃                                        ║\n";
-        cout << "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹ ╹┗━╸                ║      ║┗━┛╹   ┗━╸╹ ╹╹ ╹                                        ║ \n";      
-        cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
+        slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");                          
+        slowprint( "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║      ║┏━┓    ┏━╸╻ ╻╻╺┳╸                                       ║\n");
+        slowprint( "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      ║┣━┓     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║      ║┗━┫    ┣╸ ┏╋┛┃ ┃                                        ║\n");
+        slowprint( "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹ ╹┗━╸                ║      ║┗━┛╹   ┗━╸╹ ╹╹ ╹                                        ║ \n");      
+        slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");
 
 
-        cout << "                                                                          ________________  ________________  ________________      \n";
-        cout << "                                                                         |________________||________________||________________|     \n\n";                                                                                                                                     
-        cout << "                                                                            ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸         \n";
-        cout << "                                                                            ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸ ╹        \n";
-        cout << "                                                                            ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸╹        \n";
-        cout << "                                                                                                ╔════╗                              \n";
-        cout << "                                                                                               ╔║    ║╗                             \n";
-        cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+        slowprint( "                                                                          ________________  ________________  ________________      \n");
+        slowprint( "                                                                         |________________||________________||________________|     \n\n");                                                                                                                                     
+        slowprint( "                                                                            ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸         \n");
+        slowprint( "                                                                            ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸ ╹        \n");
+        slowprint( "                                                                            ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸╹        \n");
+        slowprint( "                                                                                                ╔════╗                              \n");
+        slowprint( "                                                                                               ╔║    ║╗                             \n");
+        slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
         
-        cout << "\033[2A"; // move UP 2 lines
-        cout << "\033[98C"; // move RIGHT 17 columns (adjust until perfect)
+        slowprint( "\033[2A"); // move UP 2 lines
+        slowprint( "\033[98C"); // move RIGHT 17 columns (adjust until perfect)
         while (true)
         {
                 cin >> choice;
@@ -8643,58 +8639,57 @@ int main() {
 
             system("cls");
         
-            cout << "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n";
-            cout << "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n";
-            cout << "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n";
-            cout << "                                                               ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n";
-            cout << "                                                               ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n";
-            cout << "                                                               ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n";
-            cout << "                                                               ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n";
-            cout << "                                                               ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n";
-            cout << "                                                               ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n";
-            cout << "                                                              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n";
+            slowprint( "                                                                       ╺┳╸┏━┓╻  ╻  ╻ ╻ ╻  ╻    ╻  ╻┏━┓╺┳╸   ┏┳┓┏━┓┏┓╻┏━┓┏━╸┏━╸┏━┓    \n");
+            slowprint( "                                                                        ┃ ┣━┫┃  ┃  ┗┳┛╺╋╸╺╋╸   ┃  ┃┗━┓ ┃    ┃┃┃┣━┫┃┗┫┣━┫┃╺┓┣╸ ┣┳┛    \n");
+            slowprint( "                                                                        ╹ ╹ ╹┗━╸┗━╸ ╹  ╹  ╹    ┗━╸╹┗━┛ ╹    ╹ ╹╹ ╹╹ ╹╹ ╹┗━┛┗━╸╹┗╸    \n");
+            slowprint( "                                                               ███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗  \n");
+            slowprint( "                                                               ████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║  \n");
+            slowprint( "                                                               ██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║  \n");
+            slowprint( "                                                               ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║  \n");
+            slowprint( "                                                               ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝  \n");
+            slowprint( "                                                               ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   \n");
+            slowprint( "                                                              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  \n\n");
 
 
                                                                             
             // Display player level & XP in main menu header
             // Show gamification header only when enabled
             if (gamificationEnabled) {
-                cout << " Player Level : " << playerLevel
-                    << "    Player XP : " << playerXP << "\n";
+                slowprint( " Player Level : " + to_string(playerLevel)
+                    + "    Player XP : " + to_string(playerXP) + "\n");
 
-                cout << " XP Progress   : " << getXPBar(playerXP)
-                    << " " << (playerXP % 100) << "%\n";
-
+                slowprint( " XP Progress   : " + getXPBar(playerXP)
+                    + " " + to_string(playerXP % 100) + "%\n");
                 // Class display 
-                cout << " Current Class : ";
+                slowprint( " Current Class : ");
                 switch (playerClass) {
-                    case DEFAULT_CLASS:  cout << "Default"; break;
-                    case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
-                    case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
-                    case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
-                    case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
-                    case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
-                    case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;   
+                    case DEFAULT_CLASS:  slowprint( "Default"); break;
+                    case HERO_CLASS:     slowprint( "Hero (+25 XP)"); break;
+                    case GAMBLER_CLASS:  slowprint( "Gambler (RNG XP)"); break;
+                    case ASSASSIN_CLASS: slowprint( "Assassin (Streak XP)"); break;
+                    case WIZARD_CLASS:   slowprint( "Wizard (Combo + Wisdom XP)"); break;
+                    case ARCHER_CLASS:   slowprint( "Archer (Precision Shot XP)"); break;
+                    case TANK_CLASS:     slowprint( "Tank (Shield Momentum XP)"); break;   
                 }
-                cout << "\n";
+                slowprint( "\n");
 
                 // Assassin display
                 if (playerClass == ASSASSIN_CLASS) {
 
                     float percent = (assassinStacks / 10.0f) * 100.0f; 
-                    cout << " Assassin Streak : " << assassinStreak
-                        << "   Stacks: " << assassinStacks << "/10\n"
-                        << " Progress: " << getProgressBar(percent)
-                        << " " << (int)percent << "%\n";
+                    slowprint( " Assassin Streak : " + to_string(assassinStreak)
+                        + "   Stacks: " + to_string(assassinStacks) + "/10\n"
+                        + " Progress: " + getProgressBar(percent)
+                        + " " + to_string((int)percent) + "%\n");
                 }
 
                 // Wizard display
                 if (playerClass == WIZARD_CLASS) {
 
                     float percent = (wizardCounter / 5.0f) * 100.0f;
-                    cout << " Wizard Counter : " << wizardCounter << "/5\n"
-                        << " Progress: " << getProgressBar(percent)
-                        << " " << (int)percent << "%\n";
+                    slowprint( " Wizard Counter : " + to_string(wizardCounter) + "/5\n"
+                        + " Progress: " + getProgressBar(percent)
+                        + " " + to_string((int)percent) + "%\n");
                 }
 
                 // Archer display
@@ -8703,10 +8698,10 @@ int main() {
                     float percent = (archerStreak / 10.0f) * 100.0f;
                     if (percent > 100) percent = 100;
 
-                    cout << " Archer Streak : " << archerStreak 
-                        << "  Bonus: " << (archerStreak * 5) << "%\n"
-                        << " Progress: " << getProgressBar(percent)
-                        << " " << (int)percent << "%\n";
+                    slowprint( " Archer Streak : " + to_string(archerStreak) 
+                        + "  Bonus: " + to_string(archerStreak * 5) + "%\n"
+                        + " Progress: " + getProgressBar(percent)
+                        + " " + to_string((int)percent) + "%\n");
                 }
 
                 // Tank display
@@ -8720,54 +8715,54 @@ int main() {
                     // Level 20: 3/3 = 100% but lower cap (shows weakness differently)
                     float percent = (maxStacks / 20.0f) * 100.0f;
 
-                    cout << " Tank Stacks : " << tankStacks 
-                        << " / " << maxStacks
-                        << "  (Shield Momentum)\n"
-                        << " Durability: " << getProgressBar(percent)
-                        << " " << (int)percent << "%\n";
+                    slowprint( " Tank Stacks : " + to_string(tankStacks) 
+                        + " / " + to_string(maxStacks)
+                        + "  (Shield Momentum)\n"
+                        + " Durability: " + getProgressBar(percent)
+                        + " " + to_string((int)percent) + "%\n");
                 }
 
 
-                cout << "-------------------------------------\n";
+                slowprint( "-------------------------------------\n");
             }
 
 
-            cout << "                                                                                       Current date: " << cmonth << '/' << cdate << '/' << cyear;
-            cout << endl;
-            cout << "\n";
+            slowprint( "                                                                                     Current streak count: " + to_string(streakCount) + " | Current date: " + to_string(cmonth) + '/' + to_string(cdate) + '/' + to_string(cyear));
+            slowprint("\n");
+            slowprint( "\n");
 
-            cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
-            cout << "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓               ║\n";
-            cout << "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      ║  ┃    ┣━┫┃  ┣━┫┃┣╸ ┃┏┛┣╸ ┃┃┃┣╸ ┃┗┫ ┃ ┗━┓               ║\n";
-            cout << "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      ║  ╹╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛               ║\n";
-            cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
+            slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");
+            slowprint( "       ║╺┓     ┏━╸┏━┓┏━╸┏━┓╺┳╸┏━╸   ┏━┓   ┏┓╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸║      ║╻ ╻    ╺┳┓┏━╸╻  ┏━╸╺┳╸┏━╸   ┏━┓   ╻  ╻┏━┓╺┳╸            ║      ║┏━┓    ┏━┓┏━╸╻ ╻╻┏━╸╻ ╻┏━╸┏┳┓┏━╸┏┓╻╺┳╸┏━┓               ║\n");
+            slowprint( "       ║ ┃     ┃  ┣┳┛┣╸ ┣━┫ ┃ ┣╸    ┣━┫   ┃┗┫┣╸ ┃╻┃   ┃  ┃┗━┓ ┃ ║      ║┗━┫     ┃┃┣╸ ┃  ┣╸  ┃ ┣╸    ┣━┫   ┃  ┃┗━┓ ┃             ║      ║  ┃    ┣━┫┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓                            ║\n");
+            slowprint( "       ║╺┻╸╹   ┗━╸╹┗╸┗━╸╹ ╹ ╹ ┗━╸   ╹ ╹   ╹ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹ ║      ║  ╹╹   ╺┻┛┗━╸┗━╸┗━╸ ╹ ┗━╸   ╹ ╹   ┗━╸╹┗━┛ ╹             ║      ║  ╹╹   ╹ ╹┗━╸╹ ╹╹┗━╸┗┛ ┗━╸╹ ╹┗━╸╹ ╹ ╹ ┗━┛               ║\n");
+            slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");
 
-            cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";
-            cout << "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      ║┏━╸    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╺┳┓┏━┓╺┳╸┏━╸                ║      ║┏━┓    ┏━╸╻  ┏━┓┏━┓┏━┓┏━╸┏━┓                            ║\n";
-            cout << "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      ║┗━┓    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸     ┃┃┣━┫ ┃ ┣╸                 ║      ║┣━┫    ┃  ┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓                            ║\n";
-            cout << "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ╺┻┛╹ ╹ ╹ ┗━╸                ║      ║┗━┛╹   ┗━╸┗━╸╹ ╹┗━┛┗━┛┗━╸┗━┛                            ║\n";
-            cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";                                
+            slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");
+            slowprint( "       ║┏━┓    ╻ ╻╻┏━╸╻ ╻   ╻  ╻┏━┓╺┳╸                          ║      ║┏━╸    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╺┳┓┏━┓╺┳╸┏━╸                ║      ║┏━┓    ┏━╸╻  ┏━┓┏━┓┏━┓┏━╸┏━┓                            ║\n");
+            slowprint( "       ║┏━┛    ┃┏┛┃┣╸ ┃╻┃   ┃  ┃┗━┓ ┃                           ║      ║┗━┓    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸     ┃┃┣━┫ ┃ ┣╸                 ║      ║┣━┫    ┃  ┃  ┣━┫┗━┓┗━┓┣╸ ┗━┓                            ║\n");
+            slowprint( "       ║┗━╸╹   ┗┛ ╹┗━╸┗┻┛   ┗━╸╹┗━┛ ╹                           ║      ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ╺┻┛╹ ╹ ╹ ┗━╸                ║      ║┗━┛╹   ┗━╸┗━╸╹ ╹┗━┛┗━┛┗━╸┗━┛                            ║\n");
+            slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");                                
 
-            cout << "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n";                          
-            cout << "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║      ║┏━┓    ┏━╸╻ ╻╻╺┳╸                                       ║\n";
-            cout << "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      ║┣━┓     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║      ║┗━┫    ┣╸ ┏╋┛┃ ┃                                        ║\n";
-            cout << "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹ ╹┗━╸                ║      ║┗━┛╹   ┗━╸╹ ╹╹ ╹                                        ║ \n";      
-            cout << "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n";
+            slowprint( "       ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗      ╔════════════════════════════════════════════════════════╗\n");                          
+            slowprint( "       ║┏━┓    ╻ ╻┏━┓╺┳┓┏━┓╺┳╸┏━╸   ╻  ╻┏━┓╺┳╸                  ║      ║┏━┓    ╺┳╸┏━┓┏━╸┏━╸╻  ┏━╸   ┏━╸┏━┓┏┳┓┏━╸                ║      ║┏━┓    ┏━╸╻ ╻╻╺┳╸                                       ║\n");
+            slowprint( "       ║╺━┫    ┃ ┃┣━┛ ┃┃┣━┫ ┃ ┣╸    ┃  ┃┗━┓ ┃                   ║      ║┣━┓     ┃ ┃ ┃┃╺┓┃╺┓┃  ┣╸    ┃╺┓┣━┫┃┃┃┣╸                 ║      ║┗━┫    ┣╸ ┏╋┛┃ ┃                                        ║\n");
+            slowprint( "       ║┗━┛╹   ┗━┛╹  ╺┻┛╹ ╹ ╹ ┗━╸   ┗━╸╹┗━┛ ╹                   ║      ║┗━┛╹    ╹ ┗━┛┗━┛┗━┛┗━╸┗━╸   ┗━┛╹ ╹╹ ╹┗━╸                ║      ║┗━┛╹   ┗━╸╹ ╹╹ ╹                                        ║ \n");      
+            slowprint( "       ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝      ╚════════════════════════════════════════════════════════╝\n\n");
 
 
-            cout << "                                                                          ________________  ________________  ________________      \n";
-            cout << "                                                                         |________________||________________||________________|     \n\n";                                                                                                                                     
-            cout << "                                                                            ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸         \n";
-            cout << "                                                                            ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸ ╹        \n";
-            cout << "                                                                            ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸╹        \n";
-            cout << "                                                                                                ╔════╗                              \n";
-            cout << "                                                                                               ╔║    ║╗                             \n";
-            cout << "                                                                                          ═════╝╚════╝╚═════                        \n" ; 
+            slowprint( "                                                                          ________________  ________________  ________________      \n");
+            slowprint( "                                                                         |________________||________________||________________|     \n\n");                                                                                                                                     
+            slowprint( "                                                                            ┏━╸┏┓╻╺┳╸┏━╸┏━┓   ╻ ╻┏━┓╻ ╻┏━┓   ┏━╸╻ ╻┏━┓╻┏━╸┏━╸         \n");
+            slowprint( "                                                                            ┣╸ ┃┗┫ ┃ ┣╸ ┣┳┛   ┗┳┛┃ ┃┃ ┃┣┳┛   ┃  ┣━┫┃ ┃┃┃  ┣╸ ╹        \n");
+            slowprint( "                                                                            ┗━╸╹ ╹ ╹ ┗━╸╹┗╸    ╹ ┗━┛┗━┛╹┗╸   ┗━╸╹ ╹┗━┛╹┗━╸┗━╸╹        \n");
+            slowprint( "                                                                                                ╔════╗                              \n");
+            slowprint( "                                                                                               ╔║    ║╗                             \n");
+            slowprint( "                                                                                          ═════╝╚════╝╚═════                        \n"); 
             
 
-            cout << "\033[0B"; // move UP 2 lines
-            cout << "\033[80C"; // move RIGHT 17 columns (adjust until perfect)
-                    cout << "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n";
+            slowprint( "\033[0B"); // move UP 2 lines
+            slowprint( "\033[80C"); // move RIGHT 17 columns (adjust until perfect)
+                    slowprint( "\033[1;37;41m  ⚠️ INVALID INPUT. PLEASE TRY AGAIN. ⚠️  \033[0m\n");
                     cin.ignore();
                     cin.get();
                     continue;
@@ -8888,7 +8883,10 @@ int main() {
                 break;
 
             case 9:
-                cout << "\nExiting program...\n";
+            system("cls");
+                slowprint("   ┏┓┏┓┏┓┳┓┳┓┓┏┏┓          ┳┳┏┓┏┓┳┓\n");
+                slowprint("   ┃┓┃┃┃┃┃┃┣┫┗┫┣           ┃┃┗┓┣ ┣┫\n");
+                slowprint("   ┗┛┗┛┗┛┻┛┻┛┗┛┗┛          ┗┛┗┛┗┛┛┗\n");
                 return 0;
 
             case 5:
@@ -8896,14 +8894,13 @@ int main() {
              break;
             case 6:
                gamificationEnabled = !gamificationEnabled;
-                cout << "\033[2B";   // move DOWN 2 lines (you labeled this UP, but 0B is down)
-                cout << "\033[80C";  // move RIGHT 80 columns (adjust as needed)
+                slowprint( "\033[2B");   // move DOWN 2 lines (you labeled this UP, but 0B is down)
+                slowprint( "\033[80C");  // move RIGHT 80 columns (adjust as needed)
 
-                cout << "\033[1;97;" << (gamificationEnabled ? "42" : "41") << "m"
-                    << "  ✔  GAMIFICATION IS NOW:  "
-                    << (gamificationEnabled ? "ENABLED" : "DISABLED")
-                    << "  \033[0m\n";
-
+                slowprint( string("\033[1;97;") + (gamificationEnabled ? "42" : "41") + "m"
+                    + "  ✔  GAMIFICATION IS NOW:  "
+                    + (gamificationEnabled ? "ENABLED" : "DISABLED")
+                    + "  \033[0m\n");
 
            
 
@@ -8915,22 +8912,22 @@ int main() {
                 system("cls");
                 headerAchievementList();
 
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << endl;
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint("\n");
 
                 for (int i = 0; i < (int)achNames.size(); i++) {
                     
-                    cout << string(82, ' ');      // center padding
-                    cout << i + 1 << ". "
-                        << achBadges[i] << " "
-                        << achNames[i];
+                    slowprint( string(82, ' '));      // center padding
+                    slowprint( to_string(i + 1) + ". "
+                        + achBadges[i] + " "
+                        + achNames[i]);
 
                     if (achUnlocked[i])
-                        cout << "  (Unlocked)";
+                        slowprint( "  (Unlocked)");
                     else
-                        cout << "  (Locked)";
+                        slowprint( "  (Locked)");
 
-                    cout << "   +" << achXP[i] << " XP\n";
+                    slowprint( "   +" + to_string(achXP[i]) + " XP\n");
                 }
 
              
@@ -8938,26 +8935,25 @@ int main() {
                 // Extra gamification info
                 if (gamificationEnabled) {
 
-                    cout << " Player Level : " << playerLevel
-                        << "    Player XP : " << playerXP << "\n";
+                    slowprint( " Player Level : " + to_string(playerLevel)
+                        + "    Player XP : " + to_string(playerXP) + "\n");
 
-                    cout << " XP Progress  : "
-                        << getXPBar(playerXP)
-                        << " " << (playerXP % 100) << "%\n";
-
+                    slowprint( " XP Progress  : "
+                        + getXPBar(playerXP)
+                        + " " + to_string(playerXP % 100) + "%\n");
                     
                     // Current Class Display
-                    cout << " Current Class: ";
+                    slowprint( " Current Class: ");
                     switch (playerClass) {
-                        case DEFAULT_CLASS:  cout << "Default"; break;
-                        case HERO_CLASS:     cout << "Hero (+25 XP)"; break;
-                        case GAMBLER_CLASS:  cout << "Gambler (RNG XP)"; break;
-                        case ASSASSIN_CLASS: cout << "Assassin (Streak XP)"; break;
-                        case WIZARD_CLASS:   cout << "Wizard (Combo + Wisdom XP)"; break;
-                        case ARCHER_CLASS:   cout << "Archer (Precision Shot XP)"; break;
-                        case TANK_CLASS:     cout << "Tank (Shield Momentum XP)"; break;
+                        case DEFAULT_CLASS:  slowprint( "Default"); break;
+                        case HERO_CLASS:     slowprint( "Hero (+25 XP)"); break;
+                        case GAMBLER_CLASS:  slowprint( "Gambler (RNG XP)"); break;
+                        case ASSASSIN_CLASS: slowprint( "Assassin (Streak XP)"); break;
+                        case WIZARD_CLASS:   slowprint( "Wizard (Combo + Wisdom XP)"); break;
+                        case ARCHER_CLASS:   slowprint( "Archer (Precision Shot XP)"); break;
+                        case TANK_CLASS:     slowprint( "Tank (Shield Momentum XP)"); break;
                     }
-                    cout << "\n";
+                    slowprint( "\n");
 
 
                     // Class-Specific Details
@@ -8965,19 +8961,19 @@ int main() {
                     if (playerClass == ASSASSIN_CLASS) {
                         float percent = (assassinStacks / 10.0f) * 100.0f;
 
-                        cout << " Assassin Streak : " << assassinStreak
-                            << "   Stacks: " << assassinStacks << "/10\n"
-                            << " Progress: " << getProgressBar(percent)
-                            << " " << (int)percent << "%\n";
+                        slowprint( " Assassin Streak : " + to_string(assassinStreak)
+                            + "   Stacks: " + to_string(assassinStacks) + "/10\n"
+                            + " Progress: " + getProgressBar(percent)
+                            + " " + to_string((int)percent) + "%\n");
                     }
 
                     // Wizard Progress
                     if (playerClass == WIZARD_CLASS) {
                         float percent = (wizardCounter / 5.0f) * 100.0f;
 
-                        cout << " Wizard Counter : " << wizardCounter << "/5\n"
-                            << " Progress: " << getProgressBar(percent)
-                            << " " << (int)percent << "%\n";
+                        slowprint( " Wizard Counter : " + to_string(wizardCounter) + "/5\n"
+                            + " Progress: " + getProgressBar(percent)
+                            + " " + to_string((int)percent) + "%\n");
                     }
 
                     // Archer Progress
@@ -8985,10 +8981,10 @@ int main() {
                         float percent = (archerStreak / 10.0f) * 100.0f;
                         if (percent > 100) percent = 100;
 
-                        cout << " Archer Streak : " << archerStreak
-                            << "   Bonus: " << (archerStreak * 5) << "%\n"
-                            << " Progress: " << getProgressBar(percent)
-                            << " " << (int)percent << "%\n";
+                        slowprint( " Archer Streak : " + to_string(archerStreak)
+                            + "   Bonus: " + to_string(archerStreak * 5) + "%\n"
+                            + " Progress: " + getProgressBar(percent)
+                            + " " + to_string((int)percent) + "%\n");
                     }
 
                     // Tank Progress
@@ -8999,18 +8995,18 @@ int main() {
                         float percent = (tankStacks * 100.0f) / maxStacks;
                         if (percent > 100) percent = 100;
 
-                        cout << " Tank Stacks : " << tankStacks << " / " << maxStacks
-                            << "  (Shield Momentum)\n"
-                            << " Durability: " << getProgressBar(percent)
-                            << " " << (int)percent << "%\n";
+                        slowprint( " Tank Stacks : " + to_string(tankStacks) + " / " + to_string(maxStacks)
+                            + "  (Shield Momentum)\n"
+                            + " Durability: " + getProgressBar(percent)
+                            + " " + to_string((int)percent) + "%\n");
                     }
 
                   
                 }
-                cout << endl;
-                cout << "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n";
-                cout << endl;
-                cout << "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m";
+                slowprint( "\n");
+                slowprint( "                                                                                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            \n");
+                slowprint("\n");
+                slowprint( "                                                                                     \033[1;48;2;255;255;255m\033[38;2;0;0;0m  ➡️ PRESS ENTER TO CONTINUE...  \033[0m");
                 cin.ignore();
                 cin.get();
                 break;
@@ -9048,4 +9044,3 @@ int main() {
 
     return 0;
 }
-
