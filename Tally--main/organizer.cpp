@@ -988,7 +988,7 @@ void checkAchievements(
     for (i = 0; i < (int)list_of_lists.size(); i++) {
         totalItems += list_of_lists[i].size();
         for (j = 0; j < (int)list_of_lists[i].size(); j++) {
-            if (list_of_lists[i][j].find("[DONE]") != string::npos)
+            if (list_of_lists[i][j].find("✅") != string::npos)
                 totalCompleted++;
         }
     }
@@ -5543,8 +5543,8 @@ void editList(
                     }
 
                     if (confirm == 1) {
-                        if (items[itemNum - 1].find("[DONE]") != string::npos)
-                            items[itemNum - 1] = "[DONE] " + newName;
+                        if (items[itemNum - 1].find("✅") != string::npos)
+                            items[itemNum - 1] = "✅" + newName;
                         else
                             items[itemNum - 1] = newName;
 
@@ -9044,3 +9044,5 @@ int main() {
 
     return 0;
 }
+
+
