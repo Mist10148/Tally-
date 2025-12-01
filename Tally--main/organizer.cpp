@@ -31,7 +31,9 @@ enum PlayerClass {
     ASSASSIN_CLASS,
     WIZARD_CLASS,
     ARCHER_CLASS,
-    TANK_CLASS
+    TANK_CLASS,
+    ALCHEMIST_CLASS,
+
 
 };
 
@@ -42,6 +44,19 @@ int assassinStacks = 0; // Assassin stack system
 int wizardCounter = 0; // Wizard spell combo counter
 int archerStreak = 0; // Archer hit streak
 int tankStacks = 0;   // Tank momentum system
+// Alchemist Data
+int alchemistCooldown[4] = {0, 0, 0, 0};
+bool burnActive = false;
+int burnDuration = 0;
+bool transmuteActive = false;
+int transmuteBonus = 0;
+bool stoneActive = false;
+int stoneDuration = 0;
+bool alchemistUsedCatalyze = false;
+bool alchemistUsedIgnite = false;
+bool alchemistUsedTransmute = false;
+bool alchemistUsedStone = false;
+
 
 // Class ownership flags
 bool ownsHero = false;
@@ -50,6 +65,7 @@ bool ownsAssassin = false;
 bool ownsWizard = false;
 bool ownsArcher = false;
 bool ownsTank = false;
+bool ownsAlchemist = false;
 
 // Achievement system global flag(for saving unlocked characters and have them as an achievement)
 bool achievementsNeedUpdate = false;
@@ -70,6 +86,109 @@ string fmt2(double n) {
     oss << fixed << setprecision(2) << n;
     return oss.str();
 }
+
+void resetAlchemist() {
+    burnActive = false;
+    burnDuration = 0;
+
+    transmuteActive = false;
+    transmuteBonus = 0;
+
+    stoneActive = false;
+    stoneDuration = 0;
+
+    for (int i = 0; i < 4; i++)
+        alchemistCooldown[i] = 0;
+}
+
+// this is for the alchemist ability panel
+void alchemistPanel(
+    int& playerXP
+) {
+    while (true) {
+        slowprint("\n⚗️ ALCHEMIST ABILITY PANEL\n");
+        slowprint("--------------------------------------\n");
+        slowprint("[1] Catalyze (+20 XP) | Cost: 10 | CD: " + to_string(alchemistCooldown[0]) + "\n");
+        slowprint("[2] Ignite (+15 XP + burn) | Cost: 10 | CD: " + to_string(alchemistCooldown[1]) + "\n");
+        slowprint("[3] Transmute (10% XP → next action) | Cost: 20 | CD: " + to_string(alchemistCooldown[2]) + "\n");
+        slowprint("[4] Philosopher’s Stone (+10 XP × 5 actions) | Cost: 15 | CD: " + to_string(alchemistCooldown[3]) + "\n");
+        slowprint("[0] Back\n");
+        slowprint("--------------------------------------\n");
+        slowprint("Choose ability: ");
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 0) return;
+        if (choice < 1 || choice > 4) continue;
+
+        int index = choice - 1;
+
+        if (alchemistCooldown[index] > 0) {
+            slowprint("Ability is still on cooldown!\n");
+            continue;
+        }
+
+        switch (choice) {
+
+        // Ability 1: Catalyze
+        case 1:
+            if (playerXP < 10) { slowprint("Not enough XP!\n"); break; }
+            playerXP -= 10;
+            playerXP += 20;
+            alchemistCooldown[0] = 3;
+            alchemistUsedCatalyze = true;
+            slowprint("Catalyze activated! (+20 XP)\n");
+            break;
+
+        // Ability 2: Ignite
+        case 2:
+            if (playerXP < 10) { slowprint("Not enough XP!\n"); break; }
+            playerXP -= 10;
+            playerXP += 15;
+
+            burnActive = true;
+            burnDuration = 3;
+
+            alchemistCooldown[1] = 6;
+            alchemistUsedIgnite = true;
+
+            slowprint("Ignite applied! Burn active for 3 actions.\n");
+            break;
+
+        // Ability 3: Transmute
+        case 3:
+            if (playerXP < 20) { slowprint("Not enough XP!\n"); break; }
+
+            playerXP -= 20;
+
+            transmuteActive = true;
+            transmuteBonus = (int)(playerXP * 0.10);
+
+            alchemistCooldown[2] = 8;
+            alchemistUsedTransmute = true;
+
+            slowprint("Transmute primed! Will activate on next action.\n");
+            break;
+
+        // Ability 4: Philosopher’s Stone
+        case 4:
+            if (playerXP < 15) { slowprint("Not enough XP!\n"); break; }
+
+            playerXP -= 15;
+
+            stoneActive = true;
+            stoneDuration = 5;
+
+            alchemistCooldown[3] = 15;
+            alchemistUsedStone = true;
+
+            slowprint("Philosopher’s Stone active! +10 XP for next 5 actions.\n");
+            break;
+        }
+    }
+}
+
 
 // -------------------------
 // XP / LEVELING FUNCTION
@@ -183,6 +302,16 @@ void showClassInfo(int c) {
         slowprint("                                                                          • Strong early, weaker late\n");
         slowprint("                                                                          • Always gives a bonus\n");
         break;
+    
+    case 8:
+        slowprint("                                                                                             [ALCHEMIST CLASS]\n");
+        slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        slowprint("                                                                          • Elemental Potion system\n");
+        slowprint("                                                                          • 1. Catalyze – +20 XP (Cost: 10 XP, CD: 3)\n");
+        slowprint("                                                                          • 2. Ignite – +15 XP + Burn (+2 XP for next 3 actions)(Cost: 10 XP, CD: 6)\n");
+        slowprint("                                                                          • 3. Transmute – Converts 10% of current XP to bonus XP - next action (Cost: 20 XP, CD: 8)\n");
+        slowprint("                                                                          • 4. Philosopher's Stone – +10 XP for next 5 actions(Cost: 15 XP, CD: 15)\n");
+        break;
 
     default:
         slowprint("Invalid class selection.\n");
@@ -232,10 +361,13 @@ void ClassListCopy(PlayerClass& playerClass, int& playerXP) {
         slowprint("                                                                          [7] Tank               (Cost: 500 XP)   "
              + string(ownsTank ? "[OWNED]" : "")
              + string(playerClass == TANK_CLASS ? " <== Equipped" : "") + "\n");
-
+        
+        slowprint("                                                                          [8] Alchemist          (Cost: 800 XP)   "
+             + string(ownsAlchemist ? "[OWNED]" : "")
+             + string(playerClass == ALCHEMIST_CLASS ? " <== Equipped" : "") + "\n");
      
         slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-        slowprint("                                                                          [8] View Class Details\n");
+        slowprint("                                                                          [9] View Class Details\n");
         slowprint("                                                                          [0] Back\n");
         slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
  
@@ -278,9 +410,13 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
              + string(ownsTank ? "[OWNED]" : "")
              + string(playerClass == TANK_CLASS ? " <== Equipped" : "") + "\n");
 
+        slowprint("                                                                          [8] ⌛ Alchemist          (Cost: 800 XP)   "
+             + string(ownsAlchemist ? "[OWNED]" : "")
+             + string(playerClass == ALCHEMIST_CLASS ? " <== Equipped" : "") + "\n");
+
 
         slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-        slowprint("                                                                          [8] View Class Details\n");
+        slowprint("                                                                          [9] View Class Details\n");
         slowprint("                                                                          [0] Back\n");
         slowprint("                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
@@ -299,7 +435,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         int c;
 
         // ================================
-        // ERROR-HANDLED INPUT FOR MAIN CHOICE (0–8)
+        // ERROR-HANDLED INPUT FOR MAIN CHOICE (0–9)
         // ================================
         if (!(cin >> c)) {
             cin.clear();
@@ -317,9 +453,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         // clean rest of the line
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        if (c < 0 || c > 8) {
+        if (c < 0 || c > 9) {
             slowprint("\n");
-            slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 0-8. ⚠️ \033[0m\n\n");
+            slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 0-9. ⚠️ \033[0m\n\n");
             slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
             cin.get();
@@ -329,7 +465,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         if (c == 0) return;
 
         // Class info cards
-        if (c == 8) {
+        if (c == 9) {
             int infoChoice;
 
             system("cls");
@@ -348,7 +484,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             slowprint("\033[98C"); // move RIGHT 17 columns (adjust until perfect)
 
             // ================================
-            // ERROR-HANDLED INPUT FOR CLASS INFO CHOICE (1–7)
+            // ERROR-HANDLED INPUT FOR CLASS INFO CHOICE (1–8)
             // ================================
             if (!(cin >> infoChoice)) {
                 cin.clear();
@@ -365,9 +501,9 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
 
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            if (infoChoice < 1 || infoChoice > 7) {
+            if (infoChoice < 1 || infoChoice > 8) {
                 slowprint("\n");
-                slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 1-7. ⚠️ \033[0m\n\n");
+                slowprint(" \033[1;37;41m ⚠️ INVALID CHOICE. PLEASE SELECT BETWEEN 1-8. ⚠️ \033[0m\n\n");
                 slowprint(" \033[1;48;2;255;255;255m\033[38;2;0;0;0m ➡️ PRESS ANY KEY TO CONTINUE... \033[0m\n");
 
                 cin.get();
@@ -399,6 +535,7 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         else if (c == 5) { chosen = WIZARD_CLASS; cost = 7; }
         else if (c == 6) { chosen = ARCHER_CLASS; cost = 6; }
         else if (c == 7) { chosen = TANK_CLASS; cost = 5; }
+        else if (c == 8) { chosen = ALCHEMIST_CLASS; cost = 8; }
         else { continue; }
 
         // If already own → equip it
@@ -407,8 +544,10 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
             (chosen == ASSASSIN_CLASS && ownsAssassin) ||
             (chosen == WIZARD_CLASS && ownsWizard) ||
             (chosen == ARCHER_CLASS && ownsArcher) ||
-            (chosen == TANK_CLASS && ownsTank))
+            (chosen == TANK_CLASS && ownsTank) ||
+            (chosen == ALCHEMIST_CLASS && ownsAlchemist))
         {
+            resetAlchemist(); // Reset alchemist state when switching to it
             playerClass = chosen;
             slowprint("Class equipped!\n");
 
@@ -436,7 +575,8 @@ void classMenu(PlayerClass& playerClass, int& playerXP) {
         if (chosen == WIZARD_CLASS)  ownsWizard  = true;
         if (chosen == ARCHER_CLASS)  ownsArcher  = true;
         if (chosen == TANK_CLASS)    ownsTank    = true;
-
+        if (chosen == ALCHEMIST_CLASS) ownsAlchemist = true;
+        resetAlchemist(); // Reset alchemist state when switching to it
         playerClass = chosen;
 
         slowprint("Class purchased and equipped!\n");
@@ -570,6 +710,39 @@ void addClassXP(
 
         break;
     }
+
+    case ALCHEMIST_CLASS: {
+
+    // ---------- Burn Effect ----------
+    if (burnActive) {
+        finalXP += 2;
+        burnDuration--;
+        if (burnDuration <= 0) burnActive = false;
+    }
+
+    // ---------- Philosopher's Stone ----------
+    if (stoneActive) {
+        finalXP += 10;
+        stoneDuration--;
+        if (stoneDuration <= 0) stoneActive = false;
+    }
+
+    // ---------- Transmute ----------
+    if (transmuteActive) {
+        int bonus = (int)(playerXP * 0.10);
+        finalXP += bonus;
+        transmuteActive = false;
+    }
+
+    // ---------- Cooldown Reduction ----------
+    for (int i = 0; i < 4; i++) {
+        if (alchemistCooldown[i] > 0)
+            alchemistCooldown[i]--;
+    }
+
+    break;
+}
+
 
     default:
         break;
@@ -937,6 +1110,16 @@ void initAchievements(
     achievementUnlocked[i] = 0;
     achievementXPRewards[i] = 25;
 
+    achievementNames[i] = "Unlock Alchemist Class";
+    achievementBadges[i] = "⚗️";
+    achievementUnlocked[i] = 0;
+    achievementXPRewards[i] = 30;
+
+    i = achievementNames.size();
+    achievementNames.resize(i + 1);
+    achievementBadges.resize(i + 1);
+    achievementUnlocked.resize(i + 1);
+    achievementXPRewards.resize(i + 1);
 
     // -------- Unlock ALL Classes --------
 
@@ -998,7 +1181,8 @@ void checkAchievements(
     (ownsAssassin ? 1 : 0) +
     (ownsWizard ? 1 : 0) +
     (ownsArcher ? 1 : 0) +
-    (ownsTank ? 1 : 0);
+    (ownsTank ? 1 : 0) +
+    (ownsAlchemist ? 1 : 0);
 
 
     for (i = 0; i < (int)list_of_lists.size(); i++) {
@@ -1470,6 +1654,26 @@ for (i = 0; i < (int)achNames.size(); i++) {
     }
 
     if (achNames[i] == "Unlock Tank Class" && ownsTank) {
+        achUnlocked[i] = 1;
+
+        slowprint( "\n");
+        slowprint( "\033[1;37;42m ✔ ACHIEVEMENT UNLOCKED! \033[0m\n");
+        slowprint( "\n");
+        slowprint( "\033[1;48;2;255;255;255m\033[38;2;0;0;0m  "
+             + achBadges[i] + " " + achNames[i]
+             + " (+" + to_string(achXP[i]) + " XP)  "
+             + " \033[0m\n\n");
+        slowprint( "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+
+        cin.get();
+
+        addClassXP(achXP[i], gamificationEnabled, playerXP, playerLevel,
+                   playerClass, assassinStreak, assassinStacks,
+                   wizardCounter, archerStreak, tankStacks);
+        continue;
+    }
+
+    if (achNames[i] == "Unlock Alchemist Class" && ownsAlchemist) {
         achUnlocked[i] = 1;
 
         slowprint( "\n");
