@@ -4,11 +4,12 @@
 #include <iomanip>
 #define NOMINMAX
 #include <windows.h>
-
+#include <sstream>
 #include <conio.h>
 #include <limits>
 using namespace std;
 
+// Slow print 
 void slowprint(const string& message, int delay_ms = 0.67) {
     for (char c : message) {
         cout << c << flush;
@@ -50,10 +51,25 @@ bool ownsWizard = false;
 bool ownsArcher = false;
 bool ownsTank = false;
 
-
 // Achievement system global flag(for saving unlocked characters and have them as an achievement)
 bool achievementsNeedUpdate = false;
 
+//function to get current date
+void getCurrentDate(int &month, int &day, int &year) {
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+
+    month = ltm->tm_mon + 1;
+    day   = ltm->tm_mday;
+    year  = ltm->tm_year + 1900;
+}
+
+//function for formatting doubles to 2 decimal places
+string fmt2(double n) {
+    ostringstream oss;
+    oss << fixed << setprecision(2) << n;
+    return oss.str();
+}
 
 // -------------------------
 // XP / LEVELING FUNCTION
@@ -3489,8 +3505,8 @@ void showSingleList(
         slowprint( "                                                                          Completed Items : "  + to_string(completedCount) + "\n");
         slowprint( "                                                                          Not Done : "         + to_string(notDone)      + "\n");
         cout <<                                                                            fixed << setprecision(2);
-        slowprint( "                                                                          % Completed : "      + to_string(percentDone) + "%\n");
-        slowprint( "                                                                          % Not Completed : "  + to_string(percentNot)  + "%\n\n");
+        slowprint( "                                                                          % Completed : "      + fmt2(percentDone) + "%\n");
+        slowprint( "                                                                          % Not Completed : "  + fmt2(percentNot)  + "%\n\n");
         slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n");
     }
 
@@ -5039,7 +5055,7 @@ void editList(
         slowprint( "                                                                          Completed Items   : " + to_string(completedCount) + "\n");
         slowprint( "                                                                          Not Done          : " + to_string(notDone) + "\n");
         cout << fixed << setprecision(2);
-        slowprint( "                                                                          % Completed       : " + to_string(percentDone) + "%\n");
+        slowprint( "                                                                          % Completed       : " + fmt2(percentDone) + "%\n");
         slowprint( "\n");
         slowprint( "                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━         \n\n");
         slowprint( "                                                                         [1] ✚ ADD NEW ITEM            [2] ✏️ EDIT AN ITEM                \n");
@@ -8398,7 +8414,8 @@ int main() {
     vector<string> name_of_list;
     vector<vector<string>> list_of_lists;
     vector<vector<vector<string>>> list_of_descriptions;
-    int cmonth = 0, cdate = 0, cyear = 0;
+    int cmonth, cdate, cyear;
+    getCurrentDate(cmonth, cdate, cyear); // get current date for default creation date
     vector<int> monthcreated;
     vector<int> datecreated;
     vector<int> yearcreated;
